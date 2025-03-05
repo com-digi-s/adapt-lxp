@@ -1,0 +1,6 @@
+job:
+  image: alpine:latest
+  script:
+  - cd dist && zip -r adapt-lxp-$(date +%F).zip .
+  - curl --header "JOB-TOKEN:${CI_JOB_TOKEN}" --upload-file adapt-lxp-$(date +%F).zip ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/adapt-lxp-builds/0.0.1/adapt-lxp-$(date +%F).zip
+  - curl --header "JOB-TOKEN:${CI_JOB_TOKEN}" --upload-file adapt-lxp-$(date +%F).zip ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/adapt-lxp-builds/0.0.1/adapt-lxp-latest.zip

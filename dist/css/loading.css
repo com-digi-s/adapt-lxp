@@ -1,0 +1,32 @@
+/* inspired by: https://stackoverflow.com/questions/55316124/how-to-blur-body-in-css-until-page-is-fully-loaded
+
+body {
+	background-color: #fff;
+	background: white;
+	animation-name: beginPage;
+	animation-duration: 1s;
+	-webkit-animation: beginPage 1s; 
+	-moz-animation:    beginPage 1s;
+	-o-animation:      beginPage 1s; 
+	animation:         beginPage 1s;
+}
+
+@-webkit-keyframes beginPage {
+	0%   { opacity: 0; filter: blur(1rem); }
+	100% { opacity: 1; filter: blur(0); }
+}
+
+@-moz-keyframes beginPage {
+	0%   { opacity: 0; filter: blur(1rem); }
+	100% { opacity: 1; filter: blur(0); }
+}
+
+@-o-keyframes NbeginPage {
+	0%   { opacity: 0; filter: blur(1rem); }
+	100% { opacity: 1; filter: blur(0); }
+}
+
+@keyframes beginPage {
+	0%   { opacity: 0; filter: blur(1rem); }
+	100% { opacity: 1; filter: blur(0); }
+} */

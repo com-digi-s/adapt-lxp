@@ -1,0 +1,209 @@
+#greeting {
+	background-image: url(../img/background.jpg) !important;
+}
+
+.chart {
+	height: 25rem;
+}
+
+.deactivation {
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+a:hover, .card-link:hover {
+  cursor:pointer;
+}
+
+.list-group-item-wrapper {
+  height: 3rem; /* match the height of the card title and course label */
+  display: flex; /* set the display property to flex */
+  align-items: center; /* vertically center the progress bar and button */
+}
+
+.card-title, .course-label {
+  height: 2rem; /* set a fixed height for the title and label elements */
+  text-align: left;
+}
+
+.module-label {
+  font-size: medium;
+}
+
+.course-label {
+  font-size: medium;
+  /*display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 1.15rem;*/
+}
+
+.course {
+  background-color: whitesmoke;
+}
+
+.card-description {
+  font-size: medium;
+}
+
+.action-call {
+  font-size: medium;
+}
+
+.pathway-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.pathway {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pathway-title {
+  font-size: medium;
+  margin-bottom: 1rem;
+}
+
+.milestone {
+  margin-left: 2rem;
+  margin-right: 2rem;
+  position: relative;
+  cursor: pointer;
+}
+
+.milestone:first-of-type {
+  margin-left: 0 !important;
+}
+
+.milestone:last-of-type {
+  margin-right: 0 !important;
+}
+
+.milestone-with-line::after {
+  content: '';
+  display: none;
+  position: absolute;
+  right: -1.5rem;
+  top: 50%;
+  width: 1.5rem;
+  height: 2px;
+  background-color: #007bff;
+  z-index: -1;
+}
+
+.milestone-icon {
+  font-size: 1.5rem;
+  position: relative;
+}
+
+.milestone-icon.completed {
+  color: #007bff;
+}
+
+.milestone-icon .fa-mountain {
+  color: #999;
+}
+
+.milestone-icon.completed .fa-mountain {
+  color: #007bff;
+}
+
+.completed-flag {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1rem;
+  color: #fff;
+}
+
+.milestone-label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0.5rem;
+  white-space: nowrap;
+}
+
+/*@keyframes heartbeat {
+  100% {
+    transform: scale(1.005);
+  }
+}*/
+
+
+.course-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sco {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+}
+
+.sco .card {
+  height: 100%;
+  border: 0 !important;
+}
+
+.card-body {
+  padding: 0 !important;
+  margin-left: 0.5rem !important;
+}
+
+.middle-scos {
+  flex: 2;
+}
+
+.module-frame {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.module-frame h5 {
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.module-cards {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.course-grid {
+  width: 100%;
+  padding-top: 0.25rem !important;
+}
+
+.collapsible-card .card-header {
+  cursor: pointer;
+  background-color: unset !important;
+  border-bottom: 1px solid lightgray;
+  padding-left: 0.5rem !important;
+}
+
+.collapsible-card .card-body {
+  transition: max-height 0.5s ease-out;
+}
+
+.collapsible-card .card-body.collapsed {
+  max-height: 0;
+  overflow: hidden;
+}
+
+h6 {
+  color: black;
+}

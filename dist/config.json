@@ -1,0 +1,4423 @@
+{
+"BOOKMARK_TEXT": "Weiter geht's", "SUSPEND_DATA_DELIMITER": "~~", "START_PAGE": "views/dashboard/index.html", "LOCAL_STORAGE": true, "COMPLETION_THRESHOLD": 0.75, "DEFAULT_DATA": {"cmi.core.lesson_status": "not attempted", "cmi.suspend_data": {"bookmark": "M0", "adaptData": {"M0": {}}, "customData": {"initial-niveau": 0, "learning-experience": []}}, "cmi.core.lesson_location": "", "cmi.core.score.raw": 0, "cmi.core.student_name": "Anonymous User", "cmi.core.student_id": "anonymous@user.com", "cmi.student_preference.language": "de"}, 
+    "glossary": {
+		"Unterwasserkabel": {
+			"definition": "Kabel, die auf dem Meeresboden verlegt sind und weltweite Datenkommunikation zwischen Kontinenten ermöglichen; entscheidender Bestandteil der Internetinfrastruktur.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.1",
+					"_id": "62ab035c19e6b13536ba89e3"
+				}
+			]
+		},
+		"Arpanet": {
+			"definition": "Vorgänger des modernen Internets, entwickelt im Auftrag des US-Verteidigungsministeriums als Netzwerk für den Austausch von Informationen zwischen Universitäten und Forschungseinrichtungen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.1",
+					"_id": "62ab035c19e6b13536ba89e3"
+				}
+			]
+		},
+		"IP-Adresse": {
+			"definition": "Eine eindeutige numerische Kennung, die jedem Gerät im Internet zugewiesen wird, um Datenkommunikation zu ermöglichen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.1",
+					"_id": "62ab035c19e6b13536ba89e3"
+				}
+			]
+		},
+		"Domain": {
+			"definition": "Eine für Menschen verständliche Adresse im Internet, die auf eine spezifische IP-Adresse verweist (z. B. www.example.com).",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.1",
+					"_id": "62ab035c19e6b13536ba89e3"
+				}
+			]
+		},
+		"Blackbox": {
+			"definition": "Eine metaphorische Bezeichnung eines undurchsichtigen Systems.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.1",
+					"_id": "62ab035c19e6b13536ba89e3"
+				}
+			]
+		},
+		"Datenpaket": {
+			"definition": "Kleineres Datenfragment, das durch das Internet transportiert wird, um große Datenmengen effizient zu übertragen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.1",
+					"_id": "62ab035c19e6b13536ba89e3"
+				}
+			]
+		},
+		"HTML": {
+			"definition": "HyperText Markup Language; die Standard-Auszeichnungssprache zur Strukturierung von Inhalten auf Webseiten. Sie definiert die grundlegenden Elemente wie Überschriften, Absätze, Bilder und Links.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.1",
+					"_id": "62ab035c19e6b13536ba89e3"
+				},
+				{
+					"taxonomy": "1.1.A.2",
+					"_id": "62ab035c19e6b1cca2ba89e4"
+				}
+			]
+		},
+		"CSS": {
+			"definition": "Cascading Style Sheets; eine Stylesheet-Sprache, die zur Gestaltung und Formatierung von Webseiten verwendet wird. Sie legt fest, wie HTML-Elemente aussehen sollen, z. B. Farben, Schriftarten und Layout.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.1",
+					"_id": "62ab035c19e6b13536ba89e3"
+				}
+			]
+		},
+		"JavaScript": {
+			"definition": "Eine Skriptsprache, die dynamische und interaktive Funktionen auf Webseiten ermöglicht, wie z. B. Animationen, Benutzerinteraktionen und das Abrufen von Daten ohne Neuladen der Seite.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.1",
+					"_id": "62ab035c19e6b13536ba89e3"
+				}
+			]
+		},
+		"Browser": {
+			"definition": "Software, die den Zugriff auf Inhalte im Internet ermöglicht, indem sie HTML-Code in eine benutzerfreundliche Darstellung übersetzt. Beispiele: Chrome, Firefox, Edge.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.2",
+					"_id": "62ab035c19e6b1cca2ba89e4"
+				}
+			]
+		},
+		"Quellcode": {
+			"definition": "Der Programmiertext, der die Struktur, das Layout und die Funktionen einer Webseite beschreibt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.2",
+					"_id": "62ab035c19e6b1cca2ba89e4"
+				}
+			]
+		},
+		"HTTP": {
+			"definition": "Hypertext Transfer Protocol; Ein Protokoll, das die Übertragung von Daten zwischen Webservern und Browsern regelt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.2",
+					"_id": "62ab035c19e6b1cca2ba89e4"
+				}
+			]
+		},
+		"HTTPS": {
+			"definition": "Hypertext Transfer Protocol Secure; Eine sichere Erweiterung von HTTP, die Datenverschlüsselung für sichere Verbindungen bietet.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.2",
+					"_id": "62ab035c19e6b1cca2ba89e4"
+				}
+			]
+		},
+		"Webtracking": {
+			"definition": "Verfahren, bei dem Nutzerinnenaktivitäten im Internet analysiert werden, oft durch Cookies oder Browser-Fingerabdrücke, um personalisierte Werbung anzuzeigen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.2",
+					"_id": "62ab035c19e6b1cca2ba89e4"
+				}
+			]
+		},
+		"Cookies": {
+			"definition": "Kleine Dateien, die Informationen über Nutzerinneninteraktionen speichern, um personalisierte Erlebnisse und Inhalte bereitzustellen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.2",
+					"_id": "62ab035c19e6b1cca2ba89e4"
+				}
+			]
+		},
+		"Cache": {
+			"definition": "Zwischenspeicher, der besuchte Webseiten speichert, um diese beim nächsten Besuch schneller zu laden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.2",
+					"_id": "62ab035c19e6b1cca2ba89e4"
+				}
+			]
+		},
+		"Plug-ins/Add-ons": {
+			"definition": "Erweiterungen, die zusätzliche Funktionen zu einem Browser hinzufügen, wie z. B. Werbeblocker oder Sicherheitstools.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.2",
+					"_id": "62ab035c19e6b1cca2ba89e4"
+				}
+			]
+		},
+		"Browser-Fingerprinting": {
+			"definition": "Ein digitales Profil (Fingerprint), das anhand der individuellen Konfiguration eines Browsers erstellt wird und zur Identifikation einer Nutzerin oder eines Nutzers dienen kann.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.2",
+					"_id": "62ab035c19e6b1cca2ba89e4"
+				}
+			]
+		},
+		"Web 2.0": {
+			"definition": "Ein Konzept des Internets, das auf Interaktivität und kollaborativen Inhalten basiert, wie Blogs, soziale Medien und Wiki-Seiten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.2",
+					"_id": "62ab035c19e6b1cca2ba89e4"
+				}
+			]
+		},
+		"Sicherheitsupdates": {
+			"definition": "Regelmäßige Software-Updates, die bekannte Sicherheitslücken schließen oder den Funktionsumfang der Software erweitern",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.2",
+					"_id": "62ab035c19e6b1cca2ba89e4"
+				}
+			]
+		},
+		"Web-Crawler": {
+			"definition": "Ein Programm, das automatisch Webseiten besucht, neue Inhalte identifiziert und diese für die Indexierung erfasst.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.3",
+					"_id": "62ab035c19e6b1e3c8ba89e5"
+				}
+			]
+		},
+		"Index": {
+			"definition": "Eine Datenbank, die alle erfassten Webseiten mit Stichworten ordnet, ähnlich einem Register in einem Buch, um Suchanfragen effizient zu beantworten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.3",
+					"_id": "62ab035c19e6b1e3c8ba89e5"
+				}
+			]
+		},
+		"Ranking": {
+			"definition": "Der Prozess, der Webseiten nach ihrer Relevanz ordnet, basierend auf Faktoren wie Verlinkungen oder aktuellen Algorithmen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.3",
+					"_id": "62ab035c19e6b1e3c8ba89e5"
+				}
+			]
+		},
+		"SEO": {
+			"definition": "Search Engine Optimization; Verfahren, die Webseiten optimieren, um deren Sichtbarkeit und Platzierung in den organischen Suchergebnissen zu verbessern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.3",
+					"_id": "62ab035c19e6b1e3c8ba89e5"
+				}
+			]
+		},
+		"SEA": {
+			"definition": "Search Engine Advertising; Verfahren, bei denen Anzeigen oder gesponserte Ergebnisse zum Einsatz kommen, die durch Zahlungen an die Suchmaschinenanbieter:innen prominent platziert werden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.3",
+					"_id": "62ab035c19e6b1e3c8ba89e5"
+				}
+			]
+		},
+		"Bezahlte Suchergebnisse": {
+			"definition": "Anzeigen oder gesponserte Ergebnisse, die durch Zahlungen an die Suchmaschinenanbieter:innen prominent platziert werden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.3",
+					"_id": "62ab035c19e6b1e3c8ba89e5"
+				}
+			]
+		},
+		"Organische Suchergebnisse": {
+			"definition": "Suchergebnisse, die algorithmisch generiert werden, ohne dass für ihre Platzierung bezahlt wurde.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.3",
+					"_id": "62ab035c19e6b1e3c8ba89e5"
+				}
+			]
+		},
+		"Wolfram|Alpha": {
+			"definition": "Eine Suchmaschine mit semantischen Fähigkeiten, die strukturierte und präzise Antworten auf komplexe Anfragen liefert.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.3",
+					"_id": "62ab035c19e6b1e3c8ba89e5"
+				}
+			]
+		},
+		"Hidden/Deep Web": {
+			"definition": "Bereiche des Internets, die nicht von Suchmaschinen indexiert werden, wie geschützte Datenbanken oder nicht verlinkte Seiten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.A.3",
+					"_id": "62ab035c19e6b1e3c8ba89e5"
+				}
+			]
+		},
+		"Eisbergmodell des Internets": {
+			"definition": "Ein Modell, das die Struktur des Internets mit einem Eisberg vergleicht. Die sichtbare Spitze steht für das Clearnet, während sich der größere, unsichtbare Teil in Deep Web und Darknet gliedert.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.1",
+					"_id": "62fcc8170baac4f195e048c4"
+				}
+			]
+		},
+		"Clearnet": {
+			"definition": "Surface Web; Der sichtbare und über Suchmaschinen zugängliche Teil des Internets, der etwa 10% der Inhalte umfasst.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.1",
+					"_id": "62fcc8170baac4f195e048c4"
+				}
+			]
+		},
+		"Deep Web": {
+			"definition": "Ein Teil des Internets, der nicht von Suchmaschinen indexiert wird und für den oft Zugangsbeschränkungen oder Authentifizierungen erforderlich sind, z. B. für firmeninterne Intranets oder Datenbanken.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.1",
+					"_id": "62fcc8170baac4f195e048c4"
+				}
+			]
+		},
+		"Darknet": {
+			"definition": "Ein Teil des Deep Web, der nur über spezielle Software wie den TOR-Browser zugänglich ist. Es zeichnet sich durch hohe Anonymität aus, die sowohl legale als auch illegale Aktivitäten ermöglicht.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.1",
+					"_id": "62fcc8170baac4f195e048c4"
+				},
+				{
+					"taxonomy": "4.1.A.1",
+					"_id": "643dc942c0b812002aaed15a"
+				}
+			]
+		},
+		"TOR-Browser": {
+			"definition": "Auch \"The Onion Router\"; Eine Software, die anonymes Surfen im Internet ermöglicht, indem Datenverkehr durch mehrere verschlüsselte Knotenpunkte geleitet wird. Notwendig für den Zugang zum Darknet.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.1",
+					"_id": "62fcc8170baac4f195e048c4"
+				}
+			]
+		},
+		".onion-Domäne": {
+			"definition": "Die Endung von Webseiten im Darknet, die ausschließlich über den TOR-Browser zugänglich sind.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.1",
+					"_id": "62fcc8170baac4f195e048c4"
+				}
+			]
+		},
+		"VPN": {
+			"definition": "Virtual Private Network; Eine Technologie, die eine verschlüsselte Verbindung zwischen Ihrem Gerät und einem VPN-Server herstellt, wodurch Ihre IP-Adresse verborgen wird und Anonymität sowie Sicherheit beim Surfen erhöht werden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.1",
+					"_id": "62fcc8170baac4f195e048c4"
+				}
+			]
+		},
+		"Geoblocking": {
+			"definition": "Die Beschränkung des Zugangs zu Internetinhalten basierend auf geografischen Standorten. Kann durch VPNs umgangen werden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.1",
+					"_id": "62fcc8170baac4f195e048c4"
+				}
+			]
+		},
+		"Anonymität im Netz": {
+			"definition": "Die Möglichkeit, im Internet zu agieren, ohne dass die Identität der Nutzer:innen nachvollziehbar ist. Technologien wie TOR und VPN tragen dazu bei.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.1",
+					"_id": "62fcc8170baac4f195e048c4"
+				}
+			]
+		},
+		"VPN-Tunnel": {
+			"definition": "Die verschlüsselte Verbindung zwischen einem Endgerät und einem VPN-Server, die den Datenverkehr schützt und die IP-Adresse der Nutzer:innen verbirgt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.1",
+					"_id": "62fcc8170baac4f195e048c4"
+				}
+			]
+		},
+		"Onion Routing": {
+			"definition": "Ein mehrschichtiges Verschlüsselungskonzept (Zwiebelprinzip), das den Datenverkehr im TOR-Netzwerk anonymisiert. Jede Schicht kennt nur ihren Vorgänger und Nachfolger.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.1",
+					"_id": "62fcc8170baac4f195e048c4"
+				}
+			]
+		},
+		"Strukturierte Daten": {
+			"definition": "Daten, die in einer klar definierten Struktur wie Tabellen oder Datenbanken gespeichert und leicht durchsucht und analysiert werden können. Beispiele sind Preise, Rezepte oder Kontaktinformationen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.2",
+					"_id": "62ab035c19e6b146c4ba89e2"
+				},
+				{
+					"taxonomy": "1.3.A.2",
+					"_id": "641061cfc0b812002aaece27"
+				}
+			]
+		},
+		"Unstrukturierte Daten": {
+			"definition": "Rohdaten ohne feste Struktur, die eine Vielzahl von Formaten annehmen können, z. B. E-Mails, Videos oder GPS-Signale. Sie machen den Großteil der verfügbaren Daten aus, sind aber schwerer zu analysieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.2",
+					"_id": "62ab035c19e6b146c4ba89e2"
+				},
+				{
+					"taxonomy": "1.3.A.2",
+					"_id": "641061cfc0b812002aaece27"
+				}
+			]
+		},
+		"Big Data": {
+			"definition": "Der Begriff beschreibt die Verarbeitung und Analyse großer, komplexer und vielfältiger Datenmengen, um neue Erkenntnisse zu gewinnen. Beispiele sind Genomsequenzierung oder Klimamodelle.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.2",
+					"_id": "62ab035c19e6b146c4ba89e2"
+				},
+				{
+					"taxonomy": "4.1.A.1",
+					"_id": "643dc942c0b812002aaed15a"
+				}
+			]
+		},
+		"5 V von Big Data": {
+			"definition": "Schlüsselkonzepte zur Beschreibung von Big Data; Volume: Die riesige Menge an Daten. Variety: Die Vielfalt der Datenformate, z. B. Texte, Bilder, Videos. Velocity: Die Geschwindigkeit, mit der Daten erzeugt und analysiert werden. Validity: Die Qualität der Daten, frei von Fehlern oder Verzerrungen. Value: Der geschaffene Nutzen durch die Analyse der Daten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.2",
+					"_id": "62ab035c19e6b146c4ba89e2"
+				}
+			]
+		},
+		"Digital Humanities": {
+			"definition": "Ein interdisziplinäres Feld, das computergestützte Methoden zur Analyse von Daten in den Geisteswissenschaften einsetzt, z. B. zur Untersuchung historischer Texte.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.2",
+					"_id": "62ab035c19e6b146c4ba89e2"
+				}
+			]
+		},
+		"Suchoperatoren": {
+			"definition": "Werkzeuge wie Anführungszeichen oder Doppelpunkte, die Suchanfragen verfeinern, um genauere Ergebnisse in Suchmaschinen oder Datenbanken zu erzielen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.2",
+					"_id": "62ab035c19e6b146c4ba89e2"
+				}
+			]
+		},
+		"Daten": {
+			"definition": "Beobachtungen oder Aufzeichnungen in symbolischer Form, z. B. Zahlen oder Zeichen, die durch Kontext zu Information werden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.2",
+					"_id": "62ab035c19e6b146c4ba89e2"
+				},
+				{
+					"taxonomy": "1.3.A.2",
+					"_id": "641061cfc0b812002aaece27"
+				}
+			]
+		},
+		"Informationen": {
+			"definition": "Kontextualisierte Daten, die eine Bedeutung haben und interpretiert werden können.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.2",
+					"_id": "62ab035c19e6b146c4ba89e2"
+				}
+			]
+		},
+		"Wissen": {
+			"definition": "Anwendbare Information, die in der Praxis genutzt werden kann, um Handlungen oder Entscheidungen zu treffen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.B.2",
+					"_id": "62ab035c19e6b146c4ba89e2"
+				}
+			]
+		},
+		"Digitale Dekade": {
+			"definition": "Ein von der EU ausgerufener Zeitraum bis 2030, der eine gemeinsame Vision für die Digitalisierung in Europa verfolgt. Ziel ist es, die Mitgliedsstaaten zu einer kohärenten Digitalstrategie zu bewegen und die digitale Transformation in allen Bereichen der Gesellschaft voranzutreiben, von Kompetenzen bis zur Infrastruktur.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.C.1",
+					"_id": "63077ad90baac493e6e04bc0"
+				}
+			]
+		},
+		"Digitaler Kompass": {
+			"definition": "Ein Konzept, das die Digitalstrategie der EU bis 2030 veranschaulicht. Er enthält vier Kernelemente: digitale Kompetenzen, digitale Transformation von Unternehmen, Digitalisierung öffentlicher Dienste und eine sichere digitale Infrastruktur.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.C.1",
+					"_id": "63077ad90baac493e6e04bc0"
+				}
+			]
+		},
+		"DESI": {
+			"definition": "Digital Economy and Society Index; Ein Index, der von der EU veröffentlicht wird, um die digitale Entwicklung der Mitgliedsstaaten zu messen. Er analysiert verschiedene Dimensionen der Digitalisierung, darunter Infrastruktur, digitale Fähigkeiten, Online-Dienste und digitale öffentliche Verwaltung.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.C.1",
+					"_id": "63077ad90baac493e6e04bc0"
+				}
+			]
+		},
+		"Open Data": {
+			"definition": "Daten, die für die öffentliche Nutzung frei zugänglich, bearbeitbar und teilbar sind. Sie werden in einem maschinen- und menschenlesbaren Format zur Verfügung gestellt und ermöglichen es Nutzer:innen, neue Zusammenhänge zu erkennen und Innovationen zu fördern. Die Nutzung von Open Data basiert auf dem Prinzip der Transparenz und Offenheit.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.C.1",
+					"_id": "63077ad90baac493e6e04bc0"
+				},
+				{
+					"taxonomy": "2.2.C.1",
+					"_id": "643dc383c0b812002aaed0ef"
+				}
+			]
+		},
+		"FAIR-Prinzip": {
+			"definition": "Ein Konzept für die Verwaltung und Veröffentlichung von Forschungsdaten, das sicherstellt, dass Daten findable (findbar), accessible (zugänglich), interoperable (interoperabel) und reusable (wiederverwendbar) sind.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.C.1",
+					"_id": "63077ad90baac493e6e04bc0"
+				},
+				{
+					"taxonomy": "5.1.C.2",
+					"_id": "65b277efc240300006b55362"
+				}
+			]
+		},
+		"Rohdaten": {
+			"definition": "Unverarbeitete, ursprüngliche Daten, die noch nicht durch Analyse oder Interpretation bearbeitet wurden. Sie sind oft in Formaten wie .csv oder .json verfügbar und müssen in der Regel weiter verarbeitet werden, um nützliche Informationen zu liefern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.C.1",
+					"_id": "63077ad90baac493e6e04bc0"
+				}
+			]
+		},
+		"Künstliche Intelligenz (KI)": {
+			"definition": "Technologien, die es Maschinen ermöglichen, menschenähnliche Intelligenzleistungen zu erbringen, wie z. B. Mustererkennung, Problemlösung und Lernen aus Daten. In der digitalen Transformation spielt KI eine Schlüsselrolle in Bereichen wie Automatisierung und datengetriebenen Entscheidungsprozessen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.C.1",
+					"_id": "63077ad90baac493e6e04bc0"
+				},
+				{
+					"taxonomy": "3.1.C.1",
+					"_id": "640a05fdc0b812002aaece1f"
+				},
+				{
+					"taxonomy": "3.2.C.1",
+					"_id": "643e688dc0b812002aaed318"
+				},
+				{
+					"taxonomy": "4.1.A.1",
+					"_id": "643dc942c0b812002aaed15a"
+				},
+				{
+					"taxonomy": "5.1.A.1",
+					"_id": "643dca90c0b812002aaed1b1"
+				},
+				{
+					"taxonomy": "5.1.B.1",
+					"_id": "643dca90c0b812002aaed1b3"
+				},
+				{
+					"taxonomy": "5.1.C.2",
+					"_id": "65b277efc240300006b55362"
+				}
+			]
+		},
+		"Cloud-Dienste": {
+			"definition": "Internetbasierte IT-Dienste, die Speicher, Rechenleistung und Anwendungen bereitstellen. Unternehmen und Einzelpersonen können diese Dienste nutzen, ohne eigene IT-Infrastruktur aufbauen oder pflegen zu müssen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.C.1",
+					"_id": "63077ad90baac493e6e04bc0"
+				},
+				{
+					"taxonomy": "2.2.A.1",
+					"_id": "643dc383c0b812002aaed0eb"
+				}
+			]
+		},
+		"E-Government": {
+			"definition": "Die Digitalisierung öffentlicher Verwaltungsdienste, die es Bürger:innen und Unternehmen ermöglicht, mit staatlichen Institutionen über digitale Kanäle zu kommunizieren und Dienstleistungen online zu nutzen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.C.1",
+					"_id": "63077ad90baac493e6e04bc0"
+				},
+				{
+					"taxonomy": "4.2.C.2",
+					"_id": "66df661933064b0006a8c572"
+				}
+			]
+		},
+		"5G": {
+			"definition": "Die fünfte Generation der Mobilfunktechnologie, die höhere Datenraten, verbesserte Konnektivität und niedrigere Latenzzeiten bietet. Sie ist entscheidend für die Entwicklung der digitalen Infrastruktur und das Internet der Dinge.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.C.1",
+					"_id": "63077ad90baac493e6e04bc0"
+				}
+			]
+		},
+		"Quantencomputing": {
+			"definition": "Eine neue Art der Datenverarbeitung, die Quantenmechanik nutzt, um Probleme zu lösen, die für klassische Computer zu komplex sind. Quantencomputing hat das Potenzial, bestimmte Arten von Berechnungen erheblich zu beschleunigen und könnte die Grundlage für zukünftige technologische Innovationen bilden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.C.1",
+					"_id": "63077ad90baac493e6e04bc0"
+				}
+			]
+		},
+		"Apply Magic Sauce": {
+			"definition": "Ein Werkzeug, entwickelt von der Psychologischen Fakultät der Universität Cambridge, das es ermöglicht, die Datenprofile von Nutzer:innen aus verschiedenen Online-Plattformen zu analysieren und eine Persönlichkeitsbeschreibung zu erstellen. Das Tool nutzt Algorithmen, um das Verhalten und die Vorlieben der Nutzer:innen zu verstehen und basierend darauf eine Einschätzung ihrer Persönlichkeit zu geben.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.C.2",
+					"_id": "63077aee0baac459afe04bc3"
+				}
+			]
+		},
+		"Online Behavioral Advertising (OBA)": {
+			"definition": "Eine Form der personalisierten Werbung, bei der Online-Verhalten von Nutzer:innen gesammelt und analysiert wird, um gezielte Werbeanzeigen anzuzeigen, die auf den individuellen Vorlieben und Interessen basieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.C.2",
+					"_id": "63077aee0baac459afe04bc3"
+				}
+			]
+		},
+		"Mikrotargeting": {
+			"definition": "Eine Form der Werbung, die gezielt auf sehr kleine, spezifische Zielgruppen ausgerichtet wird, die aufgrund ihrer Interessen, demografischen Merkmale oder Verhaltensweisen identifiziert werden. Mikrotargeting wird häufig durch die Analyse von Online-Daten und -Verhalten ermöglicht.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.C.2",
+					"_id": "63077aee0baac459afe04bc3"
+				}
+			]
+		},
+		"Predictive Policing": {
+			"definition": "Eine Technologie, die es ermöglicht, durch die Analyse von Daten aus verschiedenen Quellen Wahrscheinlichkeiten für das Auftreten zukünftiger Straftaten zu berechnen. Diese Technik zielt darauf ab, Polizeiressourcen effizienter einzusetzen, birgt jedoch die Gefahr, unverdächtige Personen ungerechtfertigt zu überwachen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.C.2",
+					"_id": "63077aee0baac459afe04bc3"
+				}
+			]
+		},
+		"Deep Blue": {
+			"definition": "Ein Computerprogramm, das 1997 den Schachweltmeister Garry Kasparow besiegte. Deep Blue war bekannt für seine Rechenleistung und nutzte Brute-Force-Algorithmen, um Millionen von Schachzügen pro Sekunde zu analysieren. Es war ein Meilenstein in der Entwicklung von Künstlicher Intelligenz.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.C.2",
+					"_id": "63077aee0baac459afe04bc3"
+				}
+			]
+		},
+		"European Interactive Digital Advertising Alliance (EDAA)": {
+			"definition": "Eine Organisation, die Standards für die digitale Werbung in Europa festlegt und die Selbstregulierung der Werbeindustrie fördert. Die EDAA bietet eine Plattform (Your Online Choices), auf der Nutzer ihre Datenschutzpräferenzen bezüglich Online-Tracking und Werbung einstellen können.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.C.2",
+					"_id": "63077aee0baac459afe04bc3"
+				}
+			]
+		},
+		"Predictive Analytics": {
+			"definition": "Die Nutzung von Daten, Algorithmen und maschinellen Lerntechniken, um Vorhersagen über zukünftige Ereignisse oder Verhaltensweisen zu treffen. In verschiedenen Bereichen wie Kriminalität, Gesundheit und Wirtschaft wird Predictive Analytics verwendet, um fundierte Entscheidungen zu treffen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.C.2",
+					"_id": "63077aee0baac459afe04bc3"
+				}
+			]
+		},
+		"GPS": {
+			"definition": "Global Positioning System; Ein System, das es ermöglicht, geografische Positionen zu bestimmen und Routen von einem Punkt zum anderen zu berechnen. Heute erfolgt dies oft mithilfe von mobilen Geräten, die Echtzeit-Daten zur Verkehrslage und zu möglichen Alternativrouten liefern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.1.C.2",
+					"_id": "63077aee0baac459afe04bc3"
+				}
+			]
+		},
+		"Seriöse Quellen": {
+			"definition": "Inhalte, die von anerkannten Institutionen, Expert:innen oder etablierten Organisationen veröffentlicht werden, oft durch wissenschaftliche Standards wie Peer-Review geprüft. Sie zeichnen sich durch Aktualität, Überprüfbarkeit und Objektivität aus und umfassen beispielsweise Fachzeitschriften, staatliche Webseiten und renommierte Nachrichtenportale.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.A.1",
+					"_id": "63f37353c0b812002aaecc6d"
+				}
+			]
+		},
+		"Unseriöse Quellen": {
+			"definition": "Inhalte, die keine transparente Überprüfung durchlaufen, subjektive Meinungen oder voreingenommene Ansichten widerspiegeln und oft reißerische oder ungenaue Informationen verbreiten. Beispiele sind Boulevard-Websites, soziale Medien mit hoher Fälschungsrate oder Plattformen ohne redaktionelle Überprüfung.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.A.1",
+					"_id": "63f37353c0b812002aaecc6d"
+				}
+			]
+		},
+		"Algorithmen": {
+			"definition": "Programmierte Prozesse, die zur Automatisierung von Aufgaben wie Datenverarbeitung, Entscheidungstreffen oder Vorhersagen verwendet werden. Sie bieten Effizienz, können jedoch durch Verzerrungen in den zugrunde liegenden Daten oder durch fehlende kritische Analyse problematisch sein.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.A.1",
+					"_id": "63f37353c0b812002aaecc6d"
+				},
+				{
+					"taxonomy": "1.2.A.2",
+					"_id": "63ee4196c0b812002aaecc04"
+				}
+			]
+		},
+		"Filterblasen": {
+			"definition": "Personalisierte Informationsräume, in denen Algorithmen Inhalte bereitstellen, die den bisherigen Vorlieben und Ansichten der Nutzer:innen entsprechen, wodurch alternative Perspektiven ausgeblendet werden. Dies kann die Wahrnehmung verzerren und eine einseitige Sichtweise fördern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.A.1",
+					"_id": "63f37353c0b812002aaecc6d"
+				},
+				{
+					"taxonomy": "1.2.A.2",
+					"_id": "63ee4196c0b812002aaecc04"
+				},
+				{
+					"taxonomy": "1.2.C.2",
+					"_id": "64181533c0b812002aaece83"
+				},
+				{
+					"taxonomy": "2.3.A.1",
+					"_id": "643dc850c0b812002aaed11b"
+				}
+			]
+		},
+		"Clickbait": {
+			"definition": "Sensationalistische Überschriften, die darauf abzielen, Aufmerksamkeit zu erregen und Klicks zu generieren, oft ohne den versprochenen informativen oder qualitativen Inhalt zu liefern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.A.1",
+					"_id": "63f37353c0b812002aaecc6d"
+				}
+			]
+		},
+		"Fact-Checking": {
+			"definition": "Werkzeuge, die Informationen auf ihre Richtigkeit und Glaubwürdigkeit prüfen, indem sie Quellen vergleichen, Beweise bewerten und mögliche Falschinformationen identifizieren. Beispiele sind Websites wie Snopes oder Correctiv.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.A.1",
+					"_id": "63f37353c0b812002aaecc6d"
+				}
+			]
+		},
+		"Peer-Review": {
+			"definition": "Ein Qualitätssicherungsprozess, bei dem wissenschaftliche Arbeiten vor der Veröffentlichung von Fachkolleg:innen auf inhaltliche Korrektheit, Relevanz und methodische Strenge überprüft werden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.A.1",
+					"_id": "63f37353c0b812002aaecc6d"
+				}
+			]
+		},
+		"Social Media": {
+			"definition": "Soziale Medien sind Plattformen, auf denen Nutzer:innen Inhalte erstellen, teilen und austauschen können. Sie bieten eine Vielfalt an Informationen und ermöglichen es Nutzer*innen, sich mit anderen zu vernetzen, Wissen zu teilen und auf Nachrichten und Inhalte aus aller Welt zuzugreifen. Diese Plattformen haben sich zu einem wichtigen Instrument der Informationsverbreitung entwickelt und beeinflussen unseren Konsum von Nachrichten und anderen Informationen erheblich.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.A.2",
+					"_id": "63ee4196c0b812002aaecc04"
+				}
+			]
+		},
+		"Vierte Gewalt": {
+			"definition": "Der Begriff bezeichnet die Medien als eine der nicht-gesetzgebenden Kräfte, die im Rahmen einer demokratischen Gesellschaft die Regierung und deren Institutionen kontrollieren. Während die Exekutive, Legislative und Judikative die drei klassischen Gewalten darstellen, nimmt die Presse eine ähnliche Rolle ein, indem sie durch Berichterstattung den Staat überwacht und Verantwortung einfordert.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.A.2",
+					"_id": "63ee4196c0b812002aaecc04"
+				}
+			]
+		},
+		"Citizen Journalism": {
+			"definition": "Citizen Journalism bezieht sich auf die Praxis, dass Bürger:innen ohne professionellen Journalismus-Hintergrund Nachrichten und Ereignisse dokumentieren und verbreiten, häufig über soziale Medien. Diese Form des Journalismus hat das Potenzial, eine breitere und vielfältigere Berichterstattung zu ermöglichen, insbesondere bei Themen, die in traditionellen Medien unterrepräsentiert sind.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.A.2",
+					"_id": "63ee4196c0b812002aaecc04"
+				}
+			]
+		},
+		"Pressekodex": {
+			"definition": "Der Deutsche Pressekodex ist ein freiwilliger ethischer Kodex, der von Journalist:innen und Medienunternehmen beachtet wird, um hohe Standards in der Berichterstattung zu wahren. Er umfasst Prinzipien wie Wahrhaftigkeit, Sorgfaltspflicht, den Schutz der Persönlichkeitsrechte und die Vermeidung von Diskriminierung. Der Kodex ist nicht gesetzlich bindend, aber der Deutsche Presserat überwacht die Einhaltung und spricht bei Verstößen öffentliche Rügen aus.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.A.2",
+					"_id": "63ee4196c0b812002aaecc04"
+				}
+			]
+		},
+		"Social Proof": {
+			"definition": "Social Proof bezeichnet den psychologischen Effekt, bei dem Menschen ihr Verhalten oder ihre Meinungen an denen anderer orientieren. In sozialen Medien wird dieser Effekt häufig verstärkt, da Likes, Shares und positive Kommentare das Vertrauen in Inhalte oder Produkte erhöhen und somit die Wahrnehmung von deren Wert beeinflussen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.A.2",
+					"_id": "63ee4196c0b812002aaecc04"
+				}
+			]
+		},
+		"Fake News": {
+			"definition": "Falschmeldungen, die bewusst oder unbewusst erstellt und verbreitet werden, häufig mit dem Ziel, die öffentliche Meinung zu manipulieren, Misstrauen zu säen oder politische und finanzielle Interessen zu fördern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.B.1",
+					"_id": "63c5d879c0b812002aaec9d3"
+				}
+			]
+		},
+		"Bias": {
+			"definition": "Systematische Verzerrung oder Vorurteile in Wahrnehmungen, Entscheidungen oder Daten, die die Objektivität beeinflussen können. Im Kontext der KI kann Bias durch Datenquellen, Algorithmen oder menschliche Eingriffe entstehen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.C.2",
+					"_id": "64181533c0b812002aaece83"
+				},
+				{
+					"taxonomy": "5.1.B.1",
+					"_id": "643dca90c0b812002aaed1b3"
+				},
+				{
+					"taxonomy": "5.1.C.1",
+					"_id": "643dca90c0b812002aaed1b5"
+				}
+			]
+		},
+		"Automation Bias": {
+			"definition": "Die Tendenz, automatisierten Systemen zu viel Vertrauen zu schenken und deren Vorschläge oder Entscheidungen ungeprüft zu übernehmen, auch wenn diese fehlerhaft sind.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.C.2",
+					"_id": "64181533c0b812002aaece83"
+				}
+			]
+		},
+		"Selection Bias": {
+			"definition": "Verzerrung durch nicht repräsentative Stichproben oder Daten, die zu fehlerhaften oder nicht generalisierbaren Ergebnissen führen können.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.C.2",
+					"_id": "64181533c0b812002aaece83"
+				}
+			]
+		},
+		"Group Attribution Bias": {
+			"definition": "Die fehlerhafte Übertragung von Eigenschaften oder Verhaltensweisen eines Einzelnen auf eine gesamte Gruppe.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.C.2",
+					"_id": "64181533c0b812002aaece83"
+				}
+			]
+		},
+		"Implicit Bias": {
+			"definition": "Unbewusste Vorurteile oder Stereotypen, die unser Verhalten und unsere Entscheidungen beeinflussen können, oft ohne dass wir uns dessen bewusst sind.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.C.2",
+					"_id": "64181533c0b812002aaece83"
+				}
+			]
+		},
+		"Vertrauenswürdige KI": {
+			"definition": "KI-Systeme, die ethischen Leitlinien folgen und Anforderungen wie Transparenz, Fairness, Datenschutz, Sicherheit und menschliche Aufsicht erfüllen, um gesellschaftlich akzeptierte Standards zu gewährleisten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.C.2",
+					"_id": "64181533c0b812002aaece83"
+				}
+			]
+		},
+		"Moralische Maschinen": {
+			"definition": "Simulationsprojekte, wie das Moral Machine Projekt, die ethische Entscheidungen von KI in komplexen oder lebensbedrohlichen Situationen analysieren und bewerten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.2.C.2",
+					"_id": "64181533c0b812002aaece83"
+				}
+			]
+		},
+		"Dateien": {
+			"definition": "Geordnete Zusammenstellungen von Daten in maschinenlesbarer Form. Dateien haben Namen und Erweiterungen, die ihren Typ kennzeichnen, wie z. B. .jpg für Bilder oder .docx für Textdokumente.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.A.2",
+					"_id": "641061cfc0b812002aaece27"
+				}
+			]
+		},
+		"Dateiformate": {
+			"definition": "Standards zur Speicherung und Darstellung von Daten in Dateien. Verschiedene Formate wie .jpg, .pdf oder .mp3 sind für spezifische Anwendungsbereiche optimiert, wie Bilder, Texte oder Audiodaten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.A.2",
+					"_id": "641061cfc0b812002aaece27"
+				}
+			]
+		},
+		"Metadaten": {
+			"definition": "Daten, die Informationen über andere Daten oder Dateien enthalten, wie Entstehungszeitpunkt, Format oder Urheber:in. Sie erleichtern Organisation und Kontextualisierung von Daten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.A.2",
+					"_id": "641061cfc0b812002aaece27"
+				},
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				}
+			]
+		},
+		"Primärdaten": {
+			"definition": "Rohdaten, die direkt gewonnen werden, z. B. durch Messgeräte oder Umfragen, und noch nicht bearbeitet oder ausgewertet wurden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.A.2",
+					"_id": "641061cfc0b812002aaece27"
+				}
+			]
+		},
+		"Sekundärdaten": {
+			"definition": "Aufbereitete Daten, die durch Interpretation, Analyse oder Kontextualisierung aus Primärdaten gewonnen werden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.A.2",
+					"_id": "641061cfc0b812002aaece27"
+				}
+			]
+		},
+		"Quantitative Daten": {
+			"definition": "Numerische Daten, die mathematisch verarbeitet werden können, wie Gewicht oder Größe.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.A.2",
+					"_id": "641061cfc0b812002aaece27"
+				}
+			]
+		},
+		"Qualitative Daten": {
+			"definition": "Nicht-numerische Daten, die subjektive Merkmale, Meinungen oder Eindrücke darstellen, wie Texte aus Interviews oder Beobachtungen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.A.2",
+					"_id": "641061cfc0b812002aaece27"
+				}
+			]
+		},
+		"Datenverarbeitung": {
+			"definition": "Jegliche Handlung mit Daten, wie Erheben, Speichern, Analysieren oder Löschen, häufig automatisiert und systematisch.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.A.2",
+					"_id": "641061cfc0b812002aaece27"
+				}
+			]
+		},
+		"Datenmanagement": {
+			"definition": "Strategische Planung, Speicherung, Organisation und Nutzung von Daten, einschließlich ihrer Analyse und Weitergabe.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.A.2",
+					"_id": "641061cfc0b812002aaece27"
+				}
+			]
+		},
+		"Forschungsdatenmanagement (FDM)": {
+			"definition": "Organisierung und Dokumentation von Forschungsdaten über ihren gesamten Lebenszyklus, von der Erfassung bis zur Archivierung, um Transparenz und Wiederverwendbarkeit zu gewährleisten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.A.2",
+					"_id": "641061cfc0b812002aaece27"
+				}
+			]
+		},
+		"Lebenszyklus von Forschungsdaten": {
+			"definition": "Phasen, die Forschungsdaten durchlaufen, von Erstellung, Verarbeitung, Analyse, Veröffentlichung bis zur langfristigen Archivierung.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.A.2",
+					"_id": "641061cfc0b812002aaece27"
+				}
+			]
+		},
+		"Datenbanken": {
+			"definition": "Strukturierte Sammlungen von Daten, die effizient gespeichert, abgefragt und bearbeitet werden können, z. B. für große Datenmengen in Tabellenform.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.A.2",
+					"_id": "641061cfc0b812002aaece27"
+				}
+			]
+		},
+		"Repositorien": {
+			"definition": "Digitale Speicherorte für wissenschaftliche oder institutionelle Daten und Objekte, die öffentlich oder eingeschränkt zugänglich sind.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.A.2",
+					"_id": "641061cfc0b812002aaece27"
+				}
+			]
+		},
+		"Dark Data": {
+			"definition": "Daten, die von Organisationen gesammelt, aber nicht genutzt werden, entweder aufgrund fehlender Infrastruktur, Übermenge, Unwissenheit über ihre Existenz oder mangelnder Nutzbarkeit. Sie verursachen oft hohe Kosten und CO₂-Emissionen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.B.1",
+					"_id": "63c5de7bc0b812002aaeca57"
+				},
+				{
+					"taxonomy": "2.2.A.1",
+					"_id": "643dc383c0b812002aaed0eb"
+				}
+			]
+		},
+		"ROT-Data": {
+			"definition": "Ein Akronym für redundante, obsolete und triviale Daten. Diese Daten sind unnötig und erschweren das Datenmanagement, ohne einen Mehrwert zu liefern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.B.1",
+					"_id": "63c5de7bc0b812002aaeca57"
+				}
+			]
+		},
+		"Versionierung": {
+			"definition": "Ein Verfahren zur Kennzeichnung von Dokumenten, das es ermöglicht, den Bearbeitungsstatus oder die Reihenfolge von Änderungen eindeutig zu identifizieren, z. B. durch Suffixe wie _v1, _v2, _v3.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.B.1",
+					"_id": "63c5de7bc0b812002aaeca57"
+				}
+			]
+		},
+		"3-2-1-Backup-Strategie": {
+			"definition": "Eine empfohlene Methode zur Datensicherung, bei der drei Kopien der Daten existieren, auf zwei verschiedenen Medientypen gespeichert und eine davon extern aufbewahrt wird.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.B.1",
+					"_id": "63c5de7bc0b812002aaeca57"
+				}
+			]
+		},
+		"Literaturverwaltungsprogramme": {
+			"definition": "Softwaretools wie Citavi oder Zotero, die das Finden, Ordnen und Zitieren von Literatur erleichtern, oft mit Zusatzfunktionen wie Tagging, Zusammenarbeit oder Browser-Integration.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.B.1",
+					"_id": "63c5de7bc0b812002aaeca57"
+				}
+			]
+		},
+		"DIN 5008": {
+			"definition": "Eine Norm des Deutschen Instituts für Normierung, die Standards für die Gestaltung von Texten, darunter auch elektronische Ordnerstrukturen und Dateibenennungen, enthält.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.B.1",
+					"_id": "63c5de7bc0b812002aaeca57"
+				}
+			]
+		},
+		"Dateileichen": {
+			"definition": "Dateien, die nicht mehr benötigt werden und Speicherplatz beanspruchen, was zu Performanceeinbußen führen kann.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.B.1",
+					"_id": "63c5de7bc0b812002aaeca57"
+				}
+			]
+		},
+		"Cloud": {
+			"definition": "Externer Speicherort oder Rechenzentrum, das Dateien, Rechenleistung und Anwendungen online zugänglich macht und für ortsunabhängiges Arbeiten geeignet ist.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.B.1",
+					"_id": "63c5de7bc0b812002aaeca57"
+				}
+			]
+		},
+		"Backup": {
+			"definition": "Eine Sicherheitskopie von Daten, die vor Verlust schützt. Es gibt verschiedene Arten, wie Vollbackups, differentielle und inkrementelle Backups.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.B.1",
+					"_id": "63c5de7bc0b812002aaeca57"
+				}
+			]
+		},
+		"Dateimanager": {
+			"definition": "Software, die eine grafische Benutzeroberfläche zur Verwaltung von Dateien bietet, z. B. Windows-Explorer oder Finder bei Apple.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.B.1",
+					"_id": "63c5de7bc0b812002aaeca57"
+				}
+			]
+		},
+		"Ordnerstruktur": {
+			"definition": "Die systematische Anordnung von Dateien in einem Verzeichnisbaum, der entweder vertikal (wenig Unterordner) oder horizontal (viele Unterordner) gestaltet sein kann.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.B.1",
+					"_id": "63c5de7bc0b812002aaeca57"
+				}
+			]
+		},
+		"Datensparsamkeit": {
+			"definition": "Das Prinzip, nur notwendige Daten zu sammeln und zu speichern, um Ressourcen zu schonen und den Überblick zu bewahren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.B.1",
+					"_id": "63c5de7bc0b812002aaeca57"
+				},
+				{
+					"taxonomy": "4.1.B.1",
+					"_id": "643dc942c0b812002aaed15e"
+				}
+			]
+		},
+		"Datenethik": {
+			"definition": "Ein interdisziplinärer Ansatz, der sich mit den moralischen und gesellschaftlichen Fragen der Datennutzung beschäftigt. Ziel ist es, Leitlinien und Prinzipien für einen verantwortungsvollen Umgang mit Daten zu entwickeln.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.C.1",
+					"_id": "63c5de7bc0b812002aaeca5b"
+				}
+			]
+		},
+		"Datenökonomie": {
+			"definition": "Ein Konzept, das Daten als Wirtschaftsgut versteht, welches monetarisiert und in Geschäftsmodellen genutzt wird. Es umfasst Strategien, um wirtschaftlichen Wert aus Daten zu ziehen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.C.1",
+					"_id": "63c5de7bc0b812002aaeca5b"
+				}
+			]
+		},
+		"Personenbezogene Daten": {
+			"definition": "Informationen, die sich auf eine identifizierte oder identifizierbare Person beziehen, wie Name, Adresse, Gesundheitsdaten oder Finanzdaten, und durch die Rückschlüsse auf diese Person möglich sind.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.C.1",
+					"_id": "63c5de7bc0b812002aaeca5b"
+				},
+				{
+					"taxonomy": "4.1.A.2",
+					"_id": "659e4cc6c240300006a5591f"
+				}
+			]
+		},
+		"Datenschutz": {
+			"definition": "Ein ethischer und rechtlicher Rahmen zum Schutz der Privatsphäre und persönlichen Informationen. Ziel ist es, die Verarbeitung personenbezogener Daten zu kontrollieren und Missbrauch zu verhindern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.C.1",
+					"_id": "63c5de7bc0b812002aaeca5b"
+				},
+				{
+					"taxonomy": "2.1.B.1",
+					"_id": "643dc2b8c0b812002aaed0c8"
+				},
+				{
+					"taxonomy": "2.2.A.1",
+					"_id": "643dc383c0b812002aaed0eb"
+				},
+				{
+					"taxonomy": "2.3.A.1",
+					"_id": "643dc850c0b812002aaed11b"
+				},
+				{
+					"taxonomy": "4.1.A.1",
+					"_id": "643dc942c0b812002aaed15a"
+				}
+			]
+		},
+		"Transparenz (Datenethik)": {
+			"definition": "Ein Prinzip, das sicherstellt, dass der Ursprung und die Verwendung von Daten offen und nachvollziehbar sind, um Vertrauen und Glaubwürdigkeit zu fördern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.C.1",
+					"_id": "63c5de7bc0b812002aaeca5b"
+				}
+			]
+		},
+		"Informationelle Selbstbestimmung": {
+			"definition": "Das Recht jedes Einzelnen, über die Erhebung, Verarbeitung und Nutzung seiner persönlichen Daten selbst zu bestimmen. Dieses Prinzip ist ein zentraler Bestandteil der Datenschutzgesetze.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.C.1",
+					"_id": "63c5de7bc0b812002aaeca5b"
+				},
+				{
+					"taxonomy": "4.1.A.1",
+					"_id": "643dc942c0b812002aaed15a"
+				}
+			]
+		},
+		"Datenethikkommission": {
+			"definition": "Ein von der Bundesregierung eingesetztes interdisziplinäres Gremium, das Empfehlungen und Leitlinien für den ethischen Umgang mit Daten entwickelt hat.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.C.1",
+					"_id": "63c5de7bc0b812002aaeca5b"
+				}
+			]
+		},
+		"Data Ethics Canvas": {
+			"definition": "Ein vom Open Data Institute entwickeltes Werkzeug, das Leitfragen bereitstellt, um den Umgang mit Daten kritisch zu reflektieren und ethische Schwachstellen in der Datennutzung zu identifizieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.C.1",
+					"_id": "63c5de7bc0b812002aaeca5b"
+				}
+			]
+		},
+		"Zielsetzung (Datenethik)": {
+			"definition": "Die klare Definition des Zwecks der Datenerhebung und -nutzung, um sicherzustellen, dass keine unlauteren oder schädlichen Absichten verfolgt werden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.C.1",
+					"_id": "63c5de7bc0b812002aaeca5b"
+				}
+			]
+		},
+		"Daten als Allgemeingut": {
+			"definition": "Der Gedanke, dass bestimmte Daten oder deren Zugang der gesamten Gesellschaft zugutekommen und als öffentliches Gut behandelt werden sollten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "1.3.C.1",
+					"_id": "63c5de7bc0b812002aaeca5b"
+				}
+			]
+		},
+		"E-Mail": {
+			"definition": "Eine elektronische Nachricht, die zwischen Computern über das Internet ausgetauscht wird. Die erste E-Mail in Deutschland wurde am 3. August 1984 empfangen und markiert den Beginn der digitalen Kommunikation im Land.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.A.1",
+					"_id": "643dc2b8c0b812002aaed0c4"
+				}
+			]
+		},
+		"Ray Tomlinson": {
+			"definition": "Ingenieur und Pionier der digitalen Kommunikation, der in den 1970er Jahren das Konzept der E-Mail entwickelte und das @-Symbol zur Trennung von Benutzername und Computer einführte.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.A.1",
+					"_id": "643dc2b8c0b812002aaed0c4"
+				}
+			]
+		},
+		"Virtuelle Kommunikation": {
+			"definition": "Austausch von Informationen und Interaktionen, die über digitale Medien wie E-Mail, soziale Netzwerke oder Videokonferenzen erfolgen und nicht auf physische Präsenz angewiesen sind.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.A.1",
+					"_id": "643dc2b8c0b812002aaed0c4"
+				},
+				{
+					"taxonomy": "2.1.B.1",
+					"_id": "643dc2b8c0b812002aaed0c8"
+				},
+				{
+					"taxonomy": "2.1.C.1",
+					"_id": "643dc2b8c0b812002aaed0cc"
+				}
+			]
+		},
+		"Analoge Kommunikation": {
+			"definition": "Traditionelle Form der Interaktion, bei der physische Präsenz und nonverbale Signale wie Körpersprache, Gestik und Tonfall eine zentrale Rolle spielen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.A.1",
+					"_id": "643dc2b8c0b812002aaed0c4"
+				}
+			]
+		},
+		"Hybride Kommunikation": {
+			"definition": "Eine Kombination aus physischen und digitalen Interaktionen, die Elemente beider Kommunikationsformen vereint, z. B. hybride Meetings mit Online- und Vor-Ort-Teilnehmer:innen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.A.1",
+					"_id": "643dc2b8c0b812002aaed0c4"
+				}
+			]
+		},
+		"Hybride Meetings": {
+			"definition": "Veranstaltungen oder Besprechungen, bei denen Teilnehmer:innen sowohl vor Ort als auch online teilnehmen und über digitale Kommunikationsplattformen verbunden sind.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.A.1",
+					"_id": "643dc2b8c0b812002aaed0c4"
+				}
+			]
+		},
+		"Hybride Bildung": {
+			"definition": "Bildungsmodelle, die Präsenzunterricht und digitale Lernplattformen kombinieren, um flexibles und ortsunabhängiges Lernen zu ermöglichen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.A.1",
+					"_id": "643dc2b8c0b812002aaed0c4"
+				}
+			]
+		},
+		"Hybride Arbeitsmodelle": {
+			"definition": "Arbeitsweisen, bei denen Mitarbeiter:innen zwischen Büroarbeit und Homeoffice wechseln und digitale Kommunikationsmittel zur standortunabhängigen Zusammenarbeit nutzen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.A.1",
+					"_id": "643dc2b8c0b812002aaed0c4"
+				}
+			]
+		},
+		"Digitale Ära": {
+			"definition": "Zeitabschnitt, in dem digitale Technologien und Kommunikationsformen zentrale Bestandteile des täglichen Lebens und der Interaktion geworden sind.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.A.1",
+					"_id": "643dc2b8c0b812002aaed0c4"
+				}
+			]
+		},
+		"3D-Räume": {
+			"definition": "Digitale, immersive Umgebungen, in denen Benutzer mit individuellen Avataren interagieren können. Sie ermöglichen realitätsnahe Erfahrungen wie Meetings, Konferenzen oder soziale Veranstaltungen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.B.1",
+					"_id": "643dc2b8c0b812002aaed0c8"
+				}
+			]
+		},
+		"Virtual Reality (VR) Meetings": {
+			"definition": "Virtuelle Besprechungen, die in einer computergenerierten Umgebung stattfinden. Teilnehmende nutzen VR-Technologie, um eine realistische und interaktive Erfahrung zu schaffen, als wären sie physisch anwesend.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.B.1",
+					"_id": "643dc2b8c0b812002aaed0c8"
+				}
+			]
+		},
+		"Soziale VR-Plattformen": {
+			"definition": "Digitale Plattformen, die es Nutzer:innen ermöglichen, in virtuellen Welten zu interagieren, zusammenzuarbeiten oder Freizeitaktivitäten durchzuführen. Beispiele sind gemeinsame Arbeitsräume oder kulturelle Veranstaltungen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.B.1",
+					"_id": "643dc2b8c0b812002aaed0c8"
+				}
+			]
+		},
+		"Technische Fähigkeiten": {
+			"definition": "Kompetenzen im Umgang mit digitalen Tools und Technologien, die für die effiziente Nutzung virtueller Kommunikationsplattformen erforderlich sind. Dazu gehören die Bedienung von Software, Sicherheitskenntnisse und die Anpassung an neue Technologien.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.B.1",
+					"_id": "643dc2b8c0b812002aaed0c8"
+				}
+			]
+		},
+		"Kulturelle Sensibilität": {
+			"definition": "Die Fähigkeit, in globalen, virtuellen Umgebungen kulturelle Unterschiede zu erkennen und respektvoll darauf zu reagieren. Dies verhindert Missverständnisse und fördert eine effektive Kommunikation.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.B.1",
+					"_id": "643dc2b8c0b812002aaed0c8"
+				}
+			]
+		},
+		"Asynchrone Kommunikation": {
+			"definition": "Eine Form der Kommunikation, bei der Sender:in und Empfänger:in nicht gleichzeitig aktiv sind, z. B. bei E-Mails oder Forenbeiträgen. Sie erfordert Geduld und eine klare Ausdrucksweise.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.B.1",
+					"_id": "643dc2b8c0b812002aaed0c8"
+				},
+				{
+					"taxonomy": "2.2.A.1",
+					"_id": "643dc383c0b812002aaed0eb"
+				}
+			]
+		},
+		"Immersive Erlebnisse": {
+			"definition": "Digitale Erfahrungen, die Nutzer:innen durch den Einsatz von Technologien wie Virtual Reality oder 3D-Umgebungen das Gefühl geben, vollständig in eine virtuelle Welt einzutauchen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.B.1",
+					"_id": "643dc2b8c0b812002aaed0c8"
+				}
+			]
+		},
+		"Phishing": {
+			"definition": "Eine Form von Cyberkriminalität, bei der betrügerische E-Mails oder Nachrichten verwendet werden, um persönliche Daten wie Passwörter oder Kreditkarteninformationen zu stehlen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.B.1",
+					"_id": "643dc2b8c0b812002aaed0c8"
+				},
+				{
+					"taxonomy": "4.1.B.2",
+					"_id": "65b26334c240300006b493b7"
+				}
+			]
+		},
+		"Web 3.0": {
+			"definition": "Eine neue Phase der Internetentwicklung, die durch dezentrale Technologien, semantische Technologien und maschinelles Lernen geprägt ist. Sie ermöglicht personalisierte Suchergebnisse und Empfehlungssysteme und verändert die Art der virtuellen Interaktion.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.C.1",
+					"_id": "643dc2b8c0b812002aaed0cc"
+				}
+			]
+		},
+		"Metaverse": {
+			"definition": "Eine virtuelle, dreidimensionale Welt, die immersive Kommunikation und Interaktion ermöglicht. Sie geht über traditionelle Web-Technologien hinaus und bietet neue soziale und wirtschaftliche Möglichkeiten. Beispiele: Decentraland, AltspaceVR.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.C.1",
+					"_id": "643dc2b8c0b812002aaed0cc"
+				}
+			]
+		},
+		"AltspaceVR": {
+			"definition": "Eine von Microsoft entwickelte App für virtuelle Realität, die eine immersive soziale Interaktion in digitalen Räumen ermöglicht. Sie dient als Vorläufer und Inspirationsquelle für das Konzept des Metaverse.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.C.1",
+					"_id": "643dc2b8c0b812002aaed0cc"
+				}
+			]
+		},
+		"Digitale Ermüdung": {
+			"definition": "Ein Zustand geistiger und körperlicher Erschöpfung, der durch längere Bildschirmzeiten und intensive digitale Kommunikation verursacht wird. Typische Symptome sind Konzentrationsprobleme und mentale Überforderung.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.C.1",
+					"_id": "643dc2b8c0b812002aaed0cc"
+				}
+			]
+		},
+		"Informationsüberflutung": {
+			"definition": "Das Phänomen, wenn die kognitive Verarbeitungskapazität durch eine Vielzahl an gleichzeitig verfügbaren Informationen in virtuellen Umgebungen überlastet wird.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.C.1",
+					"_id": "643dc2b8c0b812002aaed0cc"
+				},
+				{
+					"taxonomy": "4.2.A.2",
+					"_id": "66df65eb33064b0006a8a284"
+				}
+			]
+		},
+		"Emotionale Entfremdung": {
+			"definition": "Der Verlust emotionaler Nähe in der Kommunikation, der durch das Fehlen nonverbaler Signale in virtuellen Umgebungen entstehen kann.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.C.1",
+					"_id": "643dc2b8c0b812002aaed0cc"
+				}
+			]
+		},
+		"Digitale Abhängigkeit": {
+			"definition": "Ein übermäßiger Gebrauch digitaler Kommunikationsmittel, der zu einer zwanghaften Nutzung und psychologischen Abhängigkeit führen kann.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.C.1",
+					"_id": "643dc2b8c0b812002aaed0cc"
+				}
+			]
+		},
+		"Virtuelle Realität (VR)": {
+			"definition": "Eine technologiegestützte Umgebung, die immersive, interaktive Erfahrungen in einer computergenerierten 3D-Welt ermöglicht.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.C.1",
+					"_id": "643dc2b8c0b812002aaed0cc"
+				}
+			]
+		},
+		"Semantische Technologien": {
+			"definition": "Technologien, die darauf abzielen, Informationen durch maschinelles Lernen und semantische Datenverarbeitung besser zu verstehen und zu verknüpfen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.C.1",
+					"_id": "643dc2b8c0b812002aaed0cc"
+				}
+			]
+		},
+		"Cybersicherheit": {
+			"definition": "Maßnahmen und Technologien, die darauf abzielen, digitale Kommunikation vor Bedrohungen wie Cybermobbing, Datenmissbrauch und Anonymitätsrisiken zu schützen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.C.1",
+					"_id": "643dc2b8c0b812002aaed0cc"
+				}
+			]
+		},
+		"Barrierefreie Kommunikation": {
+			"definition": "Technologien und virtuelle Räume, die Menschen mit körperlichen oder psychischen Einschränkungen neue Möglichkeiten zur Teilhabe an sozialem Leben und Interaktion bieten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.1.C.1",
+					"_id": "643dc2b8c0b812002aaed0cc"
+				}
+			]
+		},
+		"Digitale Zusammenarbeit": {
+			"definition": "Zusammenarbeit zwischen Personen unter Verwendung digitaler Werkzeuge, die es ermöglichen, gemeinsam an Projekten zu arbeiten, unabhängig von Raum und Zeit. Sie umfasst sowohl synchrone Kommunikation (in Echtzeit) als auch asynchrone Arbeitsweisen (zeitversetzt), wobei oft Tools wie Cloud-Dienste, Chat-Anwendungen und Projektmanagement-Software genutzt werden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.A.1",
+					"_id": "643dc383c0b812002aaed0eb"
+				},
+				{
+					"taxonomy": "2.2.C.1",
+					"_id": "643dc383c0b812002aaed0ef"
+				}
+			]
+		},
+		"Kollaboratives Arbeiten": {
+			"definition": "Eine Form der Zusammenarbeit, bei der alle Beteiligten aktiv an einem gemeinsamen Ziel oder Projekt arbeiten, oft unter Nutzung von digitalen Plattformen, die eine Echtzeit- oder asynchrone Kommunikation und Bearbeitung von Dokumenten ermöglichen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.A.1",
+					"_id": "643dc383c0b812002aaed0eb"
+				}
+			]
+		},
+		"Medienbruch": {
+			"definition": "Ein Problem, das entsteht, wenn Informationen während der Bearbeitung von einem Medium in ein anderes übertragen werden müssen, was zu Kompatibilitätsproblemen und Inkonsistenzen führt, wie etwa unterschiedliche Versionen von Dokumenten oder Layout-Problemen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.A.1",
+					"_id": "643dc383c0b812002aaed0eb"
+				}
+			]
+		},
+		"Chat-Anwendungen": {
+			"definition": "Digitale Tools, die es Nutzer:innen ermöglichen, in Echtzeit Textnachrichten zu senden und zu empfangen, oft verwendet für schnelle, asynchrone Kommunikation innerhalb von Teams oder Gruppen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.A.1",
+					"_id": "643dc383c0b812002aaed0eb"
+				}
+			]
+		},
+		"Projektmanagement-Tools": {
+			"definition": "Softwareanwendungen oder Plattformen, die Teams helfen, Aufgaben zu organisieren, Meilensteine zu setzen, Fortschritte zu verfolgen und die Zusammenarbeit bei der Projektabwicklung zu koordinieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.A.1",
+					"_id": "643dc383c0b812002aaed0eb"
+				}
+			]
+		},
+		"Videokonferenzen": {
+			"definition": "Virtuelle Treffen, bei denen Teilnehmende über Video und Audio miteinander kommunizieren. Diese Form der Kommunikation wird genutzt, um in Echtzeit Ideen auszutauschen und Zusammenarbeit zu fördern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.A.1",
+					"_id": "643dc383c0b812002aaed0eb"
+				}
+			]
+		},
+		"Mindmap": {
+			"definition": "Ein visuelles Werkzeug zur Darstellung von Ideen, Konzepten und deren Beziehungen zueinander. Mindmaps werden häufig verwendet, um gemeinsam Ideen zu entwickeln und zu strukturieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.A.1",
+					"_id": "643dc383c0b812002aaed0eb"
+				}
+			]
+		},
+		"Datensicherheit": {
+			"definition": "Maßnahmen und Technologien, die den Schutz von Daten vor Verlust, Diebstahl oder Beschädigung gewährleisten. Sie umfassen sowohl technische als auch organisatorische Maßnahmen, um die Integrität und Verfügbarkeit von Daten zu sichern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.A.1",
+					"_id": "643dc383c0b812002aaed0eb"
+				},
+				{
+					"taxonomy": "4.1.B.1",
+					"_id": "643dc942c0b812002aaed15e"
+				}
+			]
+		},
+		"Sensible Informationen": {
+			"definition": "Daten, deren Missbrauch oder unbefugte Offenlegung potenziell schwerwiegende Folgen haben könnte, wie z. B. persönliche, medizinische oder finanzielle Informationen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.A.1",
+					"_id": "643dc383c0b812002aaed0eb"
+				}
+			]
+		},
+		"Energieeffizienz": {
+			"definition": "Der bewusste Einsatz von Technologien und Arbeitsweisen, die den Energieverbrauch minimieren. Dazu gehören der Einsatz energieeffizienter Geräte, die Nutzung von Energiesparmodi und das Ausschalten von Geräten, wenn sie nicht benötigt werden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.A.1",
+					"_id": "643dc383c0b812002aaed0eb"
+				}
+			]
+		},
+		"Kollaborationstool": {
+			"definition": "Ein digitales Werkzeug, das es mehreren Personen ermöglicht, in Echtzeit zusammenzuarbeiten, Aufgaben zu koordinieren und Informationen auszutauschen. Beispiele sind Notion, Slack und Asana.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.B.2",
+					"_id": "659e4fcec240300006a56dd5"
+				}
+			]
+		},
+		"Kollaborative Zusammenarbeit": {
+			"definition": "Arbeit, bei der mehrere Personen gemeinsam an Aufgaben, Projekten oder Dokumenten arbeiten und ihre Ergebnisse miteinander teilen, um ein gemeinsames Ziel zu erreichen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.B.2",
+					"_id": "659e4fcec240300006a56dd5"
+				}
+			]
+		},
+		"Benutzerfreundlichkeit": {
+			"definition": "Die Eigenschaft eines digitalen Tools, das es den Nutzer:innen ermöglicht, es ohne große Vorkenntnisse oder Schwierigkeiten zu verwenden. Eine benutzerfreundliche Oberfläche ist intuitiv und einfach zu navigieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.B.2",
+					"_id": "659e4fcec240300006a56dd5"
+				}
+			]
+		},
+		"DSGVO-Konformität": {
+			"definition": "Die Einhaltung der Datenschutz-Grundverordnung (DSGVO) der EU, die den Umgang mit personenbezogenen Daten regelt. Ein DSGVO-konformes Tool garantiert, dass personenbezogene Daten sicher und unter Einhaltung gesetzlicher Vorschriften verarbeitet werden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.B.2",
+					"_id": "659e4fcec240300006a56dd5"
+				}
+			]
+		},
+		"Integration": {
+			"definition": "Die Fähigkeit eines digitalen Tools, sich problemlos in bestehende Arbeitsprozesse und andere Software-Lösungen zu integrieren, sodass eine nahtlose Zusammenarbeit möglich ist.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.B.2",
+					"_id": "659e4fcec240300006a56dd5"
+				}
+			]
+		},
+		"Cloud-basierte Zusammenarbeit": {
+			"definition": "Arbeit, bei der Dokumente und Anwendungen über das Internet (in der Cloud) zugänglich gemacht werden, sodass Teams von verschiedenen Orten aus auf dieselben Ressourcen zugreifen und zusammenarbeiten können.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.B.2",
+					"_id": "659e4fcec240300006a56dd5"
+				}
+			]
+		},
+		"Kanban-Board": {
+			"definition": "Ein visuelles Projektmanagement-Tool, das Aufgaben und Projekte in Spalten unterteilt (z. B. 'To Do', 'In Progress', 'Done'), um den Fortschritt zu verfolgen und zu organisieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.B.2",
+					"_id": "659e4fcec240300006a56dd5"
+				}
+			]
+		},
+		"Virtuelle Meetings": {
+			"definition": "Online-Treffen, bei denen Teammitglieder aus verschiedenen Orten über Video-, Audio- und/oder Chat-Kommunikation in Echtzeit interagieren, ohne sich physisch am selben Ort zu befinden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.B.2",
+					"_id": "659e4fcec240300006a56dd5"
+				}
+			]
+		},
+		"Hybrides Meeting": {
+			"definition": "Ein Meeting, bei dem einige Teilnehmer:innen vor Ort und andere remote (über digitale Kanäle) teilnehmen. Diese Meetings erfordern eine Technik, die beide Gruppen effektiv miteinander verbindet.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.B.2",
+					"_id": "659e4fcec240300006a56dd5"
+				}
+			]
+		},
+		"Virtuelle Zusammenarbeit": {
+			"definition": "Eine spezifische Form der digitalen Zusammenarbeit, die vollständig in digitalen Umgebungen stattfindet und von physischen Treffen unabhängig ist.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.C.1",
+					"_id": "643dc383c0b812002aaed0ef"
+				}
+			]
+		},
+		"Digital Peer Review": {
+			"definition": "Ein Prozess, bei dem Teilnehmer:innen im virtuellen Raum die Leistungen ihrer Kolleg:innen bewerten und Feedback geben, oft mit digitalen Plattformen wie Moodle, Wikis oder Blogs.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.C.1",
+					"_id": "643dc383c0b812002aaed0ef"
+				}
+			]
+		},
+		"Open Science": {
+			"definition": "Ein Ansatz in der Wissenschaft, der den offenen Zugang zu Publikationen, Daten, Methoden und Software fördert, um Transparenz, Qualität und Zusammenarbeit zu stärken.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.C.1",
+					"_id": "643dc383c0b812002aaed0ef"
+				}
+			]
+		},
+		"Hybride Arbeitswelt": {
+			"definition": "Eine Kombination aus digitaler und physischer Zusammenarbeit, die die Vorteile beider Ansätze nutzt, um Flexibilität und Vertrauen zu fördern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.C.1",
+					"_id": "643dc383c0b812002aaed0ef"
+				}
+			]
+		},
+		"Work-Life-Balance": {
+			"definition": "Das Gleichgewicht zwischen beruflichen und privaten Verpflichtungen, das durch klare Trennung von Arbeits- und Freizeit erreicht werden soll.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.C.1",
+					"_id": "643dc383c0b812002aaed0ef"
+				}
+			]
+		},
+		"Serendipity-Effekt": {
+			"definition": "Unerwartete positive Ergebnisse, die durch spontane Begegnungen oder informelle Gespräche entstehen, häufig in informellen Arbeitskontexten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.C.1",
+					"_id": "643dc383c0b812002aaed0ef"
+				}
+			]
+		},
+		"Technische Kompetenz": {
+			"definition": "Die Fähigkeit, digitale Tools und Technologien effektiv und effizient zu nutzen und Probleme eigenständig zu lösen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.C.1",
+					"_id": "643dc383c0b812002aaed0ef"
+				}
+			]
+		},
+		"Open Access": {
+			"definition": "Der freie Zugang zu wissenschaftlichen Publikationen im Internet, ohne finanzielle, rechtliche oder technische Barrieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.C.1",
+					"_id": "643dc383c0b812002aaed0ef"
+				}
+			]
+		},
+		"Open Source": {
+			"definition": "Software, deren Quellcode offen verfügbar ist und von jedem eingesehen, verändert und weiterverwendet werden kann.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.C.1",
+					"_id": "643dc383c0b812002aaed0ef"
+				},
+				{
+					"taxonomy": "3.3.C.1",
+					"_id": "63c5dfa2c0b812002aaeca8b"
+				}
+			]
+		},
+		"Digitale Tools": {
+			"definition": "Software und Plattformen, die digitale Zusammenarbeit unterstützen, wie Videokonferenz-Tools, Kollaborationsplattformen oder digitale Whiteboards.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.2.C.1",
+					"_id": "643dc383c0b812002aaed0ef"
+				}
+			]
+		},
+		"Digitale Identität": {
+			"definition": "Die Gesamtheit der persönlichen Daten, Darstellungen und Aktivitäten, die eine Person im digitalen Raum ausmachen. Dazu zählen sowohl bewusst veröffentlichte Inhalte als auch unsichtbar gesammelte Daten, z. B. durch Algorithmen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.3.A.1",
+					"_id": "643dc850c0b812002aaed11b"
+				}
+			]
+		},
+		"Selbstdarstellung": {
+			"definition": "Die bewusste Gestaltung und Veröffentlichung von Informationen über die eigene Person, insbesondere in sozialen Medien, um die Wahrnehmung durch andere zu beeinflussen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.3.A.1",
+					"_id": "643dc850c0b812002aaed11b"
+				}
+			]
+		},
+		"Öffentliche Darstellung (Internet)": {
+			"definition": "Inhalte, die nicht durch die betroffene Person selbst, sondern von Dritten online gestellt wurden, wie Bilder, Erwähnungen oder Beiträge in Foren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.3.A.1",
+					"_id": "643dc850c0b812002aaed11b"
+				}
+			]
+		},
+		"Unsichtbare digitale Identität": {
+			"definition": "Daten, die ohne das bewusste Zutun der Person durch Algorithmen, Plattformen oder Dienste gesammelt werden, z. B. Suchverläufe oder Kaufverhalten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.3.A.1",
+					"_id": "643dc850c0b812002aaed11b"
+				}
+			]
+		},
+		"Echokammern": {
+			"definition": "Digitale Umgebungen, in denen Menschen fast ausschließlich mit Meinungen und Informationen konfrontiert werden, die ihren eigenen Ansichten entsprechen, was den Austausch mit abweichenden Perspektiven verhindert.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.3.A.1",
+					"_id": "643dc850c0b812002aaed11b"
+				}
+			]
+		},
+		"Shitstorm": {
+			"definition": "Eine plötzliche und massenhafte Welle negativer Kommentare oder Kritik, die online auf eine Person oder Institution gerichtet wird.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.3.A.1",
+					"_id": "643dc850c0b812002aaed11b"
+				}
+			]
+		},
+		"Canceln": {
+			"definition": "Die Praxis, eine Person oder Organisation aufgrund bestimmter Äußerungen oder Handlungen öffentlich zu ächten und ihre Unterstützung zu verweigern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.3.A.1",
+					"_id": "643dc850c0b812002aaed11b"
+				}
+			]
+		},
+		"Digitaler Pranger": {
+			"definition": "Die öffentliche Bloßstellung einer Person im Internet, oft mit erheblichen Auswirkungen auf die persönliche und berufliche Reputation.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.3.A.1",
+					"_id": "643dc850c0b812002aaed11b"
+				}
+			]
+		},
+		"Zoom-Effekt": {
+			"definition": "Die gesteigerte Selbstwahrnehmung durch häufige Videokonferenzen, die zu vermehrtem Fokus auf das eigene Aussehen und gegebenenfalls ästhetischen Eingriffen führt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.3.A.1",
+					"_id": "643dc850c0b812002aaed11b"
+				}
+			]
+		},
+		"Personalisierte Inhalte": {
+			"definition": "Inhalte, die durch Algorithmen speziell auf die Interessen und Verhaltensmuster einer Person zugeschnitten werden, z. B. Produktvorschläge oder Nachrichtenartikel.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.3.A.1",
+					"_id": "643dc850c0b812002aaed11b"
+				}
+			]
+		},
+		"Digitale Präsenz": {
+			"definition": "Die Gesamtheit der Aktivitäten, Inhalte und Interaktionen einer Person im digitalen Raum, die ihre Wahrnehmung durch andere beeinflussen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.3.A.1",
+					"_id": "643dc850c0b812002aaed11b"
+				}
+			]
+		},
+		"Virtuelle Selbstwahrnehmung": {
+			"definition": "Die Art und Weise, wie eine Person sich selbst aufgrund ihrer digitalen Präsenz und Interaktionen im Internet wahrnimmt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.3.A.1",
+					"_id": "643dc850c0b812002aaed11b"
+				}
+			]
+		},
+		"Data Broker": {
+			"definition": "Data Broker, auch Informationsmakler oder Datenhändler genannt, sind Unternehmen oder Organisationen, die sich auf die Sammlung, Aggregation und den Handel mit persönlichen Daten spezialisiert haben. Sie sammeln Daten aus verschiedenen Quellen, wie öffentlichen Aufzeichnungen, Online-Interaktionen und sozialen Medien, und verkaufen diese an Dritte, wie Werbetreibende oder andere Interessent:innen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.3.B.1",
+					"_id": "643dc850c0b812002aaed11d"
+				}
+			]
+		},
+		"DSGVO": {
+			"definition": "Die Datenschutz-Grundverordnung (DSGVO) ist eine Verordnung der Europäischen Union, die den Schutz personenbezogener Daten und die Privatsphäre von EU-Bürger:innen regelt. Sie gibt Einzelpersonen das Recht auf Kontrolle über ihre Daten und verpflichtet Unternehmen zur transparenten und sicheren Verarbeitung dieser Daten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.3.B.1",
+					"_id": "643dc850c0b812002aaed11d"
+				}
+			]
+		},
+		"Recht auf Vergessenwerden": {
+			"definition": "Das Recht auf Vergessenwerden ist ein Recht, das durch die DSGVO garantiert wird. Es ermöglicht es einer Person, die Löschung ihrer persönlichen Daten zu verlangen, wenn diese Daten nicht mehr notwendig sind oder unrechtmäßig verarbeitet wurden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "2.3.B.1",
+					"_id": "643dc850c0b812002aaed11d"
+				},
+				{
+					"taxonomy": "4.1.A.2",
+					"_id": "659e4cc6c240300006a5591f"
+				}
+			]
+		},
+		"Digitale Inhalte": {
+			"definition": "Informationen oder Daten, die in elektronischer Form bereitgestellt werden, z. B. Videos, Texte, Podcasts, Grafiken oder Programme, die über digitale Geräte und das Internet zugänglich sind.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.A.1",
+					"_id": "63eced4cc0b812002aaecbb2"
+				}
+			]
+		},
+		"Aufmerksamkeit": {
+			"definition": "Die kognitive Fähigkeit, sich auf spezifische Reize oder Aufgaben zu konzentrieren, die durch die zunehmende Menge an digitalen Inhalten stark beansprucht wird.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.A.1",
+					"_id": "63eced4cc0b812002aaecbb2"
+				}
+			]
+		},
+		"Aufmerksamkeitsökonomie": {
+			"definition": "Ein Konzept, das beschreibt, wie Aufmerksamkeit als wertvolle Ressource von Unternehmen und Medien umkämpft wird, insbesondere durch digitale Plattformen und Inhalte.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.A.1",
+					"_id": "63eced4cc0b812002aaecbb2"
+				}
+			]
+		},
+		"Multimedialer Effekt": {
+			"definition": "Ein kognitiver Effekt, der zeigt, dass die Kombination von Text und Bildern oder anderen visuellen Elementen das Verständnis und den Lernerfolg verbessert.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.A.1",
+					"_id": "63eced4cc0b812002aaecbb2"
+				}
+			]
+		},
+		"Konsistenz-Effekt": {
+			"definition": "Die positive Wirkung einer einheitlichen Präsentation von Informationen in unterschiedlichen Medienformaten auf das Verständnis und die Lernbereitschaft.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.A.1",
+					"_id": "63eced4cc0b812002aaecbb2"
+				}
+			]
+		},
+		"Kontext-Effekt": {
+			"definition": "Der Einfluss eines relevanten Umfelds auf die Verständlichkeit und den Lernerfolg von Informationen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.A.1",
+					"_id": "63eced4cc0b812002aaecbb2"
+				}
+			]
+		},
+		"Cocktailparty-Effekt": {
+			"definition": "Die Fähigkeit des Gehirns, in einer lauten Umgebung bestimmte relevante Informationen, wie einen bekannten Namen, aus der Masse herauszufiltern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.A.1",
+					"_id": "63eced4cc0b812002aaecbb2"
+				}
+			]
+		},
+		"Podcasts": {
+			"definition": "Audioformate, die Wissen und Unterhaltung auf flexible Weise vermitteln und sich gut in den Alltag integrieren lassen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.A.1",
+					"_id": "63eced4cc0b812002aaecbb2"
+				}
+			]
+		},
+		"Infografiken": {
+			"definition": "Visuelle Darstellungen von Daten und Informationen, die komplexe Zusammenhänge anschaulich und leicht verständlich machen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.A.1",
+					"_id": "63eced4cc0b812002aaecbb2"
+				}
+			]
+		},
+		"Interaktive Inhalte": {
+			"definition": "Digitale Formate, die durch Nutzerinteraktion geprägt sind und personalisiertes Lernen oder Datenpräsentationen ermöglichen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.A.1",
+					"_id": "63eced4cc0b812002aaecbb2"
+				}
+			]
+		},
+		"Information Overload": {
+			"definition": "Der Zustand, wenn die Menge an Informationen die kognitive Verarbeitungskapazität übersteigt und die Konzentration und das Lernen beeinträchtigt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.A.1",
+					"_id": "63eced4cc0b812002aaecbb2"
+				}
+			]
+		},
+		"Fachvortrag": {
+			"definition": "Ein Vortrag, der meist im Rahmen von wissenschaftlichen Tagungen gehalten wird und die Präsentation von Forschungsergebnissen oder wissenschaftlichen Erkenntnissen zum Ziel hat. Er zeichnet sich durch einen strukturierten Aufbau, wissenschaftlich fundierte Quellen und eine anschließende Diskussion aus.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.B.2",
+					"_id": "65d76366c240300006bd9c08"
+				}
+			]
+		},
+		"Wissenschaftliche Präsentation": {
+			"definition": "Eine Präsentation, die darauf abzielt, wissenschaftliche Inhalte klar und nachvollziehbar zu vermitteln. Sie folgt oft einem strengen, formalisierten Aufbau und ist mit entsprechenden Quellenangaben und Literaturverweisen versehen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.B.2",
+					"_id": "65d76366c240300006bd9c08"
+				}
+			]
+		},
+		"Geschäftspräsentation": {
+			"definition": "Eine Präsentation, die in einem beruflichen Kontext eingesetzt wird, um Informationen zu vermitteln, Überzeugungsarbeit zu leisten oder Entscheidungen zu fördern, z. B. in Vorstandssitzungen oder bei der Kundenakquise.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.B.2",
+					"_id": "65d76366c240300006bd9c08"
+				}
+			]
+		},
+		"Präsentationstool": {
+			"definition": "Software, die für die Erstellung und Präsentation von Folien verwendet wird. Beispiele sind PowerPoint, Prezi und Mentimeter, die unterschiedliche Funktionen bieten, um visuelle Inhalte zu erstellen und das Publikum zu interagieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.B.2",
+					"_id": "65d76366c240300006bd9c08"
+				}
+			]
+		},
+		"Strukturbilder": {
+			"definition": "Darstellungen, die komplexe Zusammenhänge oder Abläufe in Form von Diagrammen oder Fließschemata veranschaulichen. Sie sind besonders nützlich in wissenschaftlichen Vorträgen, um Prozesse oder Methoden verständlich zu erklären.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.B.2",
+					"_id": "65d76366c240300006bd9c08"
+				}
+			]
+		},
+		"Infografik": {
+			"definition": "Eine visuelle Darstellung von Informationen, die durch Bilder, Diagramme und kurze Textbeiträge ein komplexes Thema anschaulich und schnell verständlich macht. Infografiken werden oft verwendet, um wichtige Daten und Fakten übersichtlich darzustellen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.B.2",
+					"_id": "65d76366c240300006bd9c08"
+				}
+			]
+		},
+		"Gutenberg-Druckmaschine": {
+			"definition": "Die im 15. Jahrhundert von Johannes Gutenberg erfundene Druckmaschine, die durch den Einsatz von beweglichen Lettern eine Revolution der Buch- und Textproduktion einleitete und Wissen einem breiteren Publikum zugänglich machte.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.C.1",
+					"_id": "640a05fdc0b812002aaece1f"
+				}
+			]
+		},
+		"Sholes & Glidden Schreibmaschine": {
+			"definition": "Die erste serienproduzierte Schreibmaschine, entwickelt von Christopher Latham Sholes im Jahr 1868, die das Schreiben schneller, präziser und effizienter machte und die Kommunikation grundlegend veränderte.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.C.1",
+					"_id": "640a05fdc0b812002aaece1f"
+				}
+			]
+		},
+		"ENIAC": {
+			"definition": "Der erste universelle elektronische Computer, der 1946 entwickelt wurde, um komplexe Berechnungen durchzuführen, und als Meilenstein in der Entwicklung moderner Computertechnologie gilt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.C.1",
+					"_id": "640a05fdc0b812002aaece1f"
+				}
+			]
+		},
+		"Content Creator": {
+			"definition": "Eine Person oder Berufsbezeichnung für diejenigen, die digitale Inhalte wie Videos, Texte oder Bilder erstellen und oft über soziale Medien und Plattformen verbreiten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.C.1",
+					"_id": "640a05fdc0b812002aaece1f"
+				}
+			]
+		},
+		"Prompt-Design": {
+			"definition": "Ein neuer Berufszweig, der sich auf die Optimierung von Arbeitsaufträgen an KI-Systeme konzentriert, um gewünschte Ergebnisse präzise zu generieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.C.1",
+					"_id": "640a05fdc0b812002aaece1f"
+				}
+			]
+		},
+		"Digitale Transformation": {
+			"definition": "Ein umfassender Wandel, der durch den Einsatz digitaler Technologien die Art und Weise verändert, wie Menschen arbeiten, lernen und kommunizieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.C.1",
+					"_id": "640a05fdc0b812002aaece1f"
+				}
+			]
+		},
+		"Internet der Dinge / Internet of Things (IoT)": {
+			"definition": "Ein Netzwerk aus miteinander verbundenen Geräten, die Daten austauschen und in Echtzeit überwacht und gesteuert werden können.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.C.1",
+					"_id": "640a05fdc0b812002aaece1f"
+				}
+			]
+		},
+		"Cloud Computing": {
+			"definition": "Die Nutzung von Online-Diensten für Speicherung, Verarbeitung und Verwaltung von Daten, die Skalierbarkeit und Effizienz verbessern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.C.1",
+					"_id": "640a05fdc0b812002aaece1f"
+				}
+			]
+		},
+		"Digitaler Zwilling": {
+			"definition": "Eine digitale Repräsentation eines physischen Objekts oder Systems, die für Analysen, Simulationen und Optimierungen verwendet wird.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.C.1",
+					"_id": "640a05fdc0b812002aaece1f"
+				}
+			]
+		},
+		"Nachhaltige Technologien": {
+			"definition": "Technologien, die ökologische Ziele wie Energieeffizienz, Ressourcenschonung und Recycling fördern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.C.1",
+					"_id": "640a05fdc0b812002aaece1f"
+				}
+			]
+		},
+		"Erweiterte Realität (AR)": {
+			"definition": "Eine Technologie, die digitale Inhalte in die reale Welt integriert und so interaktive Erlebnisse ermöglicht.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.1.C.1",
+					"_id": "640a05fdc0b812002aaece1f"
+				}
+			]
+		},
+		"Urheberrecht": {
+			"definition": "Das gesetzliche Recht, das den:die Schöpfer:in eines Werkes schützt und ihm:ihr bestimmte exklusive Rechte an diesem Werk gewährt, wie etwa das Recht auf Vervielfältigung, Verbreitung und öffentliche Zugänglichmachung.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.A.1",
+					"_id": "643e688dc0b812002aaed319"
+				},
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				},
+				{
+					"taxonomy": "3.2.C.1",
+					"_id": "643e688dc0b812002aaed318"
+				}
+			]
+		},
+		"Verwertungsgesellschaften": {
+			"definition": "Organisationen, die im Namen von Urheber:innen und Rechteinhaber:innen Lizenzen verwalten, die Nutzung von Werken überwachen und Tantiemen einziehen, wie z. B. die GEMA in Deutschland für Musikrechte.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.A.1",
+					"_id": "643e688dc0b812002aaed319"
+				},
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				}
+			]
+		},
+		"Schrankenregelungen": {
+			"definition": "Gesetzliche Bestimmungen, die es unter bestimmten Bedingungen erlauben, urheberrechtlich geschützte Werke ohne die Zustimmung des Urheber:in zu nutzen, z. B. zu Bildungszwecken oder für Parodien.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.A.1",
+					"_id": "643e688dc0b812002aaed319"
+				}
+			]
+		},
+		"Urheberpersönlichkeitsrechte": {
+			"definition": "Teil der Urheberrechtsgesetzgebung, der spezifische rechtliche Privilegien beinhaltet, die dem Urheber oder der Urheberin eines Werkes zustehen. Diese Rechte umfassen das Recht auf Anerkennung sowie das Recht, das Werk in seiner ursprünglichen Form zu bewahren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.A.1",
+					"_id": "643e688dc0b812002aaed319"
+				}
+			]
+		},
+		"Gemeinfreiheit (Public Domain)": {
+			"definition": "Bedingungen, unter denen urheberrechtlich geschützte Werke nach Ablauf des Urheberrechts frei für die Öffentlichkeit zugänglich sind und ohne Einschränkungen verwendet werden können.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.A.1",
+					"_id": "643e688dc0b812002aaed319"
+				}
+			]
+		},
+		"Creative Commons-Lizenzen": {
+			"definition": "Eine Reihe von standardisierten Lizenzen, die Urheber:innen erlauben, ihre Werke unter bestimmten Bedingungen wie Namensnennung oder Nicht-Kommerzialisierung zur freien Nutzung und Verbreitung zur Verfügung zu stellen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.A.1",
+					"_id": "643e688dc0b812002aaed319"
+				}
+			]
+		},
+		"Copyleft": {
+			"definition": "Eine Form des Urheberrechts, bei der Werke frei genutzt, modifiziert und verbreitet werden können, solange die gleichen Freiheiten für abgeleitete Werke gewährt werden, z. B. die GNU General Public License (GPL).",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.A.1",
+					"_id": "643e688dc0b812002aaed319"
+				}
+			]
+		},
+		"Exklusive Rechte": {
+			"definition": "Rechte, die nur einem Lizenznehmer:in die alleinige Nutzung eines urheberrechtlich geschützten Werks ermöglichen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.A.1",
+					"_id": "643e688dc0b812002aaed319"
+				}
+			]
+		},
+		"Lizenz": {
+			"definition": "Eine Erlaubnis zur Nutzung eines urheberrechtlich geschützten Werkes unter bestimmten Bedingungen. Lizenzen können kostenlos oder kostenpflichtig sein und die Art und Weise regeln, wie das Werk verwendet, verändert oder weiterverbreitet werden darf.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				}
+			]
+		},
+		"Creative Commons (CC)": {
+			"definition": "Eine gemeinnützige Organisation, die 2001 gegründet wurde und eine Reihe von Lizenzen entwickelt hat, die es Urheber:innen ermöglichen, ihre Werke unter bestimmten Bedingungen zur Verfügung zu stellen. Diese Lizenzen fördern die rechtlich zulässige Nutzung, Verbreitung und Anpassung kreativer Werke.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				}
+			]
+		},
+		"Open-Source-Software-Lizenzen": {
+			"definition": "Lizenzen, die es erlauben, Software kostenlos zu nutzen, zu modifizieren und weiterzugeben. Bekannte Beispiele sind die GPL, LGPL, BSD-, MIT- und Apache-Lizenzen. Diese Lizenzen fördern die Zusammenarbeit und den freien Zugang zu Software.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				}
+			]
+		},
+		"Gemeinfreiheit": {
+			"definition": "Der Zustand eines Werkes, dessen Urheberrechtsschutz abgelaufen ist oder das von seinem Urheber:in ausdrücklich freigegeben wurde, sodass es ohne Einschränkungen und ohne Lizenzgebühren genutzt, verändert und weiterverbreitet werden kann.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				}
+			]
+		},
+		"Public Domain": {
+			"definition": "Ein rechtlicher Status, der beschreibt, dass ein Werk nicht mehr unter Urheberrechtsschutz steht und somit von jedermann ohne Einschränkungen genutzt werden kann. Werke treten in die Public Domain ein, wenn der Urheberrechtsschutz abgelaufen ist oder wenn der Urheber:in ausdrücklich auf seine Rechte verzichtet.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				}
+			]
+		},
+		"Urheberrechtliche Schutzfrist": {
+			"definition": "Die Zeitdauer, in der ein Werk urheberrechtlich geschützt ist. In Deutschland beträgt diese Frist in der Regel 70 Jahre nach dem Tod des Urheber:in. Nach Ablauf dieser Frist tritt das Werk in die Gemeinfreiheit.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				}
+			]
+		},
+		"Fair Use": {
+			"definition": "Ein Konzept im Urheberrecht, das es unter bestimmten Bedingungen erlaubt, urheberrechtlich geschützte Werke ohne Erlaubnis des Urheber:s zu nutzen, etwa für Bildungszwecke, Forschung oder Kritik. Es ist vor allem im angloamerikanischen Raum verbreitet.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				}
+			]
+		},
+		"Wasserzeichen": {
+			"definition": "Ein sichtbares oder unsichtbares Markenzeichen, das in digitale Werke eingefügt wird, um deren Urheberschaft oder Herkunft zu kennzeichnen und vor unbefugter Verwendung zu schützen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				}
+			]
+		},
+		"Creative Commons License Chooser": {
+			"definition": "Ein Online-Tool von Creative Commons, das Urheber:innen hilft, die passende Lizenz für ihr Werk auszuwählen, basierend auf den gewünschten Nutzungseinschränkungen und -bedingungen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				}
+			]
+		},
+		"Schutzrechtliche Schrankenregelungen": {
+			"definition": "Bestimmungen im Urheberrecht, die es unter bestimmten Umständen erlauben, urheberrechtlich geschützte Werke ohne die Zustimmung des Urheber:s zu nutzen, z. B. für Bildung, Forschung oder Parodien. Diese Ausnahmen sollen die Nutzung im öffentlichen Interesse erleichtern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				}
+			]
+		},
+		"Impressum": {
+			"definition": "Eine rechtliche Anforderung, die in vielen Ländern verlangt wird, um die Verantwortung für digitale Inhalte zu klären. Es gibt Informationen zu den verantwortlichen Personen und deren Kontaktdaten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				}
+			]
+		},
+		"Urheberrechtlicher Hinweis": {
+			"definition": "Ein Hinweis, der verwendet wird, um darauf aufmerksam zu machen, dass ein Werk urheberrechtlich geschützt ist. Üblicherweise enthält dieser Hinweis das Urheberrechtssymbol © sowie den Namen des Urheber:s und das Jahr der Erstveröffentlichung des Werks.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				}
+			]
+		},
+		"GEMA": {
+			"definition": "Die Gesellschaft für musikalische Aufführungs- und mechanische Vervielfältigungsrechte, eine deutsche Verwertungsgesellschaft, die die Rechte von Komponist:innen, Textautor:innen und Musikverleger:innen verwaltet und Lizenzen für die Nutzung von Musik vergibt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				}
+			]
+		},
+		"VG Bild-Kunst": {
+			"definition": "Eine deutsche Verwertungsgesellschaft, die die Rechte von bildenden Künstler:innen, Fotograf:innen und Grafikdesigner:innen verwaltet. Sie vergibt Lizenzen für die Nutzung von Bildwerken und sorgt für die Erhebung von Tantiemen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				}
+			]
+		},
+		"Open Educational Resources (OER)": {
+			"definition": "Lehr- und Lernmaterialien, die kostenlos und unter offenen Lizenzen zur Verfügung gestellt werden, sodass sie von Lehrenden und Lernenden frei genutzt, angepasst und weiterverbreitet werden können.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				}
+			]
+		},
+		"Proprietäre Lizenzen": {
+			"definition": "Lizenzen, die einem Unternehmen oder einer Einzelperson die exklusiven Rechte an einem Werk oder Produkt geben. Diese Lizenzen schränken die Nutzung, Modifikation und Weitergabe des Werkes ein und können mit Lizenzgebühren verbunden sein.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				}
+			]
+		},
+		"Projekt Gutenberg-DE": {
+			"definition": "Eine Online-Bibliothek, die es Nutzenden ermöglicht, Werke, deren Urheberrecht abgelaufen ist, kostenlos herunterzuladen. Diese Werke sind in die Gemeinfreiheit übergegangen und können ohne Lizenzbeschränkungen genutzt werden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.B.1",
+					"_id": "643e688dc0b812002aaed31a"
+				}
+			]
+		},
+		"Large Language Models (LLM)": {
+			"definition": "Große Sprachmodelle sind KI-Algorithmen, die auf riesigen Textkorpora trainiert werden, um die Wahrscheinlichkeit vorherzusagen, mit der ein Wort in einem Text auf ein anderes folgt. Diese Modelle werden für Aufgaben wie Textgenerierung, Übersetzungen und Frage-Antwort-Systeme eingesetzt, um kohärente und relevante Inhalte zu erstellen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.C.1",
+					"_id": "643e688dc0b812002aaed318"
+				}
+			]
+		},
+		"Stochastische Texte": {
+			"definition": "Stochastische Texte sind Texte, die durch Zufallsgeneratoren oder algorithmische Verfahren erstellt werden. Ein bekanntes Beispiel ist die Sammlung \"Stochastische Texte\" von Theo Lutz, die mithilfe eines Programms des Zuse Z22 Rechners generiert wurde. Diese Texte werfen die Frage auf, wer der Urheber:in solcher Werke ist – die Maschine, der Entwickler:in oder eine Mischung von beidem.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.C.1",
+					"_id": "643e688dc0b812002aaed318"
+				}
+			]
+		},
+		"Geistiges Eigentum": {
+			"definition": "Geistiges Eigentum umfasst rechtliche Schutzrechte, die Schöpfungen des menschlichen Intellekts betreffen, wie z.B. Erfindungen, literarische und künstlerische Werke, Designs und Marken. Es stellt sicher, dass Schöpfer:innen und Innovator:innen die Kontrolle über ihre Werke und Ideen behalten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.C.1",
+					"_id": "643e688dc0b812002aaed318"
+				}
+			]
+		},
+		"Künstlich erzeugte Kunst": {
+			"definition": "Kunst, die mithilfe von KI-Systemen erstellt wird, indem Algorithmen mit Kunstdaten trainiert werden, um neue Werke zu schaffen. Solche Werke können in verschiedenen Medien wie Bildern, Musik oder Texten auftreten. In der Kunstwelt gibt es Diskussionen darüber, ob KI-generierte Werke als echte Kunst gelten und wer die Urheberschaft an solchen Werken hat.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.C.1",
+					"_id": "643e688dc0b812002aaed318"
+				}
+			]
+		},
+		"AI Act (KI-VO)": {
+			"definition": "Der AI Act (Künstliche Intelligenz Verordnung) der Europäischen Union ist ein Gesetzesrahmen, der Künstliche Intelligenz regelt, um sowohl die Förderung von Innovation als auch den Schutz der Gesellschaft zu gewährleisten. Er legt Anforderungen an KI-Systeme fest, je nach deren Risikokategorie, und bestimmt, welche Transparenz- und Dokumentationspflichten für Anbieter:innen von KI-Systemen bestehen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.C.1",
+					"_id": "643e688dc0b812002aaed318"
+				}
+			]
+		},
+		"Plagiat": {
+			"definition": "Ein Plagiat tritt auf, wenn jemand die Ideen oder Arbeiten einer anderen Person ohne deren Zustimmung oder ohne die entsprechende Quellenangabe verwendet und sie als eigene ausgibt. In der Wissenschaft und Kunst ist das Plagiieren eine schwerwiegende Verletzung ethischer und rechtlicher Standards.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.C.1",
+					"_id": "643e688dc0b812002aaed318"
+				}
+			]
+		},
+		"Künstlich hergestellte Musik": {
+			"definition": "Musik, die von KI-Systemen komponiert wird, die mit großen Datensätzen musikalischer Werke trainiert wurden. Solche Systeme können neue Musikstücke generieren, die dem Stil bekannter Komponist:innen ähneln oder völlig neue Kompositionen schaffen. Aktuelle KI-generierte Musik wird oft als unterstützendes Werkzeug in der Musikproduktion eingesetzt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.C.1",
+					"_id": "643e688dc0b812002aaed318"
+				}
+			]
+		},
+		"Zuse Z22": {
+			"definition": "Der Zuse Z22 war ein frühes Rechenmodell, das 1960 von Konrad Zuse und seinem Team an der Technischen Universität Stuttgart entwickelt wurde. Es wurde unter anderem verwendet, um die ersten computergenerierten Texte zu erzeugen. Ein Beispiel hierfür ist das Gedicht, das unter Verwendung eines von Theo Lutz entwickelten Programms erstellt wurde und als frühes Beispiel für KI-generierte Kunst gilt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.2.C.1",
+					"_id": "643e688dc0b812002aaed318"
+				}
+			]
+		},
+		"Ada Lovelace": {
+			"definition": "Die erste Programmiererin der Welt, die in den 1840er Jahren ein Computerprogramm für die von Charles Babbage konzipierte 'Analytical Engine' schrieb.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.A.1",
+					"_id": "63c5dfa2c0b812002aaeca87"
+				}
+			]
+		},
+		"Konrad Zuse": {
+			"definition": "Deutscher Ingenieur und Erfinder des ersten funktionsfähigen Computers (Z3) sowie der Programmiersprache Plankalkül, die als Vorläufer moderner Programmiersprachen gilt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.A.1",
+					"_id": "63c5dfa2c0b812002aaeca87"
+				}
+			]
+		},
+		"Plankalkül": {
+			"definition": "Die erste algorithmische Programmiersprache, entwickelt von Konrad Zuse, die mathematische und logische Operationen ermöglichte und die Grundlage für moderne Programmierkonzepte legte.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.A.1",
+					"_id": "63c5dfa2c0b812002aaeca87"
+				}
+			]
+		},
+		"Binärsystem": {
+			"definition": "Ein Zahlensystem, das nur die Ziffern 0 und 1 verwendet und als Grundlage für die Datenverarbeitung in Computern dient.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.A.1",
+					"_id": "63c5dfa2c0b812002aaeca87"
+				}
+			]
+		},
+		"Compiler": {
+			"definition": "Ein Programm, das Quellcode in eine für Computer ausführbare Form übersetzt, meist in Maschinensprache oder Bytecode.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.A.1",
+					"_id": "63c5dfa2c0b812002aaeca87"
+				}
+			]
+		},
+		"Jeanette Wing": {
+			"definition": "US-amerikanische Informatikprofessorin, die den Begriff 'Computational Thinking' prägte und dessen Bedeutung für die Problemlösung betonte.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.A.1",
+					"_id": "63c5dfa2c0b812002aaeca87"
+				}
+			]
+		},
+		"Hello, World!": {
+			"definition": "Ein traditionelles erstes Programm beim Erlernen einer neuen Programmiersprache, das den Text 'Hello, World!' ausgibt, um Syntax und Funktionalität zu demonstrieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.A.1",
+					"_id": "63c5dfa2c0b812002aaeca87"
+				}
+			]
+		},
+		"Assembler": {
+			"definition": "Eine maschinennahe Programmiersprache, die direkte Kontrolle über die Hardware eines Computers ermöglicht.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.A.1",
+					"_id": "63c5dfa2c0b812002aaeca87"
+				}
+			]
+		},
+		"Brian Kernighan": {
+			"definition": "Mitentwickler der Programmiersprache C und Urheber des ersten 'Hello, World!'-Programms in der Computersprache B.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.A.1",
+					"_id": "63c5dfa2c0b812002aaeca87"
+				}
+			]
+		},
+		"Smart Home": {
+			"definition": "Ein vernetztes Zuhause, in dem Geräte und Systeme automatisiert und zentral gesteuert werden können, oft mithilfe von programmierbaren Anwendungen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.A.1",
+					"_id": "63c5dfa2c0b812002aaeca87"
+				}
+			]
+		},
+		"Industrie 4.0": {
+			"definition": "Eine Vision der vernetzten und automatisierten Produktion, bei der Maschinen und Systeme selbstständig Daten austauschen und Entscheidungen treffen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.A.1",
+					"_id": "63c5dfa2c0b812002aaeca87"
+				}
+			]
+		},
+		"Computational Thinking": {
+			"definition": "Ein Denkansatz, der die Prinzipien der Informatik nutzt, um Probleme zu analysieren, zu strukturieren und durch Algorithmen oder andere logische Ansätze zu lösen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.A.1",
+					"_id": "63c5dfa2c0b812002aaeca87"
+				}
+			]
+		},
+		"No-Code": {
+			"definition": "Eine Softwareentwicklungsstrategie, die es Nutzer:innen ermöglicht, Anwendungen ohne jegliche Programmierkenntnisse zu erstellen, oft mithilfe von visuellen Drag-and-Drop-Tools. Ziel ist es, technische Barrieren zu überwinden und Fachleuten aus anderen Bereichen die Erstellung eigener Software zu ermöglichen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.B.1",
+					"_id": "63c5dfa2c0b812002aaeca89"
+				}
+			]
+		},
+		"Low-Code": {
+			"definition": "Ein Entwicklungsansatz, der eine minimale Menge an Programmierung erfordert. Nutzer:innen können mit vorgefertigten Bausteinen und visuellen Werkzeugen Anwendungen erstellen, wobei die Möglichkeit zur individuellen Anpassung erhalten bleibt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.B.1",
+					"_id": "63c5dfa2c0b812002aaeca89"
+				}
+			]
+		},
+		"Citizen Developer": {
+			"definition": "Fachleute ohne IT-Expertise, die mithilfe von No-Code oder Low-Code-Plattformen selbst Softwarelösungen für spezifische Probleme in ihrem Fachbereich entwickeln, um Prozesse zu optimieren oder schnell digitale Lösungen zu implementieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.B.1",
+					"_id": "63c5dfa2c0b812002aaeca89"
+				}
+			]
+		},
+		"Agile Methoden": {
+			"definition": "Ein Ansatz in der Softwareentwicklung, der Flexibilität, enge Zusammenarbeit mit Kund:innen und kontinuierliche Anpassung an Veränderungen betont. Agile Methoden setzen auf schnelle, iterative Entwicklungen und betonen die Zusammenarbeit im Team sowie den praktischen Nutzen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.B.1",
+					"_id": "63c5dfa2c0b812002aaeca89"
+				}
+			]
+		},
+		"Interdisziplinäre Kommunikation": {
+			"definition": "Der Austausch zwischen verschiedenen Fachbereichen, bei dem unterschiedliche fachliche Perspektiven und Vokabularien aufeinandertreffen. Dies erfordert spezielle Verständigungskompetenz, um Missverständnisse zu vermeiden und Wissen effektiv zu kombinieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.B.1",
+					"_id": "63c5dfa2c0b812002aaeca89"
+				}
+			]
+		},
+		"Fachsprache": {
+			"definition": "Eine spezialisierte Variante der Sprache, die innerhalb einer bestimmten Fachgemeinschaft verwendet wird, um präzise und effizient über fachspezifische Themen zu kommunizieren. Sie trägt zur Herausbildung einer Fachidentität bei, indem sie das Denken und die Sichtweise der Fachleute prägt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.B.1",
+					"_id": "63c5dfa2c0b812002aaeca89"
+				}
+			]
+		},
+		"Verständigungskompetenz": {
+			"definition": "Die Fähigkeit, zwischen verschiedenen Fachsprachen zu vermitteln, insbesondere durch das Explizitmachen von implizitem Wissen und die Anpassung der Sprache an die Bedürfnisse des:der jeweiligen Adressat:in. Sie fördert den interdisziplinären Austausch und die Vermeidung von Missverständnissen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.B.1",
+					"_id": "63c5dfa2c0b812002aaeca89"
+				}
+			]
+		},
+		"Demokratisierung der Softwareentwicklung": {
+			"definition": "Die Vereinfachung und Öffnung von Programmiermethoden und -tools für breitere Bevölkerungsgruppen, z. B. durch No- und Low-Code-Plattformen, die es auch Nicht-Expert:innen ermöglichen, Software zu erstellen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.C.1",
+					"_id": "63c5dfa2c0b812002aaeca8b"
+				}
+			]
+		},
+		"Ethics by Design": {
+			"definition": "Ein Ansatz in der Softwareentwicklung, der ethische Überlegungen von Anfang an in den Entwicklungsprozess integriert, um gesellschaftliche und moralische Werte in Technologie umzusetzen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.C.1",
+					"_id": "63c5dfa2c0b812002aaeca8b"
+				}
+			]
+		},
+		"Generative KI": {
+			"definition": "Künstliche Intelligenz, die eigenständig neue Inhalte wie Texte, Bilder oder Programme generiert, z. B. OpenAIs Codex zur Erstellung von Code auf Basis natürlicher Sprache.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.C.1",
+					"_id": "63c5dfa2c0b812002aaeca8b"
+				},
+				{
+					"taxonomy": "5.1.B.1",
+					"_id": "643dca90c0b812002aaed1b3"
+				}
+			]
+		},
+		"Low-Code/No-Code-Plattformen": {
+			"definition": "Entwicklungsumgebungen, die es Nutzern ermöglichen, Anwendungen mit minimalem oder keinem Programmieraufwand zu erstellen, häufig durch visuelle Schnittstellen oder vorgefertigte Module.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.C.1",
+					"_id": "63c5dfa2c0b812002aaeca8b"
+				}
+			]
+		},
+		"Quantenüberlegenheit (Quantum Supremacy)": {
+			"definition": "Der Punkt, an dem ein Quantencomputer eine Aufgabe wesentlich schneller lösen kann als herkömmliche Computer.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.C.1",
+					"_id": "63c5dfa2c0b812002aaeca8b"
+				}
+			]
+		},
+		"Qubit": {
+			"definition": "Die kleinste Informationseinheit in einem Quantencomputer, die aufgrund der Überlagerung gleichzeitig die Zustände 0 und 1 einnehmen kann.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.C.1",
+					"_id": "63c5dfa2c0b812002aaeca8b"
+				}
+			]
+		},
+		"Roadmap Quantencomputer": {
+			"definition": "Ein Entwicklungsplan, der die Meilensteine und Fortschritte im Bereich des Quantencomputings beschreibt, z. B. IBMs Zeitplan für prototypische Anwendungen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.C.1",
+					"_id": "63c5dfa2c0b812002aaeca8b"
+				}
+			]
+		},
+		"Standardsoftware": {
+			"definition": "Vorgefertigte Softwarelösungen, die allgemeine und spezifische Anforderungen von Unternehmen erfüllen können und oft keine Programmierkenntnisse für die Anpassung erfordern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.C.1",
+					"_id": "63c5dfa2c0b812002aaeca8b"
+				}
+			]
+		},
+		"Technologische Disruption": {
+			"definition": "Ein tiefgreifender Wandel, der durch neue Technologien ausgelöst wird und bestehende Geschäftsmodelle oder Arbeitsweisen fundamental verändert.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.C.1",
+					"_id": "63c5dfa2c0b812002aaeca8b"
+				}
+			]
+		},
+		"Zugängliche Entwicklungsressourcen": {
+			"definition": "Tools wie Frameworks, Bibliotheken oder Open-Source-Software, die den Entwicklungsprozess beschleunigen und die Qualität von Software verbessern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.C.1",
+					"_id": "63c5dfa2c0b812002aaeca8b"
+				}
+			]
+		},
+		"Lebenslanges Lernen": {
+			"definition": "Die kontinuierliche Aneignung neuer Fähigkeiten und Kenntnisse, insbesondere im IT-Bereich, um mit technologischen Entwicklungen Schritt zu halten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.C.1",
+					"_id": "63c5dfa2c0b812002aaeca8b"
+				},
+				{
+					"taxonomy": "4.2.C.2",
+					"_id": "66df661933064b0006a8c572"
+				},
+				{
+					"taxonomy": "5.2.A.1",
+					"_id": "643dcabdc0b812002aaed1c9"
+				}
+			]
+		},
+		"Verantwortungsbewusste Softwareentwicklung": {
+			"definition": "Der bewusste Umgang mit ökologischen, sozialen und politischen Auswirkungen bei der Gestaltung und Implementierung von Technologien.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "3.3.C.1",
+					"_id": "63c5dfa2c0b812002aaeca8b"
+				}
+			]
+		},
+		"DSGVO (Datenschutz-Grundverordnung)": {
+			"definition": "Europäische Verordnung, die seit 2018 den Umgang mit personenbezogenen Daten regelt und einheitliche Datenschutzstandards in der EU schafft.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.A.1",
+					"_id": "643dc942c0b812002aaed15a"
+				}
+			]
+		},
+		"Cybercrime": {
+			"definition": "Kriminelle Aktivitäten im digitalen Raum, z. B. Angriffe durch Hacker:innen oder Handel mit personenbezogenen Daten im Darknet.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.A.1",
+					"_id": "643dc942c0b812002aaed15a"
+				}
+			]
+		},
+		"EU-U.S. Data Privacy Framework": {
+			"definition": "Abkommen zwischen der EU und den USA, das den transatlantischen Datentransfer regelt, unter Berücksichtigung der DSGVO-Anforderungen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.A.1",
+					"_id": "643dc942c0b812002aaed15a"
+				},
+				{
+					"taxonomy": "4.1.A.2",
+					"_id": "659e4cc6c240300006a5591f"
+				}
+			]
+		},
+		"Max Schrems": {
+			"definition": "Datenschutzaktivist, bekannt für die rechtliche Anfechtung der Abkommen \"Safe Harbor\" und \"Privacy Shield\", die den Datenschutz im transatlantischen Datenaustausch betreffen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.A.1",
+					"_id": "643dc942c0b812002aaed15a"
+				}
+			]
+		},
+		"Volkszählungsurteil": {
+			"definition": "Grundsatzurteil des Bundesverfassungsgerichts von 1983, das das Grundrecht auf informationelle Selbstbestimmung definierte.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.A.1",
+					"_id": "643dc942c0b812002aaed15a"
+				}
+			]
+		},
+		"Sichere Drittstaaten": {
+			"definition": "Länder außerhalb der EU, die von der EU-Kommission als datenschutzrechtlich sicher eingestuft werden, wie z. B. Schweiz, Japan oder Südkorea.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.A.1",
+					"_id": "643dc942c0b812002aaed15a"
+				}
+			]
+		},
+		"Personenprofil": {
+			"definition": "Sammlung personenbezogener Daten, die ein umfassendes Bild einer Person ergeben können, oft erstellt durch die Auswertung digitaler Aktivitäten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.A.1",
+					"_id": "643dc942c0b812002aaed15a"
+				}
+			]
+		},
+		"Datenschutzaktivist:in": {
+			"definition": "Person, die sich für den Schutz personenbezogener Daten und die Einhaltung von Datenschutzbestimmungen einsetzt, oft durch rechtliche Schritte oder Öffentlichkeitsarbeit.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.A.1",
+					"_id": "643dc942c0b812002aaed15a"
+				}
+			]
+		},
+		"Datenschutzgrundverordnung (DSGVO)": {
+			"definition": "Ein europäisches Gesetz, das den Schutz personenbezogener Daten gewährleistet und den Umgang mit diesen Daten einheitlich für alle EU-Länder regelt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.A.2",
+					"_id": "659e4cc6c240300006a5591f"
+				},
+				{
+					"taxonomy": "5.1.C.1",
+					"_id": "643dca90c0b812002aaed1b5"
+				}
+			]
+		},
+		"BfDI (Bundesbeauftragte für den Datenschutz und die Informationsfreiheit)": {
+			"definition": "Die oberste Datenschutzbehörde in Deutschland, die für Information, Beratung und Kontrolle im Bereich Datenschutz zuständig ist.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.A.2",
+					"_id": "659e4cc6c240300006a5591f"
+				}
+			]
+		},
+		"Technisch-Organisatorische Maßnahmen (TOM)": {
+			"definition": "Maßnahmen zur Sicherung personenbezogener Daten, darunter organisatorische Regelungen und technische Schutzmechanismen wie Verschlüsselung und Zugangskontrollen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.A.2",
+					"_id": "659e4cc6c240300006a5591f"
+				}
+			]
+		},
+		"Datenminimierung": {
+			"definition": "Das Prinzip, dass nur so viele personenbezogene Daten wie nötig erhoben und verarbeitet werden dürfen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.A.2",
+					"_id": "659e4cc6c240300006a5591f"
+				},
+				{
+					"taxonomy": "4.1.B.1",
+					"_id": "643dc942c0b812002aaed15e"
+				}
+			]
+		},
+		"Transparenz": {
+			"definition": "Ein Grundsatz der DSGVO, der vorschreibt, dass Betroffene klar und verständlich über die Verwendung ihrer Daten informiert werden müssen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.A.2",
+					"_id": "659e4cc6c240300006a5591f"
+				}
+			]
+		},
+		"Zweckbindung": {
+			"definition": "Die Verpflichtung, personenbezogene Daten ausschließlich für den angegebenen und vorher mitgeteilten Zweck zu verwenden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.A.2",
+					"_id": "659e4cc6c240300006a5591f"
+				}
+			]
+		},
+		"Datenschutzmanagement": {
+			"definition": "Die organisatorische und technische Verwaltung von Prozessen und Maßnahmen, um personenbezogene Daten gemäß der DSGVO rechtskonform zu schützen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.B.1",
+					"_id": "643dc942c0b812002aaed15e"
+				}
+			]
+		},
+		"Selbstdatenschutz": {
+			"definition": "Der individuelle Umgang mit den eigenen personenbezogenen Daten, um die Privatsphäre zu schützen, z. B. durch die Nutzung sicherer Passwörter oder den Verzicht auf die Preisgabe sensibler Informationen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.B.1",
+					"_id": "643dc942c0b812002aaed15e"
+				}
+			]
+		},
+		"Privilegierung": {
+			"definition": "Ausnahmen im Datenschutzrecht, die z. B. in der Forschung gelten, um bestimmte Prozesse zu erleichtern, während dennoch der Schutz der betroffenen Person gewährleistet wird.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.B.1",
+					"_id": "643dc942c0b812002aaed15e"
+				}
+			]
+		},
+		"Pseudonymisierung": {
+			"definition": "Verfahren, bei dem personenbezogene Daten so verarbeitet werden, dass sie ohne zusätzliche Informationen nicht einer bestimmten Person zugeordnet werden können, wobei diese Informationen getrennt aufbewahrt werden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.B.1",
+					"_id": "643dc942c0b812002aaed15e"
+				}
+			]
+		},
+		"Anonymisierung": {
+			"definition": "Verfahren, bei dem personenbezogene Daten derart verändert werden, dass eine Zuordnung zu einer Person nicht mehr möglich ist.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.B.1",
+					"_id": "643dc942c0b812002aaed15e"
+				}
+			]
+		},
+		"Auftragsverarbeitung": {
+			"definition": "Die Verarbeitung personenbezogener Daten durch einen externen Dienstleister, der gemäß einem Vertrag im Auftrag und nach Weisung der verantwortlichen Stelle handelt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.B.1",
+					"_id": "643dc942c0b812002aaed15e"
+				}
+			]
+		},
+		"Cookie-Banner": {
+			"definition": "Eine Benutzeroberfläche auf Websites, die Informationen über die Verwendung von Cookies bereitstellt und Nutzer:innen die Möglichkeit gibt, der Datensammlung zuzustimmen oder sie abzulehnen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.B.1",
+					"_id": "643dc942c0b812002aaed15e"
+				}
+			]
+		},
+		"EU-US Privacy Shield": {
+			"definition": "Ehemaliger Rechtsrahmen für den sicheren Austausch personenbezogener Daten zwischen der EU und den USA, der 2020 vom EuGH für ungültig erklärt wurde. Der Nachfolger ist das EU-US Data Privacy Framework.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.B.1",
+					"_id": "643dc942c0b812002aaed15e"
+				}
+			]
+		},
+		"Datenschutzerklärung": {
+			"definition": "Dokument, das offenlegt, wie eine Organisation personenbezogene Daten verarbeitet, speichert und schützt, oft mit Informationen über Rechte der betroffenen Personen und Kontaktmöglichkeiten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.B.1",
+					"_id": "643dc942c0b812002aaed15e"
+				}
+			]
+		},
+		"Firewall": {
+			"definition": "Eine Sicherheitsvorkehrung, die unerwünschten Datenverkehr blockiert und so Computer und Netzwerke vor Bedrohungen schützt. Sie ist in den Betriebssystemeinstellungen aktivierbar.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.B.2",
+					"_id": "65b26334c240300006b493b7"
+				}
+			]
+		},
+		"Antivirenprogramm": {
+			"definition": "Eine Software, die Viren und andere Malware erkennt, blockiert und entfernt. Regelmäßige Aktualisierungen sind notwendig, um Schutz vor neuen Bedrohungen zu gewährleisten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.B.2",
+					"_id": "65b26334c240300006b493b7"
+				}
+			]
+		},
+		"Social Engineering": {
+			"definition": "Ein Angriff, bei dem menschliches Verhalten manipuliert wird, um an vertrauliche Informationen zu gelangen. Täter:innen nutzen Eigenschaften wie Vertrauen oder Angst aus.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.B.2",
+					"_id": "65b26334c240300006b493b7"
+				}
+			]
+		},
+		"Ransomware": {
+			"definition": "Schadsoftware, die den Zugriff auf Daten oder Geräte blockiert und Lösegeld für die Freigabe fordert.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.B.2",
+					"_id": "65b26334c240300006b493b7"
+				}
+			]
+		},
+		"Spyware": {
+			"definition": "Schadsoftware, die Aktivitäten auf Geräten überwacht und sensible Informationen wie Passwörter stiehlt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.B.2",
+					"_id": "65b26334c240300006b493b7"
+				}
+			]
+		},
+		"Datenverschlüsselung": {
+			"definition": "Ein Verfahren, bei dem Daten so verändert werden, dass sie nur mit einem speziellen Schlüssel gelesen werden können. Es gibt asymmetrische (zwei Schlüssel) und symmetrische (ein Schlüssel) Verschlüsselung.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.B.2",
+					"_id": "65b26334c240300006b493b7"
+				}
+			]
+		},
+		"VPN (Virtual Private Network)": {
+			"definition": "Eine Technik, die die Internetverbindung verschlüsselt und die Herkunft der Daten verschleiert, um die Privatsphäre zu schützen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.B.2",
+					"_id": "65b26334c240300006b493b7"
+				}
+			]
+		},
+		"Transport-Verschlüsselung": {
+			"definition": "Verschlüsselung, die den Schutz von Nachrichten während der Übertragung gewährleistet, aber nicht nach deren Ankunft.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.B.2",
+					"_id": "65b26334c240300006b493b7"
+				}
+			]
+		},
+		"End-to-End-Verschlüsselung": {
+			"definition": "Eine Verschlüsselungsmethode, bei der nur Absender:innen und Empfänger:innen die Nachricht lesen können.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.1.B.2",
+					"_id": "65b26334c240300006b493b7"
+				}
+			]
+		},
+		"Phantomvibrationssyndrom": {
+			"definition": "Eine Halluzination, bei der Betroffene glauben, dass ihr Handy vibriert oder klingelt, obwohl dies nicht der Fall ist. Dies kann durch die ständige Erwartung von Benachrichtigungen ausgelöst werden und erhöht das Stressniveau.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.A.2",
+					"_id": "66df65eb33064b0006a8a284"
+				}
+			]
+		},
+		"Technostress": {
+			"definition": "Stress, der durch den Umgang mit digitalen Technologien entsteht. Ursachen sind Überforderung, technische Komplexität, Unsicherheit, permanente Erreichbarkeit oder technische Ausfälle.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.A.2",
+					"_id": "66df65eb33064b0006a8a284"
+				}
+			]
+		},
+		"Dark Patterns": {
+			"definition": "Manipulative Designmuster in digitalen Anwendungen, die darauf abzielen, Nutzer:in zu unerwünschten Handlungen zu bewegen, etwa durch versteckte Informationen oder irreführende Schaltflächen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.A.2",
+					"_id": "66df65eb33064b0006a8a284"
+				}
+			]
+		},
+		"Doomscrolling": {
+			"definition": "Das zwanghafte und übermäßige Konsumieren negativer Nachrichten in digitalen Medien, was oft zu einem verstärkten Gefühl von Angst und Stress führt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.A.2",
+					"_id": "66df65eb33064b0006a8a284"
+				}
+			]
+		},
+		"FOMO (Fear of Missing Out)": {
+			"definition": "Die Angst, wichtige Informationen, Erlebnisse oder Möglichkeiten zu verpassen, häufig ausgelöst durch soziale Medien und ständige digitale Vernetzung.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.A.2",
+					"_id": "66df65eb33064b0006a8a284"
+				}
+			]
+		},
+		"Digital Detox": {
+			"definition": "Der bewusste, zeitlich begrenzte Verzicht auf die Nutzung digitaler Medien, um das eigene Wohlbefinden zu fördern und den Medienkonsum reflektierter zu gestalten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.A.2",
+					"_id": "66df65eb33064b0006a8a284"
+				},
+				{
+					"taxonomy": "4.2.B.3",
+					"_id": "66df660433064b0006a8b11f"
+				}
+			]
+		},
+		"VUKA": {
+			"definition": "Eine Abkürzung, die vier Herausforderungen der modernen Welt beschreibt; Volatilität: Flüchtigkeit und schnelle Veränderungen. Unsicherheit: Schwierigkeiten bei der Vorhersage zukünftiger Entwicklungen. Komplexität: Hohe Vernetztheit und Intransparenz von Prozessen. Ambivalenz: Mehrdeutigkeit und widersprüchliche Informationen, die Entscheidungen erschweren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.A.2",
+					"_id": "66df65eb33064b0006a8a284"
+				},
+				{
+					"taxonomy": "4.2.B.1",
+					"_id": "66df65fe33064b0006a8ac10"
+				}
+			]
+		},
+		"Digitalisierte Gesellschaft": {
+			"definition": "Eine Gesellschaft, die durch digitale Technologien geprägt ist, was sich auf Kommunikation, Arbeit, Konsum und das soziale Leben auswirkt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.A.2",
+					"_id": "66df65eb33064b0006a8a284"
+				}
+			]
+		},
+		"Erwartung ständiger Erreichbarkeit": {
+			"definition": "Der gesellschaftliche und berufliche Druck, jederzeit auf digitale Nachrichten oder Anfragen zu reagieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.A.2",
+					"_id": "66df65eb33064b0006a8a284"
+				}
+			]
+		},
+		"Cybermobbing": {
+			"definition": "Belästigung, Demütigung oder Bedrohung einer Person durch digitale Kommunikationsmittel wie soziale Medien oder Messenger-Dienste.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.A.2",
+					"_id": "66df65eb33064b0006a8a284"
+				}
+			]
+		},
+		"Selbstregulation (im digitalen Kontext)": {
+			"definition": "Die Fähigkeit, den eigenen Umgang mit digitalen Medien bewusst zu steuern, um negative Auswirkungen zu vermeiden und einen gesunden Medienkonsum zu fördern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.A.2",
+					"_id": "66df65eb33064b0006a8a284"
+				}
+			]
+		},
+		"Agilität (Management)": {
+			"definition": "Ein Konzept zur flexiblen und schrittweisen Organisation von Aufgaben und Zielen, das Methoden wie Kanban, Mind Mapping, und die SMART-Methode nutzt, um Produktivität zu fördern und Stress zu reduzieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.B.1",
+					"_id": "66df65fe33064b0006a8ac10"
+				}
+			]
+		},
+		"Brainfog": {
+			"definition": "Ein Zustand geistiger Verwirrung oder mentaler Erschöpfung, oft durch Stress oder Überforderung verursacht, bei dem Konzentration und Klarheit schwerfallen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.B.1",
+					"_id": "66df65fe33064b0006a8ac10"
+				}
+			]
+		},
+		"Clean Desk Policy": {
+			"definition": "Ein Organisationsprinzip, das auf einem ordentlichen, strukturierten Arbeitsplatz basiert, um Ablenkungen zu minimieren und die Produktivität zu steigern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.B.1",
+					"_id": "66df65fe33064b0006a8ac10"
+				}
+			]
+		},
+		"Eisenhower-Matrix": {
+			"definition": "Ein Werkzeug zur Priorisierung von Aufgaben, basierend auf ihrer Dringlichkeit und Wichtigkeit, das in vier Kategorien unterteilt wird, um effektive Zeitnutzung zu fördern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.B.1",
+					"_id": "66df65fe33064b0006a8ac10"
+				}
+			]
+		},
+		"Kaizen": {
+			"definition": "Eine japanische Methode zur kontinuierlichen Verbesserung durch kleine, schrittweise Veränderungen, die Angst und Überforderung minimiert.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.B.1",
+					"_id": "66df65fe33064b0006a8ac10"
+				}
+			]
+		},
+		"Kanban": {
+			"definition": "Eine agile Projektmanagement-Methode, die Aufgaben auf einem Board visualisiert und in Schritte wie \"To-Do\", \"Doing\" und \"Done\" unterteilt, um den Workflow zu optimieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.B.1",
+					"_id": "66df65fe33064b0006a8ac10"
+				}
+			]
+		},
+		"Mind Mapping": {
+			"definition": "Eine kreative Methode zur Visualisierung von Ideen, die durch zentrale Themen und assoziative Verbindungen eine Übersicht und Strukturierung komplexer Inhalte ermöglicht.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.B.1",
+					"_id": "66df65fe33064b0006a8ac10"
+				}
+			]
+		},
+		"Minimal Viable Product (MVP)": {
+			"definition": "Die einfachste Version eines Produkts oder Projekts, die bereits nutzbar ist und weiterentwickelt werden kann.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.B.1",
+					"_id": "66df65fe33064b0006a8ac10"
+				}
+			]
+		},
+		"Prokrastination": {
+			"definition": "Das Verschieben oder Vermeiden von Aufgaben, das als Reaktion auf Überforderung auftreten kann, jedoch durch Reflexion und kleine Schritte funktional genutzt werden kann.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.B.1",
+					"_id": "66df65fe33064b0006a8ac10"
+				}
+			]
+		},
+		"SMART-Methode": {
+			"definition": "Eine Methode zur Zielsetzung, bei der Ziele spezifisch, messbar, attraktiv, realistisch und terminiert definiert werden, um ihre Umsetzung zu erleichtern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.B.1",
+					"_id": "66df65fe33064b0006a8ac10"
+				}
+			]
+		},
+		"Zeigarnik-Effekt": {
+			"definition": "Ein psychologisches Phänomen, das beschreibt, wie unerledigte Aufgaben im Gedächtnis bleiben und mentalen Raum beanspruchen, was Stress fördern kann.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.B.1",
+					"_id": "66df65fe33064b0006a8ac10"
+				}
+			]
+		},
+		"Iterationen": {
+			"definition": "Wiederholungsschleifen innerhalb agiler Prozesse, die kontinuierliche Verbesserungen und Anpassungen ermöglichen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.B.1",
+					"_id": "66df65fe33064b0006a8ac10"
+				}
+			]
+		},
+		"Resilienz": {
+			"definition": "Die psychische Widerstandsfähigkeit, die es ermöglicht, nach belastenden Ereignissen wieder in den Normalzustand zurückzukehren und Herausforderungen ohne langfristige negative Auswirkungen auf die psychische Gesundheit zu bewältigen. Resilienz ist ein dynamischer Prozess, der durch das Zusammenspiel von Person und Umwelt entsteht.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.B.3",
+					"_id": "66df660433064b0006a8b11f"
+				}
+			]
+		},
+		"Zeitsouveränität": {
+			"definition": "Die Fähigkeit, Zeit bewusst und selbstbestimmt zu nutzen, indem man Prioritäten setzt, Aktivitäten strukturiert und Zeitdruck minimiert. Sie umfasst die Kontrolle über persönliche Ressourcen und das Verfolgen von Zielen ohne unnötigen Stress.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.B.3",
+					"_id": "66df660433064b0006a8b11f"
+				}
+			]
+		},
+		"Entspannungstechniken": {
+			"definition": "Methoden wie Atemtechniken, Meditation, progressive Muskelentspannung oder Bewegung, die zur Reduktion von Stress und zur Förderung von körperlicher und geistiger Regeneration beitragen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.B.3",
+					"_id": "66df660433064b0006a8b11f"
+				}
+			]
+		},
+		"WOOP-Methode": {
+			"definition": "Eine mentale Strategie zur Zielerreichung und Veränderung von Gewohnheiten, basierend auf den Schritten Wish (Wunsch), Outcome (Ergebnis), Obstacle (Hindernis) und Plan. Sie kombiniert positives Denken mit einer Auseinandersetzung mit Hindernissen, um realistische Umsetzungen zu fördern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.B.3",
+					"_id": "66df660433064b0006a8b11f"
+				}
+			]
+		},
+		"Digitalisierung": {
+			"definition": "Die Digitalisierung bezeichnet den Prozess der Umwandlung von analogen Informationen und Prozessen in digitale Formate. Sie umfasst die Einführung und Nutzung digitaler Technologien in allen Lebensbereichen, von der Verwaltung über die Arbeitswelt bis hin zum privaten Alltag. Dies führt zu Veränderungen in der Art und Weise, wie Menschen miteinander interagieren, wie sie arbeiten, lernen und kommunizieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.C.2",
+					"_id": "66df661933064b0006a8c572"
+				}
+			]
+		},
+		"One-Click-Bewerbung": {
+			"definition": "Eine One-Click-Bewerbung ist ein Verfahren, bei dem Bewerber sich mit nur einem Klick auf Jobangebote bewerben können, indem sie ihre Daten aus einem beruflichen Netzwerk wie LinkedIn oder Xing nutzen. Dies vereinfacht den Bewerbungsprozess erheblich, birgt jedoch auch Risiken wie unvollständige oder fehlerhafte Bewerbungen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.C.2",
+					"_id": "66df661933064b0006a8c572"
+				}
+			]
+		},
+		"Remote-Arbeit": {
+			"definition": "Remote-Arbeit bezeichnet die Möglichkeit, Arbeitsaufgaben außerhalb des traditionellen Büros zu erledigen, oft von zu Hause oder anderen flexiblen Orten. Sie ist ein Ergebnis der digitalen Transformation und wird durch Technologien wie Videokonferenzen und Cloud-Software unterstützt. Sie bietet Flexibilität, erfordert jedoch ein hohes Maß an Selbstorganisation und Disziplin.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.C.2",
+					"_id": "66df661933064b0006a8c572"
+				}
+			]
+		},
+		"Entgrenzung": {
+			"definition": "Entgrenzung bezeichnet den Prozess, bei dem die traditionellen Grenzen zwischen verschiedenen Lebensbereichen, wie Arbeit, Freizeit und Privatleben, zunehmend verschwimmen. Dies ist eine direkte Folge der Digitalisierung, da ständig verfügbare digitale Technologien eine ständige Vernetzung und Erreichbarkeit ermöglichen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.C.2",
+					"_id": "66df661933064b0006a8c572"
+				}
+			]
+		},
+		"Wearables": {
+			"definition": "Wearables sind tragbare digitale Geräte, die verschiedene Daten, meist Gesundheits- oder Fitnessdaten, erfassen und überwachen. Beispiele sind Smartwatches oder Fitness Tracker. Sie bieten Echtzeit-Feedback und unterstützen die Selbstüberwachung von Gesundheitsparametern wie Schrittzahl, Herzfrequenz oder Schlafqualität.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.C.2",
+					"_id": "66df661933064b0006a8c572"
+				}
+			]
+		},
+		"Telemedizin": {
+			"definition": "Telemedizin bezeichnet die Nutzung von digitalen Kommunikationsmitteln, um medizinische Dienstleistungen über Distanz anzubieten. Dies umfasst unter anderem die Fernberatung durch Ärzt:innen oder die Übermittlung von Diagnosen und Behandlungsplänen. Sie ist besonders vorteilhaft in abgelegenen Gebieten oder bei eingeschränkter Mobilität.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.C.2",
+					"_id": "66df661933064b0006a8c572"
+				}
+			]
+		},
+		"Selbstoptimierung": {
+			"definition": "Selbstoptimierung bezieht sich auf den kontinuierlichen Prozess der Verbesserung der eigenen physischen und mentalen Fähigkeiten. Während der Begriff ursprünglich mit dem Streben nach mehr Leistung und Lebensqualität verbunden war, hat er sich in jüngster Zeit zu einer übertriebenen Form entwickelt, die zu Perfektionismus und Stress führen kann.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.C.2",
+					"_id": "66df661933064b0006a8c572"
+				}
+			]
+		},
+		"Multitasking": {
+			"definition": "Multitasking bezeichnet das gleichzeitige Ausführen von mehreren Aufgaben. In der Praxis bedeutet es oft einen schnellen Wechsel zwischen verschiedenen Tätigkeiten. Die Forschung zeigt jedoch, dass das menschliche Gehirn nicht in der Lage ist, mehrere komplexe Aufgaben gleichzeitig effektiv zu bewältigen, was zu einer verminderten Qualität der Arbeit führen kann.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.C.2",
+					"_id": "66df661933064b0006a8c572"
+				}
+			]
+		},
+		"Intermittierende Verstärkung": {
+			"definition": "Intermittierende Verstärkung ist ein psychologisches Prinzip, bei dem ein Verhalten nicht bei jeder Ausführung, sondern nur unregelmäßig verstärkt wird. In digitalen Medien führt dieser Effekt dazu, dass Nutzer:innen immer wieder nach neuen Benachrichtigungen oder Inhalten suchen, weil sie auf eine Belohnung hoffen. Dies ist ein Prinzip, das auch in der Suchtforschung verwendet wird, um das Verlangen nach ständiger Bestätigung und Belohnung zu erklären.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.C.2",
+					"_id": "66df661933064b0006a8c572"
+				}
+			]
+		},
+		"Pre Internet Brain": {
+			"definition": "Der Begriff \"Pre Internet Brain\" beschreibt den Zustand des menschlichen Gehirns vor der weit verbreiteten Nutzung von Internet und digitalen Technologien. Im Vergleich zu den kognitiven Herausforderungen der heutigen Zeit, bei denen das Gehirn mit einer Flut von Informationen und ständiger Ablenkung konfrontiert ist, war das Leben vor dem Internet weniger informationsintensiv und erforderte mehr aktive Denkleistungen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.2.C.2",
+					"_id": "66df661933064b0006a8c572"
+				}
+			]
+		},
+		"Altgeräte": {
+			"definition": "Elektronische Geräte wie Smartphones, Tablets oder Laptops, die nicht mehr genutzt werden, defekt oder nicht fachgerecht entsorgt sind. Sie tragen erheblich zum Elektroschrottproblem bei.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.A.1",
+					"_id": "643dc980c0b812002aaed181"
+				}
+			]
+		},
+		"Erdüberlastungstag": {
+			"definition": "Ein jährlich festgelegtes Datum, das symbolisiert, wann die Menschheit die natürlichen Ressourcen eines Jahres aufgebraucht hat, die die Erde erneuern kann.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.A.1",
+					"_id": "643dc980c0b812002aaed181"
+				}
+			]
+		},
+		"Green IT": {
+			"definition": "Ein Konzept, das darauf abzielt, die Umweltauswirkungen von Informations- und Kommunikationstechnologien durch nachhaltige Herstellung, Nutzung und Entsorgung zu minimieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.A.1",
+					"_id": "643dc980c0b812002aaed181"
+				}
+			]
+		},
+		"Green through IT": {
+			"definition": "Der Ansatz, Informations- und Kommunikationstechnologie als Werkzeug zur Förderung nachhaltigen Handelns einzusetzen, etwa durch Energieeinsparung, Verkehrsoptimierung oder Umweltmonitoring.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.A.1",
+					"_id": "643dc980c0b812002aaed181"
+				}
+			]
+		},
+		"Obsoleszenz": {
+			"definition": "Der Zustand, in dem ein Produkt vorzeitig unbrauchbar oder unmodern wird. Unterscheidet sich in werkstoffliche, funktionale, psychologische und ökonomische Obsoleszenz.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.A.1",
+					"_id": "643dc980c0b812002aaed181"
+				}
+			]
+		},
+		"Phoebus-Kartell": {
+			"definition": "Ein Zusammenschluss führender Glühbirnenhersteller in den 1920er Jahren, der die Lebensdauer von Glühbirnen absichtlich reduzierte, um den Absatz zu steigern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.A.1",
+					"_id": "643dc980c0b812002aaed181"
+				}
+			]
+		},
+		"Urban Mining": {
+			"definition": "Das Konzept, Altgeräte und Elektroschrott als Quelle für Sekundärrohstoffe zu nutzen, um die Gewinnung neuer Rohstoffe zu reduzieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.A.1",
+					"_id": "643dc980c0b812002aaed181"
+				}
+			]
+		},
+		"Rohstoffgewinnung": {
+			"definition": "Der Abbau mineralischer Rohstoffe, die für digitale Technologien notwendig sind, oft in Ländern des globalen Südens unter umweltschädlichen und menschenrechtsverletzenden Bedingungen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.A.1",
+					"_id": "643dc980c0b812002aaed181"
+				}
+			]
+		},
+		"Rechenzentren": {
+			"definition": "Einrichtungen, die große Datenmengen verarbeiten und speichern, deren Energieverbrauch durch Optimierungsmaßnahmen wie Abwärmenutzung und erneuerbare Energien reduziert werden kann.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.A.1",
+					"_id": "643dc980c0b812002aaed181"
+				}
+			]
+		},
+		"Energieeffizienz in der IKT": {
+			"definition": "Maßnahmen zur Reduktion des Energieverbrauchs in der Informationstechnologie, etwa durch flüssigkeitsgekühlte Server oder die Nutzung von Abwärme.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.A.1",
+					"_id": "643dc980c0b812002aaed181"
+				}
+			]
+		},
+		"Elektroschrott": {
+			"definition": "Alte oder ungenutzte elektronische Geräte, die oft unsachgemäß gelagert oder entsorgt werden, und wertvolle Rohstoffe enthalten, die recycelt werden könnten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.A.1",
+					"_id": "643dc980c0b812002aaed181"
+				}
+			]
+		},
+		"Energiebedarf der IKT": {
+			"definition": "Der Energieverbrauch, der mit der Herstellung, Nutzung und Entsorgung von Informations- und Kommunikationstechnologie verbunden ist und durch technologische Innovation reduziert werden kann.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.A.1",
+					"_id": "643dc980c0b812002aaed181"
+				}
+			]
+		},
+		"Ressourcensparende Programmierung": {
+			"definition": "Die Entwicklung von Software, die effizient mit Hardware-Ressourcen umgeht, um den Energieverbrauch zu minimieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.A.1",
+					"_id": "643dc980c0b812002aaed181"
+				}
+			]
+		},
+		"Footprint Network": {
+			"definition": "Eine Organisation, die Daten und Tools bereitstellt, um den ökologischen Fußabdruck von Individuen und Unternehmen zu berechnen und zu reduzieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.A.1",
+					"_id": "643dc980c0b812002aaed181"
+				}
+			]
+		},
+		"EAG (Elektro- und Elektronik-Altgeräte)": {
+			"definition": "Geräte, die aufgrund von Defekten, Ablauf der Nutzungsdauer oder technologischen Fortschritt nicht mehr gebraucht werden und daher entsorgt werden müssen. Dazu gehören Geräte wie Smartphones, Computer, Fernseher, Elektrogeräte und Batterien.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.B.1",
+					"_id": "643dc980c0b812002aaed183"
+				}
+			]
+		},
+		"ElektroG3": {
+			"definition": "Das Elektro- und Elektronikgesetz in seiner 3. Fassung, das Regelungen zur Entsorgung von Elektro- und Elektronik-Altgeräten trifft. Es zielt darauf ab, eine nachhaltige Kreislaufwirtschaft zu fördern und Verbraucher über Entsorgungswege zu informieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.B.1",
+					"_id": "643dc980c0b812002aaed183"
+				}
+			]
+		},
+		"Reparaturindex": {
+			"definition": "Ein Bewertungssystem, das seit 2021 in Frankreich eingeführt wurde und den Reparaturaufwand von Geräten mit einer Skala von 1 bis 10 anzeigt. Der Index berücksichtigt Faktoren wie Dokumentation, Demontagefähigkeit, Verfügbarkeit von Ersatzteilen und deren Preis.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.B.1",
+					"_id": "643dc980c0b812002aaed183"
+				}
+			]
+		},
+		"European Green Deal": {
+			"definition": "Eine Initiative der Europäischen Union, die darauf abzielt, die EU bis 2050 klimaneutral zu machen, mit Maßnahmen zur Förderung von Nachhaltigkeit und einer Kreislaufwirtschaft, einschließlich der Unterstützung von Reparaturen und der Verlängerung von Produktlebenszyklen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.B.1",
+					"_id": "643dc980c0b812002aaed183"
+				}
+			]
+		},
+		"Recht auf Reparatur": {
+			"definition": "Ein Konzept, das Verbrauchern das Recht gibt, ihre defekten Geräte selbst zu reparieren oder von Dritten reparieren zu lassen, ohne die Garantie zu verlieren. Ziel ist es, die Lebensdauer von Geräten zu verlängern und den Elektroschrott zu reduzieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.B.1",
+					"_id": "643dc980c0b812002aaed183"
+				}
+			]
+		},
+		"Datenmüll": {
+			"definition": "Unnötige, doppelte oder ungenutzte digitale Daten, die Speicherplatz und Rechenleistung beanspruchen. Eine effiziente Datenorganisation trägt zur Reduzierung des Energieverbrauchs und der Umweltbelastung bei.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.B.1",
+					"_id": "643dc980c0b812002aaed183"
+				}
+			]
+		},
+		"Nachhaltigkeitsdilemma": {
+			"definition": "Ein Dilemma, bei dem ein Fortschritt in einer Richtung negative Auswirkungen auf andere Nachhaltigkeitsaspekte hat, beispielsweise beim Bau von Infrastruktur, die sowohl umweltfreundlich als auch umweltschädlich ist.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.C.1",
+					"_id": "643dc980c0b812002aaed185"
+				}
+			]
+		},
+		"Klimaschutz und Digitalisierung": {
+			"definition": "Das Spannungsverhältnis zwischen den ökologischen Auswirkungen der zunehmenden Digitalisierung und der Vorstellung, dass Technologie zur Bekämpfung des Klimawandels eingesetzt werden kann.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.C.1",
+					"_id": "643dc980c0b812002aaed185"
+				}
+			]
+		},
+		"Klimaneutralität": {
+			"definition": "Das Ziel, den Ausstoß von Treibhausgasen zu minimieren und die verbleibenden Emissionen durch Kompensationsmaßnahmen auszugleichen, um einen neutralen Einfluss auf das Klima zu erzielen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.C.1",
+					"_id": "643dc980c0b812002aaed185"
+				}
+			]
+		},
+		"Codes-Action-Plan": {
+			"definition": "Eine Initiative zur Förderung der digitalen Nachhaltigkeit, die digitale Technologien umweltfreundlicher und sozialverträglicher gestalten soll. Sie wurde von der Coalition for Digital Environmental Sustainability (CODES) ins Leben gerufen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.C.1",
+					"_id": "643dc980c0b812002aaed185"
+				}
+			]
+		},
+		"Stadt.Land.Digital": {
+			"definition": "Eine Initiative des Bundesministeriums für Wirtschaft und Klimaschutz zur Unterstützung der digitalen Transformation von Kommunen, die digitale Ökosysteme schaffen soll, die Nachhaltigkeit und Lebensqualität fördern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.C.1",
+					"_id": "643dc980c0b812002aaed185"
+				}
+			]
+		},
+		"Natürlich.Digital.Nachhaltig": {
+			"definition": "Ein Aktionsplan des BMBF, der digitale Technologien und Innovationen nutzt, um Nachhaltigkeit und Umweltschutz zu fördern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.C.1",
+					"_id": "643dc980c0b812002aaed185"
+				}
+			]
+		},
+		"ZNE (Ziele für nachhaltige Entwicklung)": {
+			"definition": "Globale Ziele der Vereinten Nationen, die 2015 verabschiedet wurden, um eine nachhaltige Entwicklung auf ökologischer, sozialer und wirtschaftlicher Ebene zu fördern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.C.1",
+					"_id": "643dc980c0b812002aaed185"
+				}
+			]
+		},
+		"IKT (Informations- und Kommunikationstechnologie)": {
+			"definition": "Technologien, die die Speicherung, Verarbeitung, Übertragung und den Empfang von Informationen ermöglichen, einschließlich Computernetzwerken, Internetdiensten und Software.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.C.1",
+					"_id": "643dc980c0b812002aaed185"
+				}
+			]
+		},
+		"Blockchain": {
+			"definition": "Eine Technologie, die es ermöglicht, Daten in verteilten und sicheren Datenbanken zu speichern, wobei jede Transaktion in 'Blöcken' aufgezeichnet wird, die miteinander verbunden sind und transparent für alle im Netzwerk sind.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.C.1",
+					"_id": "643dc980c0b812002aaed185"
+				}
+			]
+		},
+		"Rebound-Effekt": {
+			"definition": "Ein Phänomen, bei dem die Einführung umweltfreundlicher Technologien wie LED-Lampen zu einer Erhöhung des Gesamtverbrauchs führt, da die wahrgenommene Ressourcenschonung dazu führt, dass die Technologie intensiver genutzt wird.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.C.1",
+					"_id": "643dc980c0b812002aaed185"
+				}
+			]
+		},
+		"Fortschrittsfalle": {
+			"definition": "Ein Konzept, das beschreibt, wie Fortschritte und Lösungen zu neuen Problemen führen können, die unvorhersehbar oder sogar negativ ausfallen, was zu einer negativen Spirale des technologischen Fortschritts führt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "4.3.C.1",
+					"_id": "643dc980c0b812002aaed185"
+				}
+			]
+		},
+		"Maschinelles Lernen": {
+			"definition": "Maschinelles Lernen ist ein Teilbereich der KI, bei dem Algorithmen entwickelt werden, die es Computern ermöglichen, aus Daten zu lernen und Muster zu erkennen, ohne explizite Programmierung. Es umfasst Techniken wie überwachtes Lernen und unüberwachtes Lernen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.A.1",
+					"_id": "643dca90c0b812002aaed1b1"
+				},
+				{
+					"taxonomy": "5.1.B.1",
+					"_id": "643dca90c0b812002aaed1b3"
+				}
+			]
+		},
+		"Überwachtes Lernen (Supervised Learning)": {
+			"definition": "Überwachtes Lernen ist eine Methode des maschinellen Lernens, bei der ein Modell auf Grundlage von beschrifteten Trainingsdaten lernt, Vorhersagen zu treffen oder zu klassifizieren. Der Algorithmus wird mit bekannten Eingabe- und Ausgabewerten trainiert, um Muster zu erkennen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.A.1",
+					"_id": "643dca90c0b812002aaed1b1"
+				}
+			]
+		},
+		"Unüberwachtes Lernen (Unsupervised Learning)": {
+			"definition": "Unüberwachtes Lernen ist eine Methode des maschinellen Lernens, bei der das Modell mit unbeschrifteten Daten trainiert wird, um eigenständig Muster oder Strukturen zu erkennen. Dies wird oft für Clustering oder Anomalieerkennung genutzt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.A.1",
+					"_id": "643dca90c0b812002aaed1b1"
+				}
+			]
+		},
+		"Gesichtserkennung": {
+			"definition": "Gesichtserkennung ist eine Technologie, die mithilfe von KI das Gesicht einer Person in Bildern oder Videos identifizieren kann. Sie wird häufig in Sicherheitsanwendungen und sozialen Medien eingesetzt, um Benutzer zu taggen oder unbefugte Zugriffe zu verhindern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.A.1",
+					"_id": "643dca90c0b812002aaed1b1"
+				}
+			]
+		},
+		"Spracherkennung": {
+			"definition": "Spracherkennung ist eine KI-Technologie, die gesprochene Sprache in Text umwandelt und interpretiert. Sie wird in virtuellen Assistenten wie Siri und Google Assistant verwendet, um mit Nutzern zu interagieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.A.1",
+					"_id": "643dca90c0b812002aaed1b1"
+				}
+			]
+		},
+		"Emotionserkennung": {
+			"definition": "Emotionserkennung ist die Fähigkeit von KI-Systemen, menschliche Emotionen anhand von Gesichtsausdrücken, Stimme oder anderen biologischen Merkmalen zu erkennen und darauf zu reagieren. Sie wird in der Marktforschung, Gesundheitsindustrie und bei der Verbesserung von Benutzererfahrungen eingesetzt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.A.1",
+					"_id": "643dca90c0b812002aaed1b1"
+				}
+			]
+		},
+		"Clustering": {
+			"definition": "Clustering ist eine Technik im unüberwachten Lernen, bei der ähnliche Datenpunkte zu Gruppen oder Clustern zusammengefasst werden, ohne dass die genauen Kategorien vorher bekannt sind. Ein Beispiel ist das Gruppieren von Kunden mit ähnlichen Einkaufsgewohnheiten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.A.1",
+					"_id": "643dca90c0b812002aaed1b1"
+				}
+			]
+		},
+		"Klassifikation (Lernverfahren)": {
+			"definition": "Klassifikation ist eine Technik im überwachten Lernen, bei der ein Modell dazu verwendet wird, Daten in vordefinierte Kategorien einzuteilen. Ein Beispiel ist die Unterscheidung zwischen \"bekannt\" und \"unbekannt\" bei der Erkennung von Gesichtern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.A.1",
+					"_id": "643dca90c0b812002aaed1b1"
+				}
+			]
+		},
+		"Regression (Lernverfahren)": {
+			"definition": "Regression ist eine Technik im überwachten Lernen, bei der ein Modell verwendet wird, um kontinuierliche Werte vorherzusagen, basierend auf Eingabedaten. Ein Beispiel ist die Vorhersage von Immobilienpreisen auf der Basis von Hausgröße und Lage.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.A.1",
+					"_id": "643dca90c0b812002aaed1b1"
+				}
+			]
+		},
+		"Chatbot": {
+			"definition": "Ein Chatbot ist ein KI-gesteuertes System, das mit Nutzern in natürlicher Sprache kommuniziert. Chatbots werden häufig für Kundenservice-Anfragen verwendet und können Routineaufgaben wie Fragen zur Bestellung oder Lieferung beantworten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.A.1",
+					"_id": "643dca90c0b812002aaed1b1"
+				}
+			]
+		},
+		"Virtueller Assistent": {
+			"definition": "Ein virtueller Assistent ist eine KI-Anwendung, die sprachliche Anfragen von Nutzern verarbeitet und darauf reagiert. Beispiele sind Siri, Alexa und Google Assistant, die Sprachbefehle verstehen und Aufgaben wie das Abspielen von Musik oder das Setzen von Erinnerungen durchführen können.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.A.1",
+					"_id": "643dca90c0b812002aaed1b1"
+				}
+			]
+		},
+		"Deep Learning": {
+			"definition": "Deep Learning ist ein Teilbereich des maschinellen Lernens, der auf künstlichen neuronalen Netzen basiert, die besonders gut in der Erkennung komplexer Muster und der Verarbeitung großer Datenmengen sind. Diese Technologie wird in Bereichen wie Sprach- und Bildverarbeitung eingesetzt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.A.1",
+					"_id": "643dca90c0b812002aaed1b1"
+				},
+				{
+					"taxonomy": "5.1.B.1",
+					"_id": "643dca90c0b812002aaed1b3"
+				}
+			]
+		},
+		"Prompt-Engineering": {
+			"definition": "Prompt-Engineering ist der Prozess, bei dem präzise Eingabeaufforderungen (Prompts) für generative KI-Modelle erstellt werden, um die gewünschten Ergebnisse zu erzielen. Ein Prompt kann eine Frage, Aufforderung oder ein Szenario sein, das das KI-Modell anweist, wie es eine bestimmte Aufgabe ausführen soll.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.B.1",
+					"_id": "643dca90c0b812002aaed1b3"
+				}
+			]
+		},
+		"Datenaufbereitung": {
+			"definition": "Datenaufbereitung ist der Prozess der Sammlung, Reinigung und Transformation von Rohdaten in ein Format, das für maschinelles Lernen und andere analytische Anwendungen geeignet ist. Dieser Schritt umfasst das Entfernen von Inkonsistenzen, das Korrigieren von Fehlern und das Umwandeln der Daten in eine nutzbare Form.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.B.1",
+					"_id": "643dca90c0b812002aaed1b3"
+				}
+			]
+		},
+		"Modellarchitekturen": {
+			"definition": "Modellarchitekturen sind die strukturellen Designs von KI-Modellen, die festlegen, wie ein Modell aufgebaut ist und wie es Daten verarbeitet. Beispiele sind Entscheidungsbäume, Random Forests und neuronale Netzwerke, die je nach Anwendungsfall unterschiedlich eingesetzt werden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.B.1",
+					"_id": "643dca90c0b812002aaed1b3"
+				}
+			]
+		},
+		"Transformer (Modellarchitektur)": {
+			"definition": "Transformer nutzen eine spezielle Art von Modellarchitektur, die besonders gut für die Verarbeitung von Sequenzdaten geeignet ist, wie etwa Text, Audio oder Bilder. Sie nutzen einen Aufmerksamkeitsmechanismus, der es dem Modell ermöglicht, relevante Teile einer Eingabesequenz effektiv zu gewichten und zu verarbeiten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.B.1",
+					"_id": "643dca90c0b812002aaed1b3"
+				}
+			]
+		},
+		"Prompt (im Kontext von KI)": {
+			"definition": "Ein Prompt ist eine Eingabeaufforderung oder ein Befehl, der an ein KI-Modell gegeben wird, um eine Antwort oder Handlung zu erzeugen. Je nach Formulierung des Prompts kann die Antwort der KI stark variieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.B.1",
+					"_id": "643dca90c0b812002aaed1b3"
+				}
+			]
+		},
+		"Frühadopter (early adopter)": {
+			"definition": "Frühadopter sind Personen, die neue Technologien oder Produkte sehr früh nutzen, oft bevor sie allgemein verbreitet oder akzeptiert sind. Im Kontext von KI sind Studierende häufig Frühadopter, die KI-Tools und -Modelle als Erste in ihrem Studium einsetzen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.B.1",
+					"_id": "643dca90c0b812002aaed1b3"
+				}
+			]
+		},
+		"Generative Text-KI": {
+			"definition": "Generative Text-KI bezeichnet Systeme, die in der Lage sind, Text zu erzeugen, basierend auf eingegebenen Daten oder Anweisungen. Diese Modelle sind so trainiert, dass sie zusammenhängende und oft kreative Texte produzieren können, wie zum Beispiel ChatGPT oder Claude.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.B.1",
+					"_id": "643dca90c0b812002aaed1b3"
+				}
+			]
+		},
+		"Datenexploration": {
+			"definition": "Datenexploration ist der Prozess, bei dem ein Datensatz durchforstet wird, um Muster, Zusammenhänge und mögliche Anomalien zu identifizieren. Dieser Schritt ist entscheidend, um die Qualität und Relevanz der Daten für ein spezifisches Analyseziel zu verstehen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.B.1",
+					"_id": "643dca90c0b812002aaed1b3"
+				}
+			]
+		},
+		"K-Nächste-Nachbarn (KNN)": {
+			"definition": "K-Nächste-Nachbarn (KNN) ist ein einfacher Algorithmus im maschinellen Lernen, der verwendet wird, um Datenpunkte zu klassifizieren, indem er die K ähnlichsten Punkte im Datensatz findet. Der Algorithmus ordnet einen neuen Punkt der Klasse zu, die unter seinen K nächsten Nachbarn am häufigsten vorkommt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.B.1",
+					"_id": "643dca90c0b812002aaed1b3"
+				}
+			]
+		},
+		"Random Forest": {
+			"definition": "Random Forest ist eine Ensemble-Methode im maschinellen Lernen, bei der viele Entscheidungsbäume kombiniert werden, um die Genauigkeit des Modells zu erhöhen. Jeder Baum wird auf einer zufälligen Teilmenge der Daten trainiert, was das Risiko von Überanpassung (Overfitting) verringert.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.B.1",
+					"_id": "643dca90c0b812002aaed1b3"
+				}
+			]
+		},
+		"Entscheidungsbäume": {
+			"definition": "Entscheidungsbäume sind eine Art von Modell im maschinellen Lernen, das auf einer Baumstruktur basiert. Jeder Knoten im Baum stellt eine Entscheidung dar, die auf einem bestimmten Merkmal der Eingabedaten basiert. Entscheidungsbäume sind leicht verständlich und eignen sich für Klassifikations- und Regressionsaufgaben.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.B.1",
+					"_id": "643dca90c0b812002aaed1b3"
+				}
+			]
+		},
+		"Feature Engineering": {
+			"definition": "Feature Engineering ist der Prozess der Erstellung neuer Merkmale (Features) aus den Rohdaten, die das Modell dabei unterstützen, bessere Vorhersagen zu treffen. Dies kann durch Transformationen, Skalierung oder andere Methoden geschehen, um die Daten für maschinelles Lernen zu optimieren.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.B.1",
+					"_id": "643dca90c0b812002aaed1b3"
+				}
+			]
+		},
+		"Neurale Netzwerke": {
+			"definition": "Neuronale Netzwerke sind eine Art von maschinellem Lernmodell, das von der Struktur des menschlichen Gehirns inspiriert ist. Sie bestehen aus mehreren Schichten von Neuronen, die Eingabedaten verarbeiten und die Ergebnisse an die nächste Schicht weitergeben. Diese Netzwerke sind besonders gut geeignet, um komplexe Muster zu erkennen, wie sie beispielsweise in der Bilderkennung oder Sprachverarbeitung auftreten.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.B.1",
+					"_id": "643dca90c0b812002aaed1b3"
+				}
+			]
+		},
+		"KI-Systeme": {
+			"definition": "KI-Systeme sind Programme oder Modelle, die in der Lage sind, Aufgaben autonom auszuführen, die normalerweise menschliche Intelligenz erfordern. Dazu gehören das Erlernen von Aufgaben, die Analyse von Daten, die Entscheidungsfindung und das Verstehen von Sprache oder Bildern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.B.1",
+					"_id": "643dca90c0b812002aaed1b3"
+				}
+			]
+		},
+		"Fairness in KI-Systemen": {
+			"definition": "Der Zustand, bei dem KI-Systeme Entscheidungen treffen, die frei von Vorurteilen und Diskriminierung sind. Fairness erfordert die Reduzierung von Bias in den Daten und den Algorithmen, um diskriminierende Auswirkungen zu vermeiden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.1",
+					"_id": "643dca90c0b812002aaed1b5"
+				}
+			]
+		},
+		"Black Box": {
+			"definition": "Ein KI-Modell oder System, dessen interne Entscheidungsprozesse nicht transparent oder nachvollziehbar sind. In solchen Systemen ist es oft nicht möglich, zu verstehen, wie eine Entscheidung getroffen wurde.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.1",
+					"_id": "643dca90c0b812002aaed1b5"
+				}
+			]
+		},
+		"Explainable AI (XAI)": {
+			"definition": "Ein Ansatz in der KI-Entwicklung, bei dem Modelle so gestaltet werden, dass ihre Entscheidungen für Menschen verständlich und nachvollziehbar sind. Ziel ist es, die \"Black Box\" der KI zu durchbrechen und Entscheidungsprozesse offen zu legen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.1",
+					"_id": "643dca90c0b812002aaed1b5"
+				}
+			]
+		},
+		"LIME (Local Interpretable Model-Agnostic Explanations)": {
+			"definition": "Ein Werkzeug, das verwendet wird, um die Entscheidungen eines beliebigen KI-Modells zu erklären. LIME hilft dabei, zu verstehen, warum ein Modell eine bestimmte Vorhersage getroffen hat, indem es lokale, interpretable Erklärungen liefert.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.1",
+					"_id": "643dca90c0b812002aaed1b5"
+				}
+			]
+		},
+		"Transparenz in KI-Systemen": {
+			"definition": "Der Grad, zu dem die Funktionsweise eines KI-Systems offen und nachvollziehbar gemacht wird. Transparenz ermöglicht es, die Entscheidungsprozesse des Systems zu verstehen und gegebenenfalls zu hinterfragen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.1",
+					"_id": "643dca90c0b812002aaed1b5"
+				}
+			]
+		},
+		"Erklärbarkeit von KI-Entscheidungen": {
+			"definition": "Die Fähigkeit eines KI-Systems, seine Entscheidungen in einer Weise darzustellen, die für den Menschen verständlich ist. Dies umfasst die Identifikation von Entscheidungsfaktoren und die Erklärung, wie diese zu einer bestimmten Entscheidung geführt haben.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.1",
+					"_id": "643dca90c0b812002aaed1b5"
+				}
+			]
+		},
+		"Datenschutz und Datenethik": {
+			"definition": "Datenschutz bezieht sich auf den Schutz personenbezogener Daten vor unbefugtem Zugriff und Missbrauch. Datenethik befasst sich mit der moralischen Verantwortung beim Umgang mit Daten, insbesondere personenbezogenen Daten, und stellt sicher, dass deren Erfassung und Nutzung keine negativen Auswirkungen auf den Einzelnen oder die Gesellschaft haben.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.1",
+					"_id": "643dca90c0b812002aaed1b5"
+				}
+			]
+		},
+		"Gemeinwohlorientierte KI": {
+			"definition": "KI-Systeme, die darauf ausgerichtet sind, gesellschaftliche und nicht nur wirtschaftliche Interessen zu fördern. Diese Systeme sollen transparent, fair und partizipativ sein, mit dem Ziel, dem Gemeinwohl zu dienen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.1",
+					"_id": "643dca90c0b812002aaed1b5"
+				}
+			]
+		},
+		"Human-in-the-loop (HITL)": {
+			"definition": "Ein Ansatz, bei dem Menschen in den KI-Prozess integriert werden, um Datenerfassung, -verarbeitung und -analyse zu überwachen oder zu verbessern. HITL wird verwendet, um die Entscheidungsfindung von KI-Systemen zu optimieren und Fehler zu minimieren, indem menschliche Expertise eingebracht wird.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.1",
+					"_id": "643dca90c0b812002aaed1b5"
+				}
+			]
+		},
+		"Clickworker": {
+			"definition": "Menschen, die über Online-Plattformen Aufgaben wie Datensammlung, -kategorisierung und -annotation ausführen. Sie spielen eine wichtige Rolle bei der Verbesserung von KI-Systemen, indem sie Trainingsdaten für KI-Modelle bereitstellen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.1",
+					"_id": "643dca90c0b812002aaed1b5"
+				}
+			]
+		},
+		"IAB (Institut für Arbeitsmarkt- und Berufsforschung)": {
+			"definition": "Eine deutsche Forschungsinstitution, die die Entwicklung des Arbeitsmarktes untersucht. Sie stellt unter anderem Daten zur Automatisierbarkeit von Berufen bereit und bewertet die Auswirkungen von KI auf die Arbeitswelt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.1",
+					"_id": "643dca90c0b812002aaed1b5"
+				}
+			]
+		},
+		"Schwache KI": {
+			"definition": "Schwache KI bezieht sich auf KI-Systeme, die auf einen spezifischen Aufgabenbereich beschränkt sind und keine Fähigkeit zur selbstständigen Übertragung von Wissen auf andere Bereiche besitzen. Diese Art von KI ist auf konkrete, vorprogrammierte Aufgaben spezialisiert, wie etwa Spracherkennung oder Bildklassifikation.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.2",
+					"_id": "65b277efc240300006b55362"
+				}
+			]
+		},
+		"Starke KI": {
+			"definition": "Starke KI ist ein theoretisches Konzept, bei dem ein KI-System in der Lage wäre, menschenähnliche Intelligenz zu erreichen. Sie kann Wissen bereichsübergreifend integrieren und eigenständig Aufgaben bearbeiten, für die sie nicht explizit ausgebildet wurde. Im Gegensatz zu schwacher KI könnte starke KI allgemeine Intelligenz und Selbstbewusstsein entwickeln.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.2",
+					"_id": "65b277efc240300006b55362"
+				}
+			]
+		},
+		"Multimodale KI-Systeme": {
+			"definition": "Multimodale KI-Systeme sind in der Lage, verschiedene Datentypen gleichzeitig zu verarbeiten, wie beispielsweise Text, Bild und Audio. Ein Beispiel ist ChatGPT-4, das sowohl Text als auch Bilder generieren kann und damit mehrere Modalitäten in einer einzigen Anwendung integriert.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.2",
+					"_id": "65b277efc240300006b55362"
+				}
+			]
+		},
+		"Zero Trust": {
+			"definition": "Zero Trust ist eine Sicherheitsstrategie, die davon ausgeht, dass keine Anfrage innerhalb eines Netzwerks als vertrauenswürdig betrachtet wird, auch nicht von internen Quellen. Jede Anfrage muss unabhängig überprüft und verifiziert werden, um unbefugte Zugriffe und Sicherheitslücken zu vermeiden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.2",
+					"_id": "65b277efc240300006b55362"
+				}
+			]
+		},
+		"Uncanny Valley": {
+			"definition": "Das Uncanny Valley beschreibt ein psychologisches Phänomen, bei dem menschenähnliche Roboter oder KI-Systeme bei den Nutzern Unbehagen oder Angst auslösen, wenn sie fast, aber nicht ganz, wie echte Menschen erscheinen. Dieser Effekt tritt häufig bei humanoiden Robotern auf, die menschenähnliche Eigenschaften zeigen, aber nicht vollständig menschlich wirken.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.2",
+					"_id": "65b277efc240300006b55362"
+				}
+			]
+		},
+		"KI-Sicherheit": {
+			"definition": "KI-Sicherheit bezieht sich auf die Forschung und Entwicklung von Sicherheitsmaßnahmen, die sicherstellen, dass KI-Systeme keine schädlichen Auswirkungen auf die Gesellschaft haben und gleichzeitig vor Missbrauch geschützt sind. Dazu gehört auch die Sicherstellung der Vertrauenswürdigkeit und Transparenz von KI-Technologien.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.2",
+					"_id": "65b277efc240300006b55362"
+				}
+			]
+		},
+		"Dystopie": {
+			"definition": "Eine Dystopie ist eine fiktive, oft negativ dargestellte Zukunftsvision, in der die gesellschaftlichen Bedingungen stark negativ sind, häufig durch Überwachung, Unterdrückung und den Verlust individueller Freiheiten. In der Diskussion um KI wird oft eine Dystopie beschrieben, in der künstliche Intelligenz die Kontrolle über das Leben der Menschen übernimmt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.2",
+					"_id": "65b277efc240300006b55362"
+				}
+			]
+		},
+		"Utopie": {
+			"definition": "Eine Utopie ist das Gegenteil einer Dystopie – eine idealisierte Zukunftsvision, in der gesellschaftliche und technologische Entwicklungen zu einer besseren, gerechteren und nachhaltigeren Welt führen. In Bezug auf KI wird eine Utopie häufig als eine Welt beschrieben, in der KI das Leben der Menschen verbessert, indem sie beispielsweise die Gesundheitsversorgung optimiert oder die Umwelt schützt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.2",
+					"_id": "65b277efc240300006b55362"
+				}
+			]
+		},
+		"Künstliche Superintelligenz (ASI)": {
+			"definition": "Künstliche Superintelligenz bezeichnet eine hypothetische Form von KI, die weit über die menschliche Intelligenz hinausgeht. ASI würde in der Lage sein, alle menschlichen kognitiven Aufgaben besser als der Mensch selbst zu erledigen, was zu erheblichen Risiken und ethischen Fragestellungen führen könnte.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.2",
+					"_id": "65b277efc240300006b55362"
+				}
+			]
+		},
+		"Quantencomputer": {
+			"definition": "Quantencomputer sind eine neue Generation von Computern, die auf den Prinzipien der Quantenmechanik basieren. Sie haben das Potenzial, komplexe Berechnungen viel schneller und effizienter zu erledigen als klassische Computer, was auch die KI-Forschung erheblich beeinflussen könnte.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.2",
+					"_id": "65b277efc240300006b55362"
+				}
+			]
+		},
+		"Phishing-Angriffe": {
+			"definition": "Phishing-Angriffe sind betrügerische Versuche, über gefälschte E-Mails oder Webseiten persönliche Daten wie Passwörter oder Bankinformationen zu stehlen. KI kann in diesem Kontext verwendet werden, um solche Angriffe zu automatisieren und zu skalieren, was sie noch gefährlicher macht.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.1.C.2",
+					"_id": "65b277efc240300006b55362"
+				}
+			]
+		},
+		"Wissenskanon": {
+			"definition": "Ein traditionelles Konzept der Bildung, das einen festen und allgemein anerkannten Bestand an Wissen in einer Disziplin oder Kultur umfasst. Der Wissenskanon wurde oft als Grundlage für das Bildungssystem betrachtet, enthält jedoch oft eurozentrische und eingeschränkte Perspektiven.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.2.A.1",
+					"_id": "643dcabdc0b812002aaed1c9"
+				}
+			]
+		},
+		"Wissensökonomie": {
+			"definition": "Ein Wirtschaftsmodell, in dem Wissen als entscheidender Produktionsfaktor betrachtet wird. In einer Wissensökonomie sind immaterielle Ressourcen wie Ideen, Innovationen und kreative Lösungsansätze von zentraler Bedeutung. Die Digitalisierung und Globalisierung haben den Austausch von Wissen beschleunigt und verstärkt.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.2.A.1",
+					"_id": "643dcabdc0b812002aaed1c9"
+				}
+			]
+		},
+		"MOOCs (Massive Open Online Courses)": {
+			"definition": "Online-Lernangebote, die einer breiten Masse an Lernenden offenstehen und eine flexible, oft kostenlose Möglichkeit bieten, Wissen zu erwerben. Sie sind ein wichtiger Bestandteil der digitalen Bildungslandschaft.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.2.A.1",
+					"_id": "643dcabdc0b812002aaed1c9"
+				},
+				{
+					"taxonomy": "5.2.B.1",
+					"_id": "643dcabdc0b812002aaed1cb"
+				}
+			]
+		},
+		"Digitale Lernplattformen": {
+			"definition": "Online-Plattformen, die Lerninhalte und -ressourcen bereitstellen und den Lernenden ermöglichen, flexibel und individuell zu lernen. Diese Plattformen sind ein wichtiger Bestandteil des lebenslangen Lernens in der digitalen Ära.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.2.A.1",
+					"_id": "643dcabdc0b812002aaed1c9"
+				}
+			]
+		},
+		"Kritisches Denken": {
+			"definition": "Die Fähigkeit, Informationen und Argumente zu analysieren, zu hinterfragen und auf ihre Richtigkeit sowie Relevanz zu überprüfen. Kritisches Denken ist eine Schlüsselkompetenz, die in der Wissensökonomie besonders gefördert wird.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.2.A.1",
+					"_id": "643dcabdc0b812002aaed1c9"
+				}
+			]
+		},
+		"Interdisziplinäre Ansätze": {
+			"definition": "Methoden und Perspektiven, die verschiedene Disziplinen kombinieren und miteinander verbinden, um komplexe Probleme zu lösen und umfassendere Lösungen zu entwickeln. In der Wissensökonomie sind solche Ansätze von großer Bedeutung, da sie die Vielfalt und Flexibilität des Wissens fördern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.2.A.1",
+					"_id": "643dcabdc0b812002aaed1c9"
+				}
+			]
+		},
+		"Wissenslücken erkennen": {
+			"definition": "\"Wissenslücken erkennen\" bezeichnet den Prozess, sich bewusst zu werden, dass man in bestimmten Themenbereichen oder Aspekten eines Fachgebiets nicht über ausreichendes Wissen verfügt. Dies kann durch Selbstreflexion, Feedback von anderen oder das Überprüfen eigener Leistungen und Ergebnisse erfolgen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.2.B.1",
+					"_id": "643dcabdc0b812002aaed1cb"
+				}
+			]
+		},
+		"Selbststudium": {
+			"definition": "\"Selbststudium\" bezieht sich auf das eigenständige Erlernen von Wissen ohne formale Unterrichtseinheiten oder externe Unterstützung. Es umfasst das Studium von Materialien wie Büchern, Fachartikeln oder Online-Ressourcen und erfordert eine hohe Eigenmotivation und Organisation.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.2.B.1",
+					"_id": "643dcabdc0b812002aaed1cb"
+				}
+			]
+		},
+		"Vertrauenswürdige Quellen": {
+			"definition": "\"Vertrauenswürdige Quellen\" bezieht sich auf Informationsquellen, die zuverlässig, genau und glaubwürdig sind. Dazu gehören akademische Institutionen, anerkannte Experten und renommierte Organisationen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.2.B.1",
+					"_id": "643dcabdc0b812002aaed1cb"
+				}
+			]
+		},
+		"Interaktivität und Engagement": {
+			"definition": "\"Interaktivität und Engagement\" in Lernangeboten bezieht sich auf die Möglichkeit, aktiv am Lernprozess teilzunehmen, z.B. durch Diskussionen, Quizze und praktische Übungen. Diese Elemente fördern ein tieferes Verständnis und ein aktiveres Lernen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.2.B.1",
+					"_id": "643dcabdc0b812002aaed1cb"
+				}
+			]
+		},
+		"Spielend Lernen": {
+			"definition": "\"Spielend Lernen\" bezeichnet ein Konzept, bei dem Lerninhalte auf spielerische Weise vermittelt werden. Es zielt darauf ab, den Lernprozess durch das Einbinden von Gamification-Elementen zu erleichtern und dabei das Engagement und die Motivation der Lernenden zu steigern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.2.C.1",
+					"_id": "643dcabdc0b812002aaed1cd"
+				}
+			]
+		},
+		"Game-Based Learning": {
+			"definition": "\"Game-Based Learning\" ist eine pädagogische Methode, bei der Lerninhalte durch die Integration von spielerischen Elementen in ein Spielumfeld vermittelt werden. Es fördert das aktive Lernen durch Herausforderungen, Interaktion und Spielmechanismen, die das Engagement der Lernenden erhöhen.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.2.C.1",
+					"_id": "643dcabdc0b812002aaed1cd"
+				}
+			]
+		},
+		"Gamification": {
+			"definition": "\"Gamification\" bezeichnet den Einsatz von spielerischen Elementen wie Punktesystemen, Belohnungen und Wettbewerben in einem nicht-spielerischen Kontext, um das Lernen zu fördern und die Motivation der Lernenden zu steigern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.2.C.1",
+					"_id": "643dcabdc0b812002aaed1cd"
+				}
+			]
+		},
+		"Mod": {
+			"definition": "\"Mod\" bezeichnet eine Modifikation oder Erweiterung eines Spiels, die neue Funktionen, Inhalte oder Mechaniken hinzufügt. In Minetest können Mods von Nutzer:innen erstellt und integriert werden, um das Spielerlebnis zu erweitern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.2.C.1",
+					"_id": "643dcabdc0b812002aaed1cd"
+				}
+			]
+		},
+		"Virtuelles Lerndesign": {
+			"definition": "\"Virtuelles Lerndesign\" ist ein Ansatz zur Gestaltung von Lerninhalten in virtuellen Umgebungen, der die Interaktivität und das immersive Erlebnis von digitalen Spielen nutzt, um das Lernen zu fördern.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.2.C.1",
+					"_id": "643dcabdc0b812002aaed1cd"
+				}
+			]
+		},
+		"Flow": {
+			"definition": "\"Flow\" bezeichnet einen Zustand völliger Vertiefung und Konzentration bei einer Tätigkeit, in dem die Zeit schnell vergeht und die Aufgabe mühelos erscheint. Beim Lernen kann Flow erreicht werden, wenn Inhalte in einer ansprechenden und motivierenden Weise präsentiert werden.",
+			"taxonomy_ids": [
+				{
+					"taxonomy": "5.2.C.1",
+					"_id": "643dcabdc0b812002aaed1cd"
+				}
+			]
+		}
+	},
+    "pathways": [{
+            "id": 1,
+            "name": "Quellenarbeit",
+            "courses": ["M1.1", "M1.2", "M1.3", "M3.1", "M3.2"]
+        }
+    ],
+    "SCOS": {
+        "M0": {
+            "id": "M0",
+            "enabled": false,
+            "label": "Einstiegstest",
+            "description": "Wie fit sind Sie digital?",
+            "callToAction": "Zum Test",
+            "niveaus": [["A", "#/62ab035c19e6b15a36ba89dd"], ["B", "#/62ab035c19e6b1212bba89de"], ["C", "#/62ab035c19e6b168c6ba89df"]],
+            "feedbackTitle": "Geschafft!",
+            "feedbackBody": "Sie haben {{fullScore}} von {{maxScore}} m\u00f6glichen Punkten erreicht; davon {{knowledge}} % in der kognitiven Dom\u00e4ne 'Verstehen', {{practice}} % in 'Anwenden' und {{critic}} % in 'Bewerten'. Wir empfehlen Ihnen, Ihre Lernreise mit <a onclick='parent.App.launchSCO(\"M1.1\", \"{{niveauLocation}}\", 2)' href='#'>Kurs 1.1</a> zu beginnen.",
+            "scoreToPass": 0.49,
+            "disabled": false
+        },
+        "M1": {
+            "id": "M1",
+            "enabled": false,
+            "label": "Internet & Information",
+            "description": "In diesem Modul wird das Suchen, Analysieren, Vergleichen, Auswerten, Organisieren, Speichern und Abrufen von Informationen aus dem Internet behandelt.",
+            "courses": [{
+                    "id": "1",
+                    "enabled": false,
+                    "label": "Browsen, Suchen und Filtern von Informationen",
+                    "disabled": false
+                }, {
+                    "id": "2",
+                    "enabled": false,
+                    "label": "Bewerten von Digitalen Inhalten",
+                    "disabled": false
+                }, {
+                    "id": "3",
+                    "enabled": false,
+                    "label": "Verwalten von Daten und digitalen Informationen",
+                    "disabled": false
+                }
+            ],
+            "disabled": false
+        },
+        "M2": {
+            "id": "M2",
+            "enabled": false,
+            "label": "Kommunikation",
+            "courses": [{
+                    "id": "1",
+                    "enabled": false,
+                    "label": "Interaktion im virtuellen Raum",
+                    "disabled": false
+                }, {
+                    "id": "2",
+                    "enabled": false,
+                    "label": "Zusammenarbeiten im virtuellen Raum",
+                    "disabled": false
+                }, {
+                    "id": "3",
+                    "enabled": false,
+                    "label": "Digitale Identit\u00e4t und Auftreten",
+                    "disabled": false
+                }
+            ],
+            "disabled": false
+        },
+        "M3": {
+            "id": "M3",
+            "enabled": false,
+            "label": "Inhalte erstellen",
+            "courses": [{
+                    "id": "1",
+                    "enabled": false,
+                    "label": "Digitale Inhalte",
+                    "disabled": false
+                }, {
+                    "id": "2",
+                    "enabled": false,
+                    "label": "Lizenzen, Urheberrechte und freie Inhalte",
+                    "disabled": false
+                }, {
+                    "id": "3",
+                    "enabled": false,
+                    "label": "Grundlagen des Programmierens",
+                    "disabled": false
+                }
+            ],
+            "disabled": false
+        },
+        "M4": {
+            "id": "M4",
+            "enabled": false,
+            "label": "Sicherheit & Gesundheit",
+            "courses": [{
+                    "id": "1",
+                    "enabled": false,
+                    "label": "Datenschutz & Datensicherheit",
+                    "disabled": false
+                }, {
+                    "id": "2",
+                    "enabled": false,
+                    "label": "Gesundheit und Wohlbefinden",
+                    "disabled": false
+                }, {
+                    "id": "3",
+                    "enabled": false,
+                    "label": "Umwelt und Digitalit\u00e4t",
+                    "disabled": false
+                }
+            ],
+            "disabled": false
+        },
+        "M5": {
+            "id": "M5",
+            "enabled": false,
+            "label": "Probleml\u00f6sen",
+            "courses": [{
+                    "id": "1",
+                    "enabled": false,
+                    "label": "Reflektierter Umgang mit neuen Technologien am Beispiel von KI",
+                    "disabled": false
+                }, {
+                    "id": "2",
+                    "enabled": false,
+                    "label": "Weiterlernen",
+                    "disabled": false
+                }
+            ],
+            "disabled": false
+        },
+        "MX": {
+            "id": "MX",
+            "enabled": false,
+            "label": "Abschlusstest",
+            "description": "Haben Sie etwas dazugelernt?",
+            "callToAction": "Zum Test",
+            "niveaus": [["A", "#/62ab035c19e6b15a36ba89dd"], ["B", "#/62ab035c19e6b1212bba89de"], ["C", "#/62ab035c19e6b168c6ba89df"]],
+            "feedbackTitle": "Geschafft!",
+            "feedbackBody": "Sie haben {{fullScore}} von {{maxScore}} m\u00f6glichen Punkten erreicht; davon {{knowledge}} % in der kognitiven Dom\u00e4ne 'Verstehen', {{practice}} % in 'Anwenden' und {{critic}} % in 'Bewerten'. Wir empfehlen Ihnen, Ihre Lernreise mit <a onclick='parent.App.launchSCO(\"M1.1\", \"{{niveauLocation}}\", 2)' href='#'>Kurs 1.1</a> zu beginnen.",
+            "scoreToPass": 0.49,
+            "disabled": false
+        }
+    }
+}

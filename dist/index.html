@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+	<title>ComDigiS*</title>
+
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+	<!-- External styles -->
+	<link rel="stylesheet" href="css/font-awesome.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<!-- Custom styles -->
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/loading.css">
+	
+	<!-- Boarding.js -->
+	<link rel="stylesheet" href="css/boarding_main.css" />
+	<link rel="stylesheet" href="css/boarding_basic.css"/>
+	
+	<!-- Global external scripts -->
+	<script src="libraries/bootstrap.bundle.min.js"></script>
+	<script src="libraries/handlebars.min.js"></script>
+
+	<!-- Deflating / Inflating for further compressString of suspendData -->
+	<script src="libraries/base64.js"></script>
+	<script src="libraries/rawinflate.js"></script>
+	<script src="libraries/rawdeflate.js"></script>
+
+	<!--Adapt suspend_DATA Serializer/Deserializer -->
+	<script src="libraries/underscore.js"></script>
+	<script src="libraries/lzma-min.js"></script>
+	<script src="libraries/lzma_worker-min.js"></script>
+	<script src="libraries/SCORMSuspendData.js"></script>
+
+	<!-- SCORM-API Wrapper-->
+	<script src="libraries/SCORM_API_wrapper.js"></script>
+
+	<!-- ChartJS for charts.js -->
+	<script src="libraries/chart.min.js"></script>
+
+	<!-- ReactJS for components.js -->
+	<script src="libraries/react.min.js"></script>
+	<script src="libraries/react-dom.min.js"></script>
+	
+	<!-- jsPDF -->
+	<script src="libraries/jspdf.umd.min.js"></script>
+</head>
+
+<body style="overflow:hidden;">
+	<!--Main Navigation-->
+	<header>
+		<!-- Navbar -->
+		<nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+			<!-- Container wrapper -->
+			<div class="container-fluid">
+				<!-- Online/Offline Status -->
+				<!-- div id="connection-status" class="connection-status"></div -->
+				<!-- Dashboard -->
+				<a class="navbar-brand" href="javascript:App.renderView(App.SCO_FRAME, 'views/dashboard/index.html')">
+					<i class="fa fa-home fa-lg"></i>
+				</a>
+				<!-- Glossary dropdown -->
+				<div id="template_glossary">
+				</div>
+				<!-- Breadcrumb Container -->
+				<div id="breadcrumb-container">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"></li>
+					</ol>
+				</div>
+				<!-- Right links -->
+				<ul class="navbar-nav ms-auto d-flex flex-row">					
+					<!-- Boarding -->
+					<li class="nav-item">
+						<a id="startBoarding" class="nav-link" href="#" role="button">
+							<i class="fa fa-question-circle" style="font-size: xx-large;"></i>
+						</a>
+					</li>
+					<!-- XP -->
+					<li class="nav-item">
+						<a class="nav-link" href="#" role="button">
+							<div id="template_xp" class="badge badge-light text-muted template"></div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<!-- Container wrapper -->
+		</nav>
+		<!-- Navbar -->
+	</header>
+	<!--Main Navigation-->
+
+	<!--SCO-iFrame-->
+	<iframe id="sco-frame" src="about:blank" width="100%" height="100%"></iframe>
+	<!-- JavaScript -->
+	<script>
+		// Get the breadcrumb item element
+		let breadcrumbItem = document.querySelector('.breadcrumb-item');
+
+		// Listen to the load event of the iframe element
+		document.querySelector('iframe').addEventListener('load', () => {	  
+		  // Clear the existing breadcrumb items
+		  breadcrumbItem.innerHTML = '';
+		  
+		  // Get the src attribute of the iframe element
+		  const src = document.querySelector('iframe').getAttribute('src');
+		  
+		  if (src.includes('scos')) {
+			  // Parse the src attribute to generate the breadcrumb items
+			  let breadcrumbItems = src
+				.split('/')
+				.filter((item) => item !== 'scos')
+				.map((item) => {
+				  return {
+					name: item,
+					href: '#',
+				  };
+				});
+
+			  // Remove the last item if it ends with ".html"
+			  const lastItem = breadcrumbItems[breadcrumbItems.length - 1];
+			  if (lastItem && lastItem.name.endsWith('.html')) {
+				breadcrumbItems.pop();
+			  }
+
+			  // Add the new breadcrumb items to the ol element
+			  breadcrumbItems.forEach((item) => {
+				if ((item.name !== '') && (item.name !== 'build') && (!item.name.startsWith('index.html'))) {
+				  const li = document.createElement('li');
+				  li.classList.add('breadcrumb-item');
+				  li.textContent = item.name;
+				  breadcrumbItem.appendChild(li);
+				}
+			  });
+		  } else {
+			
+		  }
+		});
+	</script>
+	<script>
+		async function fetchStylesAndInject() {
+			try {
+				const response = await fetch('css/iframe-styles.css');
+				const cssContent = await response.text();
+				const iframe = document.querySelector('iframe');
+
+				iframe.addEventListener('load', () => {
+				  try {
+					const styleElement = document.createElement('style');
+					styleElement.textContent = cssContent;
+					iframe.contentWindow.document.head.appendChild(styleElement);
+				  } catch (error) {
+					console.error('Unable to apply styles to the iframe:', error);
+				  }
+				});
+			} catch (error) {
+				console.error('Failed to fetch iframe-styles.css:', error);
+			}
+		}
+	</script>
+	<!-- App -->
+	<script type="module">
+		'use strict'
+
+		import App from './js/app.js'
+						
+		window.addEventListener('DOMContentLoaded', function () {
+			window.fetch('config.json')
+			.then(response => response.json())
+			.then(data => {
+				window.CONF = data;
+				
+				if (!window.App) {
+					window.App = new App()
+					window.App.init()
+					window.App.DATA['cmi.suspend_data'] = window.App._getSuspendData()
+				}
+				window.App.renderView(window.App.SCO_FRAME, CONF.START_PAGE)
+			})
+			.catch(error => console.error(error));
+			
+			var scoFrame = window.document.getElementById('sco-frame');
+			scoFrame.addEventListener('load', function () {
+				fetchStylesAndInject();
+			});
+		});
+		
+		window.addEventListener('beforeunload', () => {
+			if (window.App) {
+				window.App.stopApp();
+			}
+		});
+
+		window.addEventListener('unload', () => {
+			if (window.App) {
+				window.App.stopApp();
+			}
+			// Clear window.App after ensuring SCORM_API.quit has been called
+			delete window.App;
+		});
+	</script>
+	<script type="module" src="js/adaptHelpers.js"></script>
+	<script type="module">
+		import { Boarding } from "/libraries/boarding.js";
+		  
+		const boarding = new Boarding({
+			  animate: true, // Ob Animationen verwendet werden sollen oder nicht
+			  allowClose: true, // Ob ein Klick auf das Overlay das Popover schließen soll
+			  overlayClickNext: false, // Ob ein Klick auf das Overlay zum nächsten Schritt führen soll
+			  doneBtnText: "OK", // Text auf dem abschließenden Button
+			  closeBtnText: "Schließen", // Text auf dem Schließen-Button für diesen Schritt
+			  nextBtnText: "Weiter", // Text des "Weiter"-Buttons für diesen Schritt
+			  prevBtnText: "Zurück", // Text des "Zurück"-Buttons für diesen Schritt
+			  showButtons: true, // Steuerelemente im Footer nicht anzeigen
+			  keyboardControl: true, // Tastatursteuerung erlauben (Esc zum Schließen, Pfeiltasten zum Navigieren)
+			  });
+
+		// Define the steps for introduction
+		boarding.defineSteps([
+				/*{
+				  element: "#connection-status",
+				  popover: {
+					className: "popover-class",
+					title: "Online/Offline Status",
+					description: "Der Online/Offline Status zeigt an, ob Sie mit einem Lernmanagementsystem (LMS) verbunden sind. Wenn keine Verbindung zu einem Lernmanagementsystem besteht, wird der Status auf 'Offline' gesetzt, was bedeutet, dass der Lernfortschritt zunächst nur lokal in Ihrem Browser zwischengespeichert wird.",
+					prefferedSide: "left"
+				  }
+				},*/
+				{
+				  element: ".navbar-brand",
+				  popover: {
+					className: "popover-class",
+					title: "Dashboard",
+					description: "Das Dashboard bietet einen zentralen Zugriff auf alle wichtigen Funktionen der Plattform wie Tests, Module und die Anzeige eigener Lernfortschritte. Über diesen Button gelangen Sie jederzeit zum Dashboard.",
+					prefferedSide: "right"
+				  }
+				},
+				{
+				  element: "#template_glossary",
+				  popover: {
+					className: "popover-class",
+					title: "Glossar",
+					description: "Das Glossar enthält Fachbegriffe mit kurzen Erklärungen, die in den Lerneinheiten vorkommen. Es hilft, die Lerneinheiten interessengeleitet zu erkunden und unbekannte Begriffe jederzeit nachzuschlagen.",
+					prefferedSide: "left"
+				  }
+				},
+				{
+				  element: "#template_xp",
+				  popover: {
+					className: "popover-class",
+					title: "Erfahrungspunkte",
+					description: "Für jede abgeschlossene Lernkomponente gibt es 1 Experience Point (XP). Eine Lernkomponente kann z.B. ein Lesetext, ein Quiz oder eine Reflexionsaufgabe sein.",
+					prefferedSide: "left"
+				  }
+				},
+				{
+				  element: "#sco-frame",
+				  popover: {
+					className: "popover-class",
+					title: "Willkommen an Bord!",
+					description: "Wenn Sie wissen möchten, worauf die einzelnen Elemente basieren, wie das Bewertungssystem in den Tests aufgebaut ist oder wie die Statistiken in den Lernfortschrittsanzeigen zustande kommen, klicken Sie einfach auf die zugehörigen Info-Buttons!",
+					prefferedSide: "right"
+				  }
+				}
+			]);
+				
+			// Event-Listener für den Button
+			document.getElementById('startBoarding').addEventListener('click', function() {
+			  // Starte die Boarding-Tour (beispielsweise über boarding.start())
+			  boarding.start();
+			});
+	</script>
+</body>
+
+</html>

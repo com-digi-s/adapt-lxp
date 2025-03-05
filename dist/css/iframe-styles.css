@@ -1,0 +1,7 @@
+.nav__toc-btn {
+	background-color: transparent !important;
+}
+
+.nav__drawer-btn {
+	display: none;
+}

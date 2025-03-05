@@ -1,0 +1,285 @@
+body {
+	background-color: #fbfbfb;
+}
+
+@media (min-width: 991.98px) {
+	main {
+		padding-left: 240px;
+	}
+}
+
+#main-navbar {
+	box-shadow: 0 0.5px 0.5px rgba(0,0,0,0.1);
+	padding: 0.175rem;
+}
+
+#xp {
+	background: whitesmoke;
+	color: dimgray !important;
+	font-weight: normal !important;
+	margin-top: 0.25rem;
+}
+
+#sco-frame {
+	position: absolute;
+	/*margin-top: 46.5px;*/
+	padding: 3.5rem 0 0 0;
+}
+
+.nav {
+	display: initial;
+}
+
+.navbar-brand {
+	margin-left: -0.2rem;
+	margin-right: 1.5rem;
+}
+
+.nav-item {
+	margin-right: 0.5rem;
+}
+
+.container-fluid {
+	padding-left: 0.925rem !important;	
+}
+
+.navbar-toggler {
+	display: unset !important;
+	padding-left: 0rem;
+}
+
+button {
+  outline: none !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+
+.list-group {
+	border-radius: 0;
+}
+
+.list-group-item {
+	color: gray;
+	border: none;
+	height: 2.75rem;
+}
+
+.list-group-item.active {
+	background-color: dimgray;
+}
+
+.list-group-item:hover {
+	background-color: dimgray;
+	color: white;
+	text-decoration: none;
+}
+
+.loadable:hover {
+	cursor: pointer;	
+}
+
+/*.list-group-item:last-of-type {
+	background-color: whitesmoke;
+}*/
+
+.list-group-item>span {
+	visibility: hidden;
+	opacity: 0;
+	font-size: 0;
+	filter: blur(3rem);
+	transition: 0.5s;
+}
+
+.fas {
+	width: 1rem;
+	text-align: center;
+}
+
+.list-group-item.open>span {
+	visibility: visible;
+	opacity: 1;
+	font-size: small;
+	padding-left: 0.75rem;
+	filter: blur(0);
+}
+
+/* Sidebar */
+
+.sidebar {
+	overflow: hidden;
+	background: white;
+	border-right: 1px solid whitesmoke;
+	padding-left: 0rem;
+	position: fixed;
+	width: 3rem;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	padding: 46.5px 0 0;
+	/* Height of navbar */
+	z-index: 600;
+	overflow-x: hidden;
+	transition: 0.5s;
+}
+
+.sidebar.open {
+	width: 8rem !important;
+}
+
+.loading {
+	filter: blur(0.25rem);
+	transition: 1s;
+}
+
+.card-text {
+	font-size: x-large;
+}
+
+.card-text span {
+	font-size: xxx-large;
+}
+
+.accordion-header.bookmarked > button {
+	background-color: white !important;
+}
+
+/*.sco {
+	border-top: 1px solid lightgray;
+	border-radius: 0.5rem;
+}*/
+
+.sco.bookmarked {
+	background-color: white !important;
+	color: black !important;
+}
+
+.sco.bookmarked::before {
+	font-family: "Font Awesome 6 Free";
+	content: "\f02e";
+	float: right; 
+	margin-right: 0.5rem;
+}
+
+.link-unstyled, .link-unstyled:link, .link-unstyled:hover, .link-unstyled:active {
+  color: inherit;
+  text-decoration: inherit;
+  background-color: inherit;
+}
+
+/* Bootstrap-specific stuff inside wrapped content */ 
+
+img, svg {
+	vertical-align: unset;
+}
+
+.dropdown-item {
+	background-color: lightgray;
+}
+
+.dropdown-menu {
+  background-color: #fff;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  font-size: 1rem;
+  padding: 1rem;
+  width: 20rem;
+  margin-top: 1rem;
+}
+
+.dropdown-menu .search-form {
+  margin-bottom: 1rem;
+}
+
+.dropdown-menu .search-input {
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.dropdown-menu .glossary-term {
+  margin-bottom: 1rem;
+  list-style: none;
+  margin-left: -2rem;
+}
+
+.dropdown-menu .glossary-term a {
+  color: #000;
+  font-weight: bold;
+  padding-left: 0.5rem;
+}
+
+.dropdown-menu .glossary-term p span a {
+  padding-left: 0rem;
+  margin-left: 0rem !important;
+}
+
+.dropdown-menu .glossary-term p {
+  color: #777;
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+  max-width: 20rem;
+  margin-bottom: 0.5rem;
+}
+
+.dropdown-menu .glossary-term p:first-of-type {
+  margin-top: 0;
+}
+
+.dropdown-menu {
+  /* existing styles... */
+  max-height: 100vh;
+  overflow-y: auto;
+  right: auto;
+  left: 0;
+  width: max-content;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  float: inherit;
+  padding-right: 0rem;
+  color: #6c757d;
+  content: var(--bs-breadcrumb-divider, ".");
+}
+
+.breadcrumb-item {
+  display: inline;
+}
+
+.breadcrumb-item + .breadcrumb-item {
+  padding-left: 0rem;
+}
+
+#breadcrumb-container {
+  padding-left: .5rem;
+}
+
+.connection-status {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.online {
+    color: green;
+}
+
+.offline {
+    color: red;
+}
+
+.course-item.deactivation {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.course-label {
+    margin-right: 1rem;
+    text-align: left;
+}
+
+.course-progress {
+    flex-grow: 1;
+    margin-left: 1rem; /* Ensure some space between the label and progress bar */
+}

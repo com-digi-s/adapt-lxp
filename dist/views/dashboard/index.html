@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+	<title>DigiTaKS*</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Dashboard</title>
+	<!-- External styles -->
+	<link rel="stylesheet" href="css/font-awesome.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<!-- Custom styles -->
+	<link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+	<section id="greeting" class="jumbotron p-4">
+		<blockquote class="blockquote text-center">
+			<p id="quote_text" class="lead text-white"></p>
+			<footer id="quote_author" class="lead text-white blockquote-footer"></footer>
+		</blockquote>
+	</section>
+	
+	<section id="entryTest" class="mx-3 my-3">
+		<div class="row">
+			<div class="col">
+				<div class="card border-0">
+					<div class="card-header bg-light text-muted border-0 d-flex align-items-center">
+						<h6 class="mb-0" style="margin-right: 0.5rem;">Einstiegstest</h6>
+						<!-- Info Icon -->
+						<i class="fas fa-info-circle ml-2" style="cursor: pointer;" data-toggle="modal" data-target="#infoModalEntryTest"></i>
+					</div>
+					<div class="card-body">
+						<div id="template_entryTest">
+						</div>				
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Modal for Entry Test -->
+	<div class="modal fade" id="infoModalEntryTest" tabindex="-1" role="dialog" aria-labelledby="infoModalEntryTestLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="infoModalEntryTestLabel">Einstiegstest</h5>
+					<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+					</button>
+				</div>
+				<div class="modal-body">
+					Der Einstiegstest dient dazu, Ihr Vorwissen zu digitalen Kompetenzen zu ermitteln, bevor Sie mit den Lerneinheiten beginnen. Der Test führt Sie in die Themen ein und verschafft Ihnen Orientierung über Ihren Wissensstand.
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<section id="competences" class="mx-3 my-3">
+		<div class="row">
+			<div class="col">
+				<div class="card">
+					<div class="card-header bg-light text-muted border-0 d-flex align-items-center">
+						<h6 class="mb-0" style="margin-right: 0.5rem;">Module</h6>
+						<!-- Info Icon -->
+						<i class="fas fa-info-circle ml-2" style="cursor: pointer;" data-toggle="modal" data-target="#infoModalCompetences"></i>
+					</div>
+					<div class="card-body">
+						<div id="template_courseSelector">
+						</div>                
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Modal for Modules -->
+	<div class="modal fade" id="infoModalCompetences" tabindex="-1" role="dialog" aria-labelledby="infoModalCompetencesLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="infoModalCompetencesLabel">Module</h5>
+					<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+					</button>
+				</div>
+				<div class="modal-body">
+					Die vorliegenden Module wurden entwickelt, um die digitalen Kompetenzen von Lernenden gezielt zu fördern und auszubauen. Sie basieren auf dem DigComp 2.2 (Digital Competence Framework for Citizens), einem umfassenden Rahmenwerk der Europäischen Union, das die notwendigen Fähigkeiten und Kenntnisse für die aktive Teilhabe in der digitalen Gesellschaft beschreibt.
+				</div>
+				<div class="modal-footer">
+					<a href="static/2024_07_16_ Final_Lehrplan_ComDigiS.pdf" class="btn btn-secondary" download>Lehrplan (PDF)</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<section id="charts" class="mx-3">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="chart card border-0">
+					<div class="card-header bg-light text-muted border-0 d-flex align-items-center">
+						<h6 class="mb-0" style="margin-right: 0.5rem;">Lernpuls</h6>
+						<!-- Info Icon -->
+						<i class="fas fa-info-circle ml-2" style="cursor: pointer;" data-toggle="modal" data-target="#infoModalLearningPulse"></i>
+					</div>
+					<div class="card-body">
+						<canvas id="template_pulse"></canvas>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="chart card border-0">
+					<div class="card-header bg-light text-muted border-0 d-flex align-items-center">
+						<h6 class="mb-0" style="margin-right: 0.5rem;">Lernradar</h6>
+						<!-- Info Icon -->
+						<i class="fas fa-info-circle ml-2" style="cursor: pointer;" data-toggle="modal" data-target="#infoModalLearningRadar"></i>
+					</div>
+					<div class="card-body">
+						<canvas id="template_radar"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Modal for Learning Pulse -->
+	<div class="modal fade" id="infoModalLearningPulse" tabindex="-1" role="dialog" aria-labelledby="infoModalLearningPulseLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="infoModalLearningPulseLabel">Lernpuls</h5>
+					<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+					</button>
+				</div>
+				<div class="modal-body">
+					Der Lernpuls zeigt die Intensität Ihrer Lernaktivitäten. Wie lange, wie oft haben Sie in einem bestimmten Zeitraum gelernt.
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal for Learning Radar -->
+	<div class="modal fade" id="infoModalLearningRadar" tabindex="-1" role="dialog" aria-labelledby="infoModalLearningRadarLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="infoModalLearningRadarLabel">Lernradar</h5>
+					<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+					</button>
+				</div>
+				<div class="modal-body">
+					Das Lernradar visualisiert Ihren Lernfortschritt in den Modulen und Kursen, die Sie absolvieren.
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<section id="finalTest" class="mx-3 my-3">
+		<div class="row">
+			<div class="col">
+				<div class="card border-0">
+					<div class="card-header bg-light text-muted border-0 d-flex align-items-center">
+						<h6 class="mb-0" style="margin-right: 0.5rem;">Abschlusstest</h6>
+						<!-- Info Icon -->
+						<i class="fas fa-info-circle ml-2" style="cursor: pointer;" data-toggle="modal" data-target="#infoModalFinalTest"></i>
+					</div>
+					<div class="card-body">
+						<div id="template_finalTest">
+						</div>				
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Modal for Final Test -->
+	<div class="modal fade" id="infoModalFinalTest" tabindex="-1" role="dialog" aria-labelledby="infoModalFinalTestLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="infoModalFinalTestLabel">Abschlusstest</h5>
+					<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+					</button>
+				</div>
+				<div class="modal-body">
+					Der Abschlusstest prüft Ihr erlangtes Wissen und dient der Erfolgskontrolle. Nach Abschluss des Tests können Sie einen Nachweis über Ihre Ergebnisse herunterladen.
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<footer class="mt-5 text-center border-top">
+		<div class="container">
+			<div class="row mt-3">
+				<div class="col-md-4">
+					<a href="https://infai.org/" target="_blank"><img src="img/infai-logo.png" alt="InfAI Logo" class="img-fluid" style="max-height: 4rem;"></a>
+				</div>
+				<div class="col-md-4">
+					<a href="https://www.wetek.de/" target="_blank"><img src="img/wetek-logo.png" alt="WeTeK Logo" class="img-fluid" style="max-height: 4rem;"></a>
+				</div>
+				<div class="col-md-4">
+					<a href="https://dtecbw.de/home" target="_blank"><img src="img/dtecbw-logo.png" alt="dtec.bw Logo" class="img-fluid" style="max-height: 4rem;"></a>
+				</div>
+			</div>
+			<div class="row mt-2 mb-4">
+				<div class="col">
+					<p class="text-muted">&copy; 2024 Institut für Angewandte Informatik (InfAI) e. V. & WeTeK Berlin gGmbH.
+					</br>Der Quellcode dieses Projekts ist unter der GPL-3.0-Lizenz (GNU General Public License Version 3) lizenziert. Die Lerninhalte stehen unter der CC BY 4.0-Lizenz (Creative Commons Namensnennung 4.0 International).</p>
+				</div><div class="float-right">
+				  <a href="https://www.gnu.org/licenses/gpl-3.0.de.html" target="_blank">
+					<img src="img/gplv3-127x51.png" alt="GNU GPL v3" class="img-fluid" style="max-height: 2rem;">
+				  </a>
+				  <a href="https://creativecommons.org/licenses/by/4.0/deed.de" target="_blank">
+					<img src="img/cc-by.png" alt="CC BY 4.0" class="img-fluid" style="max-height: 2rem;">
+				  </a>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	<!-- View-specific app scripts -->
+	<script src="js/quotes.js"></script><!-- Include Bootstrap JS (if not already included) -->
+	<script src="js/jquery-3.6.0.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+{
+	"SCOS": "Module",
+	"label": "Name",
+	"disabled": "deaktiviert",
+	"courses": "Kurse",
+	"callToAction": "Handlungsaufforderung",
+	"description": "Beschreibung",
+	"feedbackBody": "Feedback (Inhalt)",
+	"feedbackTitle": "Feedback (Überschrift)",
+	"scoreToPass": "Bestehen der Prüfung ab (Wert zwischen 0 und 1)",
+	"niveaus": "Niveaus",
+	"glossary": "Glossar",
+	"pathways": "Lernpfade",
+	"definition": "Definition"
+}
