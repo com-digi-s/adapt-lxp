@@ -1,0 +1,65 @@
+'@context': https://schema.org/
+creativeWorkStatus: Draft
+type: LearningResource
+name: |
+  Selbstgesteuertes Lernen zur Entwicklung kritisch-reflexiver, kreativ-innovativer & sicher-effizienter digitaler Schlüsselkompetenzen
+description: |
+  Auf Basis des EU-Referenzrahmens DigComp 2.2 (The Digital Competence Framework for Citizens) wurden fünf Schlüsselkompetenzen identifiziert, die als Module in ComDigiS* LXP zur Verfügung stehen und inhaltlich in Kurse mit über 50 Lerneinheiten didaktisiert übersetzt wurden. Diese Lerneinheiten fördern auf Basis verschiedener Selbstlernformate die kognitiven Domänen Wissen, Anwenden und Bewerten. Eine detaillierte Darstellung der Inhalte finden Sie in der zugehörigen Modulmatrix; Details zum didaktischen Konzept im Pädagogischen Leitfaden.
+license: https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de
+id: https://lxp.creativeartefact.org/
+creator:
+  - givenName: Mihail
+    familyName: Miller
+    id: https://orcid.org/0000-0001-8119-8693
+    type: Person
+    affiliation:
+      name: Institut für Angewandte Informatik
+      type: Organization
+  - givenName: Jan
+    familyName: Schubert
+    type: Person
+    affiliation:
+      name: WeTeK Berlin gGmbH
+      type: Organization
+  - givenName: Bettina
+    familyName: Schasse de Araujo
+    type: Person
+    affiliation:
+      name: WeTeK Berlin gGmbH
+      type: Organization
+  - givenName: Jan
+    familyName: Schiller
+    id: https://orcid.org/0000-0002-7632-7179
+    type: Person
+    affiliation:
+      name: Helmut-Schmidt-Universität/Universität der Bundeswehr Hamburg
+      id: https://ror.org/04e8jbs38
+      type: Organization
+  - givenName: Leonore
+    familyName: Negt
+    type: Person
+    affiliation:
+      name: Helmut-Schmidt-Universität/Universität der Bundeswehr Hamburg
+      id: https://ror.org/04e8jbs38
+      type: Organization
+  - givenName: Sabine
+    familyName: Schmidt-Lauff
+    id: https://orcid.org/0000-0002-5657-7488
+    type: Person
+    affiliation:
+      name: Helmut-Schmidt-Universität/Universität der Bundeswehr Hamburg
+      id: https://ror.org/04e8jbs38
+      type: Organization
+keywords:
+  - Digitale Kompetenzen
+inLanguage:
+  - de
+about:
+  - https://w3id.org/kim/hochschulfaechersystematik/n0
+learningResourceType:
+  - https://w3id.org/kim/hcrt/assessment
+  - https://w3id.org/kim/hcrt/course
+  - https://w3id.org/kim/hcrt/slide
+educationalLevel:
+  - https://w3id.org/kim/educationalLevel/level_A
+
