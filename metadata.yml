@@ -5,7 +5,7 @@ name: |
   Selbstgesteuertes Lernen zur Entwicklung kritisch-reflexiver, kreativ-innovativer & sicher-effizienter digitaler Schlüsselkompetenzen
 description: |
   Auf Basis des EU-Referenzrahmens DigComp 2.2 (The Digital Competence Framework for Citizens) wurden fünf Schlüsselkompetenzen identifiziert, die als Module in ComDigiS* LXP zur Verfügung stehen und inhaltlich in Kurse mit über 50 Lerneinheiten didaktisiert übersetzt wurden. Diese Lerneinheiten fördern auf Basis verschiedener Selbstlernformate die kognitiven Domänen Wissen, Anwenden und Bewerten. Eine detaillierte Darstellung der Inhalte finden Sie in der zugehörigen Modulmatrix; Details zum didaktischen Konzept im Pädagogischen Leitfaden.
-license: https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de
+license: https://creativecommons.org/licenses/by/4.0/deed.de
 id: https://lxp.creativeartefact.org/
 creator:
   - givenName: Mihail
