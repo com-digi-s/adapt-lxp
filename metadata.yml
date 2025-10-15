@@ -24,9 +24,6 @@ creator:
   - givenName: Bettina
     familyName: Schasse de Araujo
     type: Person
-    affiliation:
-      name: WeTeK Berlin gGmbH
-      type: Organization
   - givenName: Jan
     familyName: Schiller
     id: https://orcid.org/0000-0002-7632-7179
@@ -38,18 +35,10 @@ creator:
   - givenName: Leonore
     familyName: Negt
     type: Person
-    affiliation:
-      name: Helmut-Schmidt-Universität/Universität der Bundeswehr Hamburg
-      id: https://ror.org/04e8jbs38
-      type: Organization
   - givenName: Sabine
     familyName: Schmidt-Lauff
     id: https://orcid.org/0000-0002-5657-7488
     type: Person
-    affiliation:
-      name: Helmut-Schmidt-Universität/Universität der Bundeswehr Hamburg
-      id: https://ror.org/04e8jbs38
-      type: Organization
 keywords:
   - Digitale Kompetenzen
 inLanguage:
