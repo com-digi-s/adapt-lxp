@@ -8,22 +8,21 @@ description: |
 license: https://creativecommons.org/licenses/by/4.0/deed.de
 id: https://lxp.creativeartefact.org/
 creator:
-  - givenName: Mihail
-    familyName: Miller
-    id: https://orcid.org/0000-0001-8119-8693
+  - givenName: Bettina
+    familyName: Schasse de Araujo
     type: Person
-    affiliation:
-      name: Institut für Angewandte Informatik
-      type: Organization
+  - givenName: Marie
+    familyName: Rathmann
+    type: Person
+  - givenName: Leonore
+    familyName: Negt
+    type: Person
   - givenName: Jan
     familyName: Schubert
     type: Person
     affiliation:
       name: WeTeK Berlin gGmbH
       type: Organization
-  - givenName: Bettina
-    familyName: Schasse de Araujo
-    type: Person
   - givenName: Jan
     familyName: Schiller
     id: https://orcid.org/0000-0002-7632-7179
@@ -32,9 +31,13 @@ creator:
       name: Helmut-Schmidt-Universität/Universität der Bundeswehr Hamburg
       id: https://ror.org/04e8jbs38
       type: Organization
-  - givenName: Leonore
-    familyName: Negt
+  - givenName: Mihail
+    familyName: Miller
+    id: https://orcid.org/0000-0001-8119-8693
     type: Person
+    affiliation:
+      name: Institut für Angewandte Informatik
+      type: Organization
   - givenName: Sabine
     familyName: Schmidt-Lauff
     id: https://orcid.org/0000-0002-5657-7488
