@@ -18,11 +18,14 @@ export function allowedAttemptState(value) {
 }
 
 function fingerprint(model) {
-    var fields = ['_component', 'title', 'body', '_questionWeight', '_selectable', '_correctAnswer', '_correctRange', '_answers'];
+    var fields = ['_component', 'title', 'displayTitle', 'body', 'instruction', '_questionWeight', '_selectable',
+        '_correctAnswer', '_correctRange', '_answers', '_hasItemScoring', '_attempts',
+        '_scaleStart', '_scaleEnd', '_scaleStep', '_step'];
     var config = {};
     fields.forEach(function (key) { config[key] = model.get(key); });
     config.items = (model.get('_items') || []).map(function (item) {
         return { text: item.text, _shouldBeSelected: item._shouldBeSelected, _answers: item._answers, answers: item.answers,
+            _score: item._score, _isPartlyCorrect: item._isPartlyCorrect, accepted: item.accepted, value: item.value, correct: item.correct,
             _options: (item._options || []).map(function (option) { return { text: option.text, _isCorrect: option._isCorrect }; }) };
     });
     var text = JSON.stringify(config);

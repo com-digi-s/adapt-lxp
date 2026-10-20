@@ -107,6 +107,22 @@ for (const root of ['../js', '../dist/js']) {
         assert.equal(changed.model.restoreCount, 0);
     });
 
+    test(`${root}: instruction/display-title prompts and scale changes invalidate old attempts`, () => {
+        for (const field of ['instruction', 'displayTitle', '_scaleStart', '_scaleEnd', '_scaleStep', '_step']) {
+            const app = appFixture();
+            const first = fixture('matching', '');
+            first.model.attributes[field] = 'original';
+            const controller = attachCorePersistence(app, first.Adapt, first.child, 'M0');
+            Object.assign(first.model.attributes, { _isSubmitted: true, _isComplete: true, _score: 1 });
+            controller.save();
+            const changed = fixture('matching', '');
+            changed.model.attributes[field] = 'changed';
+            attachCorePersistence(app, changed.Adapt, changed.child, 'M0');
+            assert.equal(changed.model.get('_isSubmitted'), false, field);
+            assert.equal(changed.model.restoreCount, 0, field);
+        }
+    });
+
     test(`${root}: only allowlisted, finite native state can be restored`, () => {
         assert.deepEqual(allowedAttemptState({ _id: 'malicious', body: '<script>', _isSubmitted: 'true', _score: Infinity,
             _isComplete: true, _isCorrect: false, _attemptsLeft: 0, _userAnswer: [{ dangerous: true }] }),
