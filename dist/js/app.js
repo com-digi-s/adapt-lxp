@@ -5,6 +5,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 import * as adaptHelpers from './adaptHelpers.js';
+import { createSCOBridge, installSCOBridge } from './scormBridge.js';
 import * as jQuery from '../libraries/jquery-2.2.4.min.js';
 
 import { timeIntToString } from './utils.js';
@@ -189,62 +190,8 @@ export var App = function () {
 	}, {
 		key: 'handleAPI',
 		value: function handleAPI(subAPI) {
-			var _this2 = this;
-
-			// Check if subAPI is ready
-			if (!this.SCORM_API) {
-				console.warn('Main SCORM API is not available.');
-				return;
-			}
-
-			subAPI.LMSInitialize = function () {
-				return "true";
-			};
-
-			// Only has access to simple API not to API-Wrapper
-			subAPI.LMSGetValue = function (parameter) {
-				if (parameter === 'cmi.suspend_data') {
-					// Make subAPI "believe" that it is the only one receiving suspend_data
-					return JSON.stringify(this.DATA['cmi.suspend_data'].adaptData[this.DATA['cmi.suspend_data'].bookmark] || {});
-				} else {
-					return this.SCORM_API.get(parameter);
-				}
-			}.bind(this);
-
-			subAPI.LMSSetValue = function (parameter, value) {
-				if (parameter === 'cmi.suspend_data') {
-					// suspend_data is the only value that is locally different (overall score, student preferences etc. are global)
-					this.DATA['cmi.suspend_data'].adaptData[this.DATA['cmi.suspend_data'].bookmark] = JSON.parse(value);
-					// Convert dict to SUSPEND_DATA_DELIMITER-separated string
-					this.SCORM_API.set('cmi.suspend_data', this.DATA['cmi.suspend_data']);
-				} else if (parameter === 'cmi.core.lesson_status') {
-					return true;
-				} else if (parameter.endsWith('.id')) {
-					this.SCORM_API.set(parameter, this.DATA['cmi.suspend_data'].bookmark + '#' + value);
-				} else {
-					this.SCORM_API.set(parameter, value);
-				}
-			}.bind(this);
-
-			subAPI.LMSCommit = function () {
-				_this2.SCORM_API.save();return "true";
-			};
-
-			subAPI.LMSFinish = function () {
-				return "true";
-			};
-
-			subAPI.LMSGetLastError = function () {
-				return "0";
-			};
-
-			subAPI.LMSGetErrorString = function (errorCode) {
-				return "No error";
-			};
-
-			subAPI.LMSGetDiagnostic = function (errorCode) {
-				return "No error";
-			};
+			var scoId = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.DATA['cmi.suspend_data'].bookmark;
+			return Object.assign(subAPI, createSCOBridge(this, scoId));
 		}
 	}, {
 		key: 'stopApp',
@@ -412,7 +359,7 @@ export var App = function () {
 					var subAPI = _this3.SCO_FRAME.contentWindow.API;
 
 					if (subAPI) {
-						_this3.handleAPI(subAPI);
+						_this3.handleAPI(subAPI, scoId);
 					}
 
 					var that = _this3;
@@ -583,6 +530,7 @@ export var App = function () {
 
 				var path = 'scos/' + scoId.replace('.', '/') + '/index.html#' + contentPath;
 
+				installSCOBridge(this, scoId, window);
 				this.SCO_FRAME.setAttribute('src', path);
 
 				console.log('started SCO ' + scoId);

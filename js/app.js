@@ -1,5 +1,6 @@
 'use strict'
 import * as adaptHelpers from './adaptHelpers.js'
+import { createSCOBridge, installSCOBridge } from './scormBridge.js'
 import * as jQuery from '../libraries/jquery-2.2.4.min.js'
 
 import {
@@ -202,51 +203,8 @@ export class App {
         .bind(this)
     }
 
-    handleAPI(subAPI) {
-		// Check if subAPI is ready
-		if (!this.SCORM_API) {
-		  console.warn('Main SCORM API is not available.');
-		  return;
-		}
-		
-		subAPI.LMSInitialize = function () {
-			return "true";
-		};
-
-		// Only has access to simple API not to API-Wrapper
-		subAPI.LMSGetValue = (function (parameter) {
-		  if (parameter === 'cmi.suspend_data') {
-			// Make subAPI "believe" that it is the only one receiving suspend_data
-			return JSON.stringify(this.DATA['cmi.suspend_data'].adaptData[this.DATA['cmi.suspend_data'].bookmark] || {});
-		  } else {
-			return this.SCORM_API.get(parameter);
-		  }
-		}).bind(this);
-
-		subAPI.LMSSetValue = (function (parameter, value) {
-		  if (parameter === 'cmi.suspend_data') {
-			// suspend_data is the only value that is locally different (overall score, student preferences etc. are global)
-			this.DATA['cmi.suspend_data'].adaptData[this.DATA['cmi.suspend_data'].bookmark] = JSON.parse(value);
-			// Convert dict to SUSPEND_DATA_DELIMITER-separated string
-			this.SCORM_API.set('cmi.suspend_data', this.DATA['cmi.suspend_data']);
-		  } else if (parameter === 'cmi.core.lesson_status') {
-			return true 
-		  } else if (parameter.endsWith('.id')) {
-			this.SCORM_API.set(parameter, this.DATA['cmi.suspend_data'].bookmark + '#' + value);
-		  } else {
-			this.SCORM_API.set(parameter, value);
-		  }
-		}).bind(this);
-
-		subAPI.LMSCommit = () => { this.SCORM_API.save(); return "true"; };
-
-		subAPI.LMSFinish = () => "true";
-
-		subAPI.LMSGetLastError = () => "0";
-
-		subAPI.LMSGetErrorString = (errorCode) => "No error";
-
-		subAPI.LMSGetDiagnostic = (errorCode) => "No error";
+    handleAPI(subAPI, scoId = this.DATA['cmi.suspend_data'].bookmark) {
+        return Object.assign(subAPI, createSCOBridge(this, scoId));
     }
 
     stopApp() {		
@@ -402,7 +360,7 @@ export class App {
 				const subAPI = this.SCO_FRAME.contentWindow.API;  
 
 				if (subAPI) {
-					this.handleAPI(subAPI);
+					this.handleAPI(subAPI, scoId);
 				}
 
 				const that = this;
@@ -552,6 +510,7 @@ export class App {
 
 			const path = 'scos/' + scoId.replace('.', '/') + '/index.html#' + contentPath;
 
+			installSCOBridge(this, scoId, window);
 			this.SCO_FRAME.setAttribute('src', path);
 
 			console.log(`started SCO ${scoId}`);
