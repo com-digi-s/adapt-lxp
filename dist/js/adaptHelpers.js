@@ -1,12 +1,30 @@
 import { ResultsComponent } from './components.js'; // Adjust the import path as needed
 import { addQuizBankScore, normalizeAssessmentScore } from './assessmentScores.js';
+var diagnosticObservers = new WeakMap();
 export function getDiagnosticResults() {
   var Adapt = window.App.SCO_FRAME.contentWindow.require('coreJS/adapt');
   var components = Adapt.components.models;
   var blocks = Adapt.blocks.models;
+  var previousObserver = diagnosticObservers.get(Adapt.course);
+  if (previousObserver) Adapt.stopListening(Adapt.course, 'change:_isComplete', previousObserver);
+  diagnosticObservers.set(Adapt.course, calculateScores);
   Adapt.listenTo(Adapt.course, 'change:_isComplete', calculateScores);
+  // Restored/completed tests do not emit a new completion transition on click.
+  if (Adapt.course.get('_isComplete') === true) calculateScores();
   function calculateScores() {
-    var scorePerQuizBank = collectDiagnosticScores(components, blocks);
+    if (Adapt.course.get('_isComplete') !== true) return;
+    var scorePerQuizBank;
+    try {
+      scorePerQuizBank = collectDiagnosticScores(components, blocks);
+    } catch (error) {
+      window.App.templates.template_results = function (DOMelem) {
+        ReactDOM.createRoot(DOMelem).render(React.createElement('div', {
+          role: 'alert'
+        }, React.createElement('h3', null, 'Ergebnisbericht nicht verfügbar'), React.createElement('p', null, error.message + ' Bitte die Kursbetreuung informieren.')));
+      };
+      window.App.renderView(window.App.SCO_FRAME, window.App.SCO_FRAME.getAttribute('src'));
+      return;
+    }
     var fullScore = Object.values(scorePerQuizBank).reduce(function (accumulator, current) {
       return accumulator + current.score;
     }, 0);
