@@ -1,4 +1,5 @@
 import { ResultsComponent } from './components.js'; // Adjust the import path as needed
+import { addQuizBankScore } from './assessmentScores.js';
 
 export function getDiagnosticResults() {
     var Adapt = window.App.SCO_FRAME.contentWindow.require('coreJS/adapt');
@@ -168,15 +169,5 @@ function calculateComponentScore(component, scoreIncrement) {
 // Reusing the original scoring functions, assuming they are correct
 
 function updateQuizBankScores(quizBank, idx, questionScore, maxScore) {
-    if (quizBank[idx]) {
-        quizBank[idx].score += questionScore;
-        quizBank[idx].questionCount += maxScore == 0 ? 0 : 1;
-        quizBank[idx].maxScore += maxScore;
-    } else {
-        quizBank[idx] = {
-            score: questionScore,
-            questionCount: 0,
-            maxScore: maxScore
-        };
-    }
+    return addQuizBankScore(quizBank, idx, questionScore, maxScore);
 }

@@ -1,4 +1,5 @@
 'use strict'
+import { aggregateQuizBankScores, assessmentPercentage } from './assessmentScores.js';
 
 export class GlossaryDropdown extends React.Component {
   constructor(props) {
@@ -339,30 +340,9 @@ export class ResultsComponent extends React.Component {
   
   aggregateScores = () => {
     const { scorePerQuizBank } = this.props;
-    const aggregatedModuleScores = {};
-    const aggregatedDomainScores = {};
-
-    // Aggregate scores by module and domain
-    Object.entries(scorePerQuizBank).forEach(([id, scoreData]) => {
-      const module = id.substring(0, 1); // Extract the first digit as module number
-      const domain = id.substring(id.length - 1); // Extract the last digit as domain number
-
-      // Aggregate module scores
-      if (!aggregatedModuleScores[module]) {
-        aggregatedModuleScores[module] = { score: 0, maxScore: 0 };
-      }
-      aggregatedModuleScores[module].score += scoreData.score;
-      aggregatedModuleScores[module].maxScore += scoreData.maxScore;
-
-      // Aggregate domain scores
-      if (!aggregatedDomainScores[domain]) {
-        aggregatedDomainScores[domain] = { score: 0, maxScore: 0 };
-      }
-      aggregatedDomainScores[domain].score += scoreData.score;
-      aggregatedDomainScores[domain].maxScore += scoreData.maxScore;
-    });
-
-    this.generatePDF(aggregatedModuleScores, aggregatedDomainScores);
+    const scores = aggregateQuizBankScores(scorePerQuizBank, window.CONF.SCOS);
+    if (scores.unmappedQuizBanks.length || !Object.keys(scores.moduleScores).length) return;
+    this.generatePDF(scores.moduleScores, scores.domainScores);
   }
   
   generatePDF = (aggregatedModuleScores, aggregatedDomainScores) => {
@@ -444,7 +424,9 @@ export class ResultsComponent extends React.Component {
 
       doc.setFontSize(14);
       Object.entries(scores).forEach(([key, data], index) => {
-        const percentageScore = ((data.score / data.maxScore) * 100).toFixed(1) + '%';
+        const percentage = assessmentPercentage(data.score, data.maxScore);
+        if (percentage === null) return;
+        const percentageScore = percentage.toFixed(1) + '%';
         const label = type === 'Domäne' ? domainNames[key] : `Modul ${key}`;
 
         // Draw box for module or domain
@@ -498,6 +480,15 @@ export class ResultsComponent extends React.Component {
   }
 
   render() {
+    const scores = aggregateQuizBankScores(this.props.scorePerQuizBank, window.CONF.SCOS);
+    if (scores.unmappedQuizBanks.length || !Object.keys(scores.moduleScores).length) {
+      return <div role="alert">
+        <h3>Ergebnisbericht nicht verfügbar</h3>
+        <p>{scores.unmappedQuizBanks.length
+          ? `Die Quizbank-Zuordnung ist nicht unterstützt: ${scores.unmappedQuizBanks.join(', ')}. Bitte die Kursbetreuung informieren.`
+          : 'Es wurden keine auswertbaren Testfragen gefunden. Bitte die Kursbetreuung informieren.'}</p>
+      </div>;
+    }
     return (
       <div>
         <h3>Ihr Ergebnisbericht wird gerade erstellt...</h3>

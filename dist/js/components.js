@@ -1,4 +1,5 @@
 'use strict';
+import { aggregateQuizBankScores, assessmentPercentage } from './assessmentScores.js';
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -602,34 +603,9 @@ export var ResultsComponent = function (_React$Component7) {
     return _ret2 = (_temp2 = (_this9 = _possibleConstructorReturn(this, (_ref8 = ResultsComponent.__proto__ || Object.getPrototypeOf(ResultsComponent)).call.apply(_ref8, [this].concat(args))), _this9), _this9.aggregateScores = function () {
       var scorePerQuizBank = _this9.props.scorePerQuizBank;
 
-      var aggregatedModuleScores = {};
-      var aggregatedDomainScores = {};
-
-      // Aggregate scores by module and domain
-      Object.entries(scorePerQuizBank).forEach(function (_ref9) {
-        var _ref10 = _slicedToArray(_ref9, 2),
-            id = _ref10[0],
-            scoreData = _ref10[1];
-
-        var module = id.substring(0, 1); // Extract the first digit as module number
-        var domain = id.substring(id.length - 1); // Extract the last digit as domain number
-
-        // Aggregate module scores
-        if (!aggregatedModuleScores[module]) {
-          aggregatedModuleScores[module] = { score: 0, maxScore: 0 };
-        }
-        aggregatedModuleScores[module].score += scoreData.score;
-        aggregatedModuleScores[module].maxScore += scoreData.maxScore;
-
-        // Aggregate domain scores
-        if (!aggregatedDomainScores[domain]) {
-          aggregatedDomainScores[domain] = { score: 0, maxScore: 0 };
-        }
-        aggregatedDomainScores[domain].score += scoreData.score;
-        aggregatedDomainScores[domain].maxScore += scoreData.maxScore;
-      });
-
-      _this9.generatePDF(aggregatedModuleScores, aggregatedDomainScores);
+      var scores = aggregateQuizBankScores(scorePerQuizBank, window.CONF.SCOS);
+      if (scores.unmappedQuizBanks.length || !Object.keys(scores.moduleScores).length) return;
+      _this9.generatePDF(scores.moduleScores, scores.domainScores);
     }, _this9.generatePDF = function (aggregatedModuleScores, aggregatedDomainScores) {
       var doc = new window.jspdf.jsPDF({
         orientation: "portrait",
@@ -713,7 +689,9 @@ export var ResultsComponent = function (_React$Component7) {
               key = _ref12[0],
               data = _ref12[1];
 
-          var percentageScore = (data.score / data.maxScore * 100).toFixed(1) + '%';
+          var percentage = assessmentPercentage(data.score, data.maxScore);
+          if (percentage === null) return;
+          var percentageScore = percentage.toFixed(1) + '%';
           var label = type === 'Domäne' ? domainNames[key] : 'Modul ' + key;
 
           // Draw box for module or domain
@@ -778,6 +756,14 @@ export var ResultsComponent = function (_React$Component7) {
   }, {
     key: 'render',
     value: function render() {
+      var scores = aggregateQuizBankScores(this.props.scorePerQuizBank, window.CONF.SCOS);
+      if (scores.unmappedQuizBanks.length || !Object.keys(scores.moduleScores).length) {
+        return React.createElement('div', { role: 'alert' },
+          React.createElement('h3', null, 'Ergebnisbericht nicht verfügbar'),
+          React.createElement('p', null, scores.unmappedQuizBanks.length
+            ? 'Die Quizbank-Zuordnung ist nicht unterstützt: ' + scores.unmappedQuizBanks.join(', ') + '. Bitte die Kursbetreuung informieren.'
+            : 'Es wurden keine auswertbaren Testfragen gefunden. Bitte die Kursbetreuung informieren.'));
+      }
       return React.createElement(
         'div',
         null,
