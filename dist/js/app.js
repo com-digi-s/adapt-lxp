@@ -6,6 +6,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 import * as adaptHelpers from './adaptHelpers.js';
 import { createSCOBridge, installSCOBridge } from './scormBridge.js';
+import { attachCorePersistence } from './corePersistence.js';
 import * as jQuery from '../libraries/jquery-2.2.4.min.js';
 
 import { timeIntToString } from './utils.js';
@@ -186,6 +187,14 @@ export var App = function () {
 					return this.DATA[parameter] || (this.lmsConnection ? this.SCORM_API.data.get(parameter) : window.CONF.LOCAL_STORAGE ? window.localStorage.getItem(parameter) : '') || window.CONF.DEFAULT_DATA[parameter];
 				}
 			}.bind(this);
+		}
+	}, {
+		key: 'attachAdaptPersistence',
+		value: function attachAdaptPersistence(Adapt, childWindow) {
+			var path = childWindow.location.pathname.split('/scos/')[1];
+			if (!path) throw new Error('Cannot identify Adapt SCO for persistence');
+			var scoId = path.split('/index.html')[0].replace('/', '.');
+			return attachCorePersistence(this, Adapt, childWindow, scoId);
 		}
 	}, {
 		key: 'handleAPI',

@@ -1,6 +1,7 @@
 'use strict'
 import * as adaptHelpers from './adaptHelpers.js'
 import { createSCOBridge, installSCOBridge } from './scormBridge.js'
+import { attachCorePersistence } from './corePersistence.js'
 import * as jQuery from '../libraries/jquery-2.2.4.min.js'
 
 import {
@@ -201,6 +202,13 @@ export class App {
                 }
         }
         .bind(this)
+    }
+
+    attachAdaptPersistence(Adapt, childWindow) {
+        const path = childWindow.location.pathname.split('/scos/')[1];
+        if (!path) throw new Error('Cannot identify Adapt SCO for persistence');
+        const scoId = path.split('/index.html')[0].replace('/', '.');
+        return attachCorePersistence(this, Adapt, childWindow, scoId);
     }
 
     handleAPI(subAPI, scoId = this.DATA['cmi.suspend_data'].bookmark) {

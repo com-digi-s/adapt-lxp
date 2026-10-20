@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "bootstrap": "parent.App.attachAdaptPersistence",
+  "adapter": "js/corePersistence.js"
+}
