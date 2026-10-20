@@ -51,6 +51,39 @@ function children(model) {
   var collection = typeof model.getChildren === 'function' && model.getChildren();
   return collection && collection.models ? collection.models : [];
 }
+function restoreDraft(model, record, view) {
+  if (ACTIVE_TYPES.indexOf(model.get('_component')) !== -1 && Array.isArray(record.active)) {
+    children(model).forEach(function (item, index) {
+      var originalIndex = Number.isInteger(item.get('_index')) ? item.get('_index') : index;
+      item.toggleActive(record.active[originalIndex] === true);
+    });
+  }
+  if (model.get('_component') === 'textinput' && Array.isArray(record.draftText)) {
+    (model.get('_items') || []).forEach(function (item, index) {
+      if (typeof record.draftText[index] === 'string') item.userAnswer = record.draftText[index];
+    });
+    if (view && view.$) view.$('input[type="text"]').each(function (index, input) {
+      if (typeof record.draftText[index] === 'string') input.value = record.draftText[index];
+    });
+  }
+  if (model.get('_component') === 'slider' && Number.isFinite(record.draftSlider)) {
+    var index = (model.get('_items') || []).findIndex(function (item) {
+      return item.value === record.draftSlider;
+    });
+    if (index !== -1) {
+      if (view && typeof view.selectItem === 'function') {
+        view.selectItem(index);
+        view.setSliderValue(record.draftSlider);
+      } else {
+        model.deselectAllItems();
+        var selected = model.get('_items')[index];
+        selected.selected = true;
+        model.set('_selectedItem', selected);
+      }
+    }
+  }
+  if (typeof model.checkCanSubmit === 'function') model.checkCanSubmit();
+}
 export function attachCorePersistence(app, Adapt, childWindow, scoId) {
   if (Adapt.__lxpCorePersistence) return Adapt.__lxpCorePersistence;
   var controller = {
@@ -89,28 +122,21 @@ export function attachCorePersistence(app, Adapt, childWindow, scoId) {
       if (state._isSubmitted === true) {
         model.restoreUserAnswers();
       } else {
-        if (ACTIVE_TYPES.indexOf(model.get('_component')) !== -1 && Array.isArray(record.active)) {
-          children(model).forEach(function (item, index) {
-            var originalIndex = Number.isInteger(item.get('_index')) ? item.get('_index') : index;
-            item.toggleActive(record.active[originalIndex] === true);
-          });
-        }
-        if (model.get('_component') === 'textinput' && Array.isArray(record.draftText)) {
-          (model.get('_items') || []).forEach(function (item, index) {
-            if (typeof record.draftText[index] === 'string') item.userAnswer = record.draftText[index];
-          });
-        }
-        if (model.get('_component') === 'slider' && Number.isFinite(record.draftSlider)) {
-          var selected = (model.get('_items') || []).find(function (item) {
-            return item.value === record.draftSlider;
-          });
-          if (selected) {
-            model.deselectAllItems();
-            selected.selected = true;
-            model.set('_selectedItem', selected);
-          }
-        }
+        restoreDraft(model, record);
       }
+    });
+    Adapt.on('componentView:postRender', function (view) {
+      var model = view.model;
+      var id = model.get('_id');
+      var record = records && records[id];
+      if (!record || record.fingerprint !== signatures[id] || record.state._isSubmitted === true) return;
+      // Core QuestionView defers ensureLegacyLifecycleState(), which calls
+      // onResetClicked for unsubmitted attempts after early model restore.
+      // Reapply only genuine saved drafts after that native reset, via the
+      // component/item APIs; never fabricate submission or a grade.
+      setTimeout(function () {
+        if (model.get('_isSubmitted') !== true) restoreDraft(model, record, view);
+      }, 0);
     });
     controller.mode = 'core-local';
     var timer;

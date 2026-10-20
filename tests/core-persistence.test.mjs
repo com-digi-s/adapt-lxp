@@ -107,6 +107,24 @@ for (const root of ['../js', '../dist/js']) {
         assert.equal(changed.model.restoreCount, 0);
     });
 
+    test(`${root}: partial choices survive native QuestionView deferred unsubmitted-reset lifecycle`, async () => {
+        const app = appFixture();
+        const first = fixture();
+        const controller = attachCorePersistence(app, first.Adapt, first.child, 'M0');
+        first.itemModels[0].toggleActive(true);
+        controller.save();
+        const restored = fixture();
+        attachCorePersistence(app, restored.Adapt, restored.child, 'M0');
+        // Actual Core QuestionView.ensureLegacyLifecycleState defers a reset
+        // after preRender. The post-render restoration must happen after it.
+        setTimeout(() => restored.itemModels.forEach(item => item.toggleActive(false)), 0);
+        restored.Adapt.emit('componentView:postRender', { model: restored.model });
+        await new Promise(resolve => setTimeout(resolve, 20));
+        assert.deepEqual(restored.itemModels.map(item=>item.get('_isActive')), [true,false,false,false]);
+        assert.equal(restored.model.get('_isSubmitted'), false);
+        assert.equal(restored.model.restoreCount, 0);
+    });
+
     test(`${root}: instruction/display-title prompts and scale changes invalidate old attempts`, () => {
         for (const field of ['instruction', 'displayTitle', '_scaleStart', '_scaleEnd', '_scaleStep', '_step']) {
             const app = appFixture();
