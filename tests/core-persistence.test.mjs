@@ -123,6 +123,20 @@ for (const root of ['../js', '../dist/js']) {
         assert.deepEqual(restored.itemModels.map(item=>item.get('_isActive')), [true,false,false,false]);
         assert.equal(restored.model.get('_isSubmitted'), false);
         assert.equal(restored.model.restoreCount, 0);
+        // A second render must never replay the immutable old load's draft.
+        restored.itemModels[0].toggleActive(false);
+        restored.itemModels[1].toggleActive(true);
+        restored.Adapt.__lxpCorePersistence.save();
+        restored.Adapt.emit('componentView:postRender', { model: restored.model });
+        await new Promise(resolve => setTimeout(resolve, 20));
+        assert.deepEqual(restored.itemModels.map(item=>item.get('_isActive')), [false,true,false,false]);
+        // Real page re-entry snapshots the latest verified draft before Core's
+        // reset, then restores that newer choice, not the previous load's choice.
+        restored.Adapt.emit('componentView:preRender', { model: restored.model });
+        setTimeout(() => restored.itemModels.forEach(item => item.toggleActive(false)), 0);
+        restored.Adapt.emit('componentView:postRender', { model: restored.model });
+        await new Promise(resolve => setTimeout(resolve, 20));
+        assert.deepEqual(restored.itemModels.map(item=>item.get('_isActive')), [false,true,false,false]);
     });
 
     test(`${root}: instruction/display-title prompts and scale changes invalidate old attempts`, () => {

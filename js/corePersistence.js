@@ -94,6 +94,7 @@ export function attachCorePersistence(app, Adapt, childWindow, scoId) {
         var previous = custom.nativeAdapt[scoId];
         var records = previous && previous.format === 1 ? previous.components : {};
         var signatures = {};
+        var pendingDrafts = {};
         models.forEach(function (model) {
             var id = model.get('_id');
             signatures[id] = fingerprint(model);
@@ -105,13 +106,23 @@ export function attachCorePersistence(app, Adapt, childWindow, scoId) {
                 model.restoreUserAnswers();
             } else {
                 restoreDraft(model, record);
+                pendingDrafts[id] = JSON.parse(JSON.stringify(record));
+            }
+        });
+        Adapt.on('componentView:preRender', function (view) {
+            var id = view.model.get('_id');
+            var latest = custom.nativeAdapt[scoId];
+            var record = latest && latest.components && latest.components[id];
+            if (record && record.fingerprint === signatures[id] && !(record.state && record.state._isSubmitted)) {
+                pendingDrafts[id] = JSON.parse(JSON.stringify(record));
             }
         });
         Adapt.on('componentView:postRender', function (view) {
             var model = view.model;
             var id = model.get('_id');
-            var record = records && records[id];
-            if (!record || record.fingerprint !== signatures[id] || record.state._isSubmitted === true) return;
+            var record = pendingDrafts[id];
+            delete pendingDrafts[id];
+            if (!record || record.fingerprint !== signatures[id] || (record.state && record.state._isSubmitted === true)) return;
             // Core QuestionView defers ensureLegacyLifecycleState(), which calls
             // onResetClicked for unsubmitted attempts after early model restore.
             // Reapply only genuine saved drafts after that native reset, via the
