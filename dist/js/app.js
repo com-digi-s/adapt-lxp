@@ -6,7 +6,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 import * as adaptHelpers from './adaptHelpers.js';
 import { createSCOBridge, installSCOBridge } from './scormBridge.js';
-import { attachCorePersistence } from './corePersistence.js';
+import { attachCorePersistence, nativeCourseProgress } from './corePersistence.js';
 import * as jQuery from '../libraries/jquery-2.2.4.min.js';
 
 import { timeIntToString } from './utils.js';
@@ -556,6 +556,8 @@ export var App = function () {
 		key: 'calculateScore',
 		value: function calculateScore(id) {
 			var absolute = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+			var nativeProgress = nativeCourseProgress(this.DATA, id, absolute);
+			if (nativeProgress !== null) return nativeProgress;
 
 			if (typeof this.DATA['cmi.suspend_data'].adaptData[id] !== 'undefined') {
 				if (typeof this.DATA['cmi.suspend_data'].adaptData[id].q !== 'undefined') {

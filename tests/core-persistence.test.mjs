@@ -40,7 +40,27 @@ function appFixture() {
 
 for (const root of ['../js', '../dist/js']) {
     const source = await readFile(new URL(`${root}/corePersistence.js`, import.meta.url), 'utf8');
-    const { attachCorePersistence, allowedAttemptState } = await import('data:text/javascript;base64,' + Buffer.from(source).toString('base64'));
+    const { attachCorePersistence, allowedAttemptState, nativeCourseProgress } = await import('data:text/javascript;base64,' + Buffer.from(source).toString('base64'));
+
+    test(`${root}: native dashboard progress is finite 0/50/100 and ignores optional/unavailable content`, () => {
+        const app = appFixture();
+        assert.equal(nativeCourseProgress(app.DATA, 'M0', false), null);
+        const records = { format: 1, components: {
+            a: { required: true, state: { _isComplete: false } },
+            b: { required: true, state: { _isComplete: false } },
+            hiddenQuestions: { required: false, state: { _isComplete: false } }
+        } };
+        app.DATA['cmi.suspend_data'].customData.nativeAdapt = { M0: records };
+        assert.equal(nativeCourseProgress(app.DATA, 'M0', false), 0);
+        records.components.a.state._isComplete = true;
+        assert.equal(nativeCourseProgress(app.DATA, 'M0', false), 0.5);
+        assert.equal(nativeCourseProgress(app.DATA, 'M0', true), 1);
+        records.components.b.state._isComplete = true;
+        assert.equal(nativeCourseProgress(app.DATA, 'M0', false), 1);
+        assert.equal(nativeCourseProgress(app.DATA, 'M0', true), 2);
+        records.components = {};
+        assert.equal(nativeCourseProgress(app.DATA, 'M0', false), 0);
+    });
 
     test(`${root}: partial real-model choice state roundtrips per SCO, without grading/submitting`, () => {
         const app = appFixture();

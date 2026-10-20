@@ -97,7 +97,10 @@ export function attachCorePersistence(app, Adapt, childWindow, scoId) {
             var components = {};
             models.forEach(function (model) {
                 var id = model.get('_id');
-                var record = { fingerprint: signatures[id], state: allowedAttemptState(model.getAttemptObject()) };
+                var ancestors = typeof model.getAncestorModels === 'function' ? model.getAncestorModels() : [];
+                var required = model.get('_isAvailable') !== false && model.get('_isOptional') !== true &&
+                    ancestors.every(function (ancestor) { return ancestor.get('_isAvailable') !== false && ancestor.get('_isOptional') !== true; });
+                var record = { fingerprint: signatures[id], state: allowedAttemptState(model.getAttemptObject()), required: required };
                 if (ACTIVE_TYPES.indexOf(model.get('_component')) !== -1) {
                     record.active = [];
                     children(model).forEach(function (item, index) {
@@ -129,4 +132,16 @@ export function attachCorePersistence(app, Adapt, childWindow, scoId) {
     Adapt.on('app:dataReady', begin);
     if (Adapt.components && Adapt.components.models && Adapt.components.models.length) begin();
     return controller;
+}
+
+export function nativeCourseProgress(data, scoId, absolute) {
+    var custom = data && data['cmi.suspend_data'] && data['cmi.suspend_data'].customData;
+    var record = custom && custom.nativeAdapt && custom.nativeAdapt[scoId];
+    if (!record || record.format !== 1 || !record.components) return null;
+    var components = Object.values(record.components).filter(function (component) {
+        return component && component.required !== false && component.state && typeof component.state._isComplete === 'boolean';
+    });
+    if (!components.length) return 0;
+    var completed = components.filter(function (component) { return component.state._isComplete; }).length;
+    return absolute ? completed : completed / components.length;
 }

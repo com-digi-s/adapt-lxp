@@ -1,7 +1,7 @@
 'use strict'
 import * as adaptHelpers from './adaptHelpers.js'
 import { createSCOBridge, installSCOBridge } from './scormBridge.js'
-import { attachCorePersistence } from './corePersistence.js'
+import { attachCorePersistence, nativeCourseProgress } from './corePersistence.js'
 import * as jQuery from '../libraries/jquery-2.2.4.min.js'
 
 import {
@@ -533,6 +533,8 @@ export class App {
 	}
 	
     calculateScore(id, absolute = false) {
+        const nativeProgress = nativeCourseProgress(this.DATA, id, absolute);
+        if (nativeProgress !== null) return nativeProgress;
         if (typeof this.DATA['cmi.suspend_data'].adaptData[id] !== 'undefined') {
             if (typeof this.DATA['cmi.suspend_data'].adaptData[id].q !== 'undefined') {
                 let score = 0;
