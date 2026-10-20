@@ -1,7 +1,7 @@
 'use strict'
 import * as adaptHelpers from './adaptHelpers.js'
 import { createSCOBridge, installSCOBridge } from './scormBridge.js'
-import { attachCorePersistence, nativeCourseProgress } from './corePersistence.js'
+import { attachCorePersistence, nativeCourseProgress, allSelectedCoursesComplete } from './corePersistence.js'
 import * as jQuery from '../libraries/jquery-2.2.4.min.js'
 
 import {
@@ -590,20 +590,7 @@ export class App {
     }
 	
 	checkAllCoursesCompletion() {
-		const adaptData = this.DATA["cmi.suspend_data"].adaptData;
-		let allCoursesCompleted = true;
-
-		for (const courseId in adaptData) {
-			if (adaptData.hasOwnProperty(courseId)) {
-				const isCourseCompleted = this.isCompleted(courseId);
-
-				if (!isCourseCompleted) {
-					allCoursesCompleted = false;
-				}
-			}
-		}
-
-		return allCoursesCompleted;
+		return allSelectedCoursesComplete(window.CONF.SCOS, id => this.isCompleted(id));
 	}
 
     calculateXP() {

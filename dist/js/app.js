@@ -6,7 +6,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 import * as adaptHelpers from './adaptHelpers.js';
 import { createSCOBridge, installSCOBridge } from './scormBridge.js';
-import { attachCorePersistence, nativeCourseProgress } from './corePersistence.js';
+import { attachCorePersistence, nativeCourseProgress, allSelectedCoursesComplete } from './corePersistence.js';
 import * as jQuery from '../libraries/jquery-2.2.4.min.js';
 
 import { timeIntToString } from './utils.js';
@@ -624,20 +624,8 @@ export var App = function () {
 	}, {
 		key: 'checkAllCoursesCompletion',
 		value: function checkAllCoursesCompletion() {
-			var adaptData = this.DATA["cmi.suspend_data"].adaptData;
-			var allCoursesCompleted = true;
-
-			for (var courseId in adaptData) {
-				if (adaptData.hasOwnProperty(courseId)) {
-					var isCourseCompleted = this.isCompleted(courseId);
-
-					if (!isCourseCompleted) {
-						allCoursesCompleted = false;
-					}
-				}
-			}
-
-			return allCoursesCompleted;
+			var app = this;
+			return allSelectedCoursesComplete(window.CONF.SCOS, function (id) { return app.isCompleted(id); });
 		}
 	}, {
 		key: 'calculateXP',

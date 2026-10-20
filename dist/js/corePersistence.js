@@ -183,7 +183,8 @@ export function attachCorePersistence(app, Adapt, childWindow, scoId) {
       });
       custom.nativeAdapt[scoId] = {
         format: 1,
-        components: components
+        components: components,
+        complete: Adapt.course ? Adapt.course.get('_isComplete') === true : false
       };
       app.SCORM_API.set('cmi.suspend_data', app.DATA['cmi.suspend_data']);
     }
@@ -212,9 +213,23 @@ export function nativeCourseProgress(data, scoId, absolute) {
   var components = Object.values(record.components).filter(function (component) {
     return component && component.required !== false && component.state && typeof component.state._isComplete === 'boolean';
   });
-  if (!components.length) return 0;
+  if (!components.length) return record.complete === true ? 1 : 0;
   var completed = components.filter(function (component) {
     return component.state._isComplete;
   }).length;
   return absolute ? completed : completed / components.length;
+}
+export function allSelectedCoursesComplete(modules, isCompleted) {
+  var selected = [];
+  Object.entries(modules || {}).forEach(function (entry) {
+    var id = entry[0];
+    var module = entry[1];
+    if (module.disabled === true || module.enabled === false || !Array.isArray(module.courses)) return;
+    module.courses.forEach(function (course) {
+      if (course.disabled !== true && course.enabled !== false) selected.push(id + '.' + course.id);
+    });
+  });
+  return selected.length > 0 && selected.every(function (id) {
+    return isCompleted(id) === true;
+  });
 }
