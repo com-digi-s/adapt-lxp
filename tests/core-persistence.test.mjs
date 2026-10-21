@@ -53,6 +53,10 @@ for (const root of ['../js', '../dist/js']) {
         assert.equal(allSelectedCoursesComplete(modules,()=>false),false);
         assert.equal(allSelectedCoursesComplete({},()=>true),false);
         assert.equal(allSelectedCoursesComplete({M0:{enabled:true},MX:{enabled:true}},()=>true),false);
+        const legacy={M4:{disabled:false,enabled:false,courses:[{id:'1',disabled:false,enabled:false},{id:'2',disabled:true,enabled:true}]}};
+        const legacyIds=[];
+        assert.equal(allSelectedCoursesComplete(legacy,id=>{legacyIds.push(id);return true;}),true);
+        assert.deepEqual(legacyIds,['M4.1'],'completion uses the same disabled-authoritative contract as the existing catalogue UI');
     });
 
     test(`${root}: native dashboard progress is finite 0/50/100 and ignores optional/unavailable content`, () => {

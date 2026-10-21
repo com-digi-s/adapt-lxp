@@ -1,5 +1,6 @@
 'use strict';
 import { aggregateQuizBankScores, assessmentPercentage } from './assessmentScores.js';
+import { averageCourseProgress, boundedCourseProgress } from './courseProgress.js';
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -307,6 +308,7 @@ export var CoursePathway = function (_React$Component2) {
 }(React.Component);
 
 function ProgressBar(score) {
+  score = boundedCourseProgress(score);
   return React.createElement(
     'span',
     { className: 'progress mb-n1 mr-3 progress-custom' },
@@ -454,9 +456,7 @@ export var CollapsibleCard = function (_React$Component4) {
               'div',
               { style: { float: "left", width: "90%" } },
               window.CONF.SCOS[mod].label,
-              ProgressBar(Object.values(scores).reduce(function (a, b) {
-                return a + b;
-              }, 0) / Object.values(scores).length, 'small')
+              ProgressBar(averageCourseProgress(scores), 'small')
             ),
             React.createElement(
               'div',

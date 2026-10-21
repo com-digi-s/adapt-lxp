@@ -224,9 +224,9 @@ export function allSelectedCoursesComplete(modules, isCompleted) {
   Object.entries(modules || {}).forEach(function (entry) {
     var id = entry[0];
     var module = entry[1];
-    if (module.disabled === true || module.enabled === false || !Array.isArray(module.courses)) return;
+    if (module.disabled === true || module.disabled === undefined && module.enabled === false || !Array.isArray(module.courses)) return;
     module.courses.forEach(function (course) {
-      if (course.disabled !== true && course.enabled !== false) selected.push(id + '.' + course.id);
+      if (course.disabled !== true && (course.disabled !== undefined || course.enabled !== false)) selected.push(id + '.' + course.id);
     });
   });
   return selected.length > 0 && selected.every(function (id) {
