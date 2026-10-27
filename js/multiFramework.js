@@ -6,6 +6,7 @@ import { collectAssessment, percentage, reportData } from './multiAssessment.js'
 import { spoorCourseProgress } from './courseProgress.js';
 import { renderDashboard, renderCourseOverview, courseProgressValue } from './multiDashboard.js';
 import { renderResult, downloadResultPDF } from './multiReport.js';
+import { searchGlossary } from './multiGlossary.js';
 
 function node(tag, text, attributes = {}) {
     const element = document.createElement(tag);
@@ -113,9 +114,10 @@ export class MultiFrameworkApp {
             const terms = this.contract.glossary.filter(term => term.frameworkId === this.state.activeFrameworkId), query = input.value.trim().toLocaleLowerCase();
             if (!terms.length) { results.append(node('p', 'Für diesen Kompetenzrahmen sind keine Glossareinträge hinterlegt.', { class: 'text-muted' })); return; }
             if (query.length < 3) { results.append(node('p', 'Mindestens drei Zeichen eingeben.', { class: 'text-muted' })); return; }
-            const matches = terms.filter(term => term.term.toLocaleLowerCase().includes(query) || String(term.definition || '').toLocaleLowerCase().includes(query));
+            const matches = searchGlossary(terms, input.value);
             if (!matches.length) results.append(node('p', 'Keine passenden Begriffe gefunden.', { class: 'text-muted' }));
-            matches.slice(0, 25).forEach(term => {
+            if (matches.length) results.append(node('p', matches.length + (matches.length === 1 ? ' Begriff gefunden.' : ' Begriffe gefunden.'), { class: 'text-muted' }));
+            matches.forEach(term => {
                 const entry = node('article', null, { class: 'glossary-term' }); entry.append(node('strong', term.term));
                 if (term.definition) entry.append(node('p', term.definition, { class: 'glossary-definition' }));
                 term.targets.forEach(target => entry.append(button(this.catalog.scos.get(target.scoId).label, () => { panel.hidden = true; toggle.setAttribute('aria-expanded', 'false'); this.launchSCO(target.scoId, target.contentId); }, { class: 'btn btn-link text-start' })));

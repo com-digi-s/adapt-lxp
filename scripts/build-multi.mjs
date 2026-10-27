@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 const root = fileURLToPath(new URL('..', import.meta.url));
-const modules = ['multiContract', 'multiState', 'multiBridge', 'multiAssessment', 'multiDashboard', 'multiFramework', 'multiReport'];
+const modules = ['multiContract', 'multiState', 'multiBridge', 'multiAssessment', 'multiDashboard', 'multiFramework', 'multiReport', 'multiGlossary'];
 await mkdir(path.join(root, 'dist/js'), { recursive: true });
 await mkdir(path.join(root, 'dist/css'), { recursive: true });
 for (const name of modules) await copyFile(path.join(root, `js/${name}.js`), path.join(root, `dist/js/${name}.js`));
