@@ -1,4 +1,53 @@
 # Overview
+
+## Shared multi-framework product runtime (opt-in)
+
+The exporter selects the new runtime explicitly with
+`config.MULTI_FRAMEWORK_CONTRACT = "lxp-contract.json"`. That file must be a
+production `adapt-lxp-multi-framework@1` contract (`exampleOnly: false`). Missing,
+unsupported or inconsistent contracts stop with a visible error; they never
+fall back to the legacy course catalogue. Packages without this property retain
+the existing legacy runtime.
+
+One wrapper presents framework cards, framework-specific courses, diagnostics,
+results/PDF/JSON reports, configured domain radar, pathways and glossary links.
+All relationships use explicit IDs. Each course runs below an API-bearing host
+frame with its own immutable launch context. This preserves a genuine outer LMS
+API and keeps late child unload calls bound to their original course/attempt.
+Native bootstraps can continue calling
+`parent.App.attachAdaptPersistence(Adapt, window)`. `App.SCO_FRAME` is the actual
+course iframe, not its bridge host.
+
+Completion requires **every required learning course across all frameworks**,
+with at least one required course. Tests and optional courses are not denominator
+terms. The outer LMS gets incomplete/completed, never a fabricated score100 or
+cross-framework competency score. Missing diagnostics have no invented score.
+
+State v1 carries package/revision, explicit per-framework bookmarks, opaque native
+SCO payloads, component fingerprints and test/attempt identities. Local keys are
+scoped to package/schema/profile/attempt; optional `LOCAL_PROFILE_ID` and
+`LOCAL_ATTEMPT_ID` select explicit local contexts. The default shared-device
+profile is not multi-user protection. Old global `cmi.*` localStorage values are
+never imported. The dashboard offers a guarded migration of a proven old package
+envelope plus explicit, confirmed alias/fingerprint plan. It preserves a backup,
+rejects alias collisions and does not repeat an applied migration.
+
+Regular relevant changes save immediately, with idempotent outer finalization.
+A real SCORM1.2 API must accept and return the exact compressed suspend payload;
+failed initialization/read/write/commit/readback is visible. The conservative
+4096-character budget rejects remote writes without truncation and preserves a
+downloadable local/in-memory backup. Explicit local use can store larger state
+while visibly withholding LMS release; local success is never reported as remote
+success. No target-LMS conformance is claimed by the local or API-harness tests.
+
+Run `npm run build:multi` to publish byte-identical new runtime modules/CSS and
+regenerate `adapt-multi-framework-capabilities.json` with hashes of the actual
+delivered implementation, then `npm test`. The opt-in build deliberately leaves
+existing legacy JSX/transpiled files intact. The old `build` script is a legacy
+watch command; it is not the new runtime build. Exporters must validate the
+capability values **and** all declared implementation hashes before freezing a
+wrapper. Do not add the marker to an old, unimplemented wrapper.
+
 `Adapt LXP` is an application template designed to integrate SCORM 1.2-based courses, that were developed using the [Adapt Framework](https://github.com/adaptlearning/adapt_framework), into a feature-rich Learning Experience Platform (LXP). The platform facilitates the encapsulation of Sharable Content Objects (SCOs) and augments them with LXP features.
 
 ### Use Cases and Demos

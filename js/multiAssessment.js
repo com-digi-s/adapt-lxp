@@ -1,0 +1,82 @@
+// Diagnostic grading and reporting resolve native banks within one assessment.
+// No numeric digit, route substring or current dashboard selection is an identity.
+function attr(model, key) { return typeof model.get === 'function' ? model.get(key) : (model.attributes || model)[key]; }
+function score(model) {
+    const type = attr(model, '_component'), items = attr(model, '_items') || [], answers = attr(model, '_userAnswer') || [];
+    const weightValue = attr(model, '_questionWeight'), weight = Number.isFinite(weightValue) && weightValue > 0 ? weightValue : 1;
+    let maximum = 0, points = 0;
+    if (type === 'mcq' || type === 'gmcq') {
+        items.forEach((item, i) => { if (item._shouldBeSelected) maximum += weight; if (answers[i] === true) points += item._shouldBeSelected ? weight : -weight; });
+    } else if (type === 'matching') {
+        const correct = items.flatMap(item => (item._options || []).map(option => option._isCorrect === true));
+        maximum = correct.filter(Boolean).length * weight;
+        points = correct.filter((value, i) => value && answers[i] === true).length * weight;
+    } else if (type === 'infai-dragndrop') {
+        let offset = 0;
+        items.forEach((item, i) => {
+            const accepted = (item.accepted || []).map(() => offset++); maximum += accepted.length * weight;
+            if (accepted.includes(answers[i])) points += weight;
+        });
+    } else if (type === 'slider' || type === 'textinput') {
+        maximum = Number.isFinite(model.maxScore) ? model.maxScore : attr(model, '_maxScore');
+        points = Number.isFinite(attr(model, '_score')) ? attr(model, '_score') : model.score;
+    } else throw new Error(`Nicht unterstützte Testkomponente: ${type}.`);
+    if (attr(model, '_isSubmitted') === false) points = 0;
+    if (!Number.isFinite(maximum) || maximum <= 0 || !Number.isFinite(points)) throw new Error(`Ungültige Bewertung: ${attr(model, '_id')}.`);
+    return { score: Math.min(Math.max(points, 0), maximum), maxScore: maximum };
+}
+function add(target, id, points, max) {
+    if (!target[id]) target[id] = { score: 0, maxScore: 0 };
+    target[id].score += points; target[id].maxScore += max;
+}
+export function percentage(value) { return value && Number.isFinite(value.score) && Number.isFinite(value.maxScore) && value.maxScore > 0 ? value.score / value.maxScore * 100 : null; }
+export function collectAssessment(contract, context, components, blocks) {
+    const assessment = contract.assessments.find(as => as.id === context.assessmentId && as.scoId === context.scoId && as.frameworkId === context.frameworkId && as.phase === context.role);
+    if (!assessment) throw new Error('Testkontext fehlt oder ist ungültig.');
+    const banks = new Map(assessment.banks.map(bank => [String(bank.runtimeBankId), bank]));
+    const questions = new Map(contract.questions.map(q => [q.id, q])), seen = new Set(), sourceSeen = new Set();
+    const result = { frameworkId: context.frameworkId, assessmentId: assessment.id, phase: assessment.phase, score: 0, maxScore: 0, banks: {}, courses: {}, domains: {}, questions: {} };
+    components.forEach(model => {
+        if (attr(model, '_isAvailable') === false) return;
+        const block = blocks.find(candidate => attr(candidate, '_id') === attr(model, '_parentId'));
+        const nativeBank = block && attr(block, '_assessment');
+        if (!nativeBank || nativeBank._isEnabled === false) return;
+        const bank = banks.get(String(nativeBank._quizBankID));
+        if (!bank) throw new Error(`Testbank nicht zugeordnet: ${nativeBank._quizBankID}.`);
+        const question = bank.questionIds.map(id => questions.get(id)).find(q => (q.runtimeQuestionId || q.sourceComponentId) === attr(model, '_id'));
+        if (!question) {
+            if (attr(model, '_isQuestionType') || ['mcq','gmcq','matching','slider','textinput','infai-dragndrop'].includes(attr(model, '_component'))) throw new Error(`Testfrage nicht zugeordnet: ${attr(model, '_id')}.`);
+            return;
+        }
+        const sourceIdentity = JSON.stringify([question.sourceCourseId, question.sourceComponentId]);
+        if (question.component !== attr(model, '_component')) throw new Error(`Komponententyp stimmt nicht für ${question.id}.`);
+        if (seen.has(question.id) || sourceSeen.has(sourceIdentity)) throw new Error('Doppelte Quellfrage im Test.');
+        seen.add(question.id); sourceSeen.add(sourceIdentity);
+        const value = score(model);
+        if (Math.abs(value.maxScore - question.maxPoints) > 0.000001) throw new Error(`Maximalpunkte stimmen nicht für ${question.id}.`);
+        result.questions[question.id] = value;
+        add(result.banks, bank.id, value.score, value.maxScore); add(result.courses, bank.targetCourseId, value.score, value.maxScore); add(result.domains, bank.domainId, value.score, value.maxScore);
+        result.score += value.score; result.maxScore += value.maxScore;
+    });
+    const expected = assessment.banks.flatMap(bank => bank.questionIds);
+    if (expected.some(id => !seen.has(id)) || result.maxScore <= 0) throw new Error('Test ist unvollständig; erwartete Diagnosefragen fehlen.');
+    return result;
+}
+export function reportData(contract, attempt) {
+    const framework = contract.frameworks.find(fw => fw.id === attempt.frameworkId), assessment = contract.assessments.find(as => as.id === attempt.assessmentId && as.frameworkId === attempt.frameworkId);
+    if (!framework || !assessment || percentage(attempt) === null) throw new Error('Ungültiges Testergebnis.');
+    const groups = [];
+    Object.entries(attempt.courses).forEach(([id, value]) => {
+        const sco = contract.scos.find(course => course.id === id && course.frameworkId === framework.id);
+        if (!sco || percentage(value) === null) throw new Error('Ungültige Kursgruppe im Bericht.');
+        groups.push({ kind: 'Kurs', id, label: sco.label, ...value, percentage: percentage(value) });
+    });
+    Object.entries(attempt.domains).forEach(([id, value]) => {
+        const domain = contract.domains.find(candidate => candidate.id === id && candidate.frameworkId === framework.id);
+        if (!domain || percentage(value) === null) throw new Error('Ungültige Domäne im Bericht.');
+        groups.push({ kind: 'Didaktische Domäne', id, label: domain.label, ...value, percentage: percentage(value) });
+    });
+    const safe = value => String(value).replace(/[^a-zA-Z0-9_-]/g, '_');
+    return { framework: framework.label, version: framework.version, phase: assessment.phase, score: attempt.score, maxScore: attempt.maxScore, percentage: percentage(attempt), groups,
+        filename: `Ergebnis-${safe(framework.id)}-${safe(framework.version)}-${safe(assessment.phase)}-${safe(attempt.attemptId || 'attempt')}` };
+}

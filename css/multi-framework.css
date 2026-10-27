@@ -1,0 +1,23 @@
+body.multi-framework-mode { overflow: auto !important; margin: 0; color: #172a38; background: #f4f7fa; font-family: system-ui, sans-serif; }
+#multi-framework-app { max-width: 1200px; margin: auto; padding: 1rem; }
+.mf-navigation { display: flex; gap: 1rem; align-items: center; padding: .5rem 0 1rem; flex-wrap: wrap; }
+#multi-framework-app button { background: #165979; color: white; border: 0; border-radius: .35rem; padding: .65rem .9rem; margin: .25rem .4rem .25rem 0; cursor: pointer; }
+#multi-framework-app button:hover { background: #0f3d55; }
+#multi-framework-app button:focus-visible { outline: 3px solid #e7a12b; outline-offset: 3px; }
+#multi-framework-app h1 { margin: 1.2rem 0 .75rem; font-size: clamp(1.6rem, 4vw, 2.2rem); }
+#multi-framework-app h2 { margin-top: 1rem; font-size: 1.4rem; }
+#multi-framework-app h3 { font-size: 1.15rem; }
+.mf-cards, .mf-tests { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 1rem; }
+.mf-tests > h2 { grid-column: 1/-1; }
+.mf-card, .mf-course-card, .mf-module, #mf-content > section { background: white; border: 1px solid #dce5ec; border-radius: .5rem; padding: 1rem; margin: .75rem 0; }
+.mf-module .mf-course-card { background: #f7fafc; }
+.mf-progress { font-variant-numeric: tabular-nums; }
+.mf-storage { padding: .6rem 1rem; border-radius: .35rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; background: #e4edf4; }
+.mf-storage-error, #mf-notices [role=alert] { color: #7e1515; background: #fff0ed; padding: .75rem; border: 1px solid #d69a91; }
+.mf-storage-local { background: #fff4d6; color: #5a4317; }
+.mf-storage-lms { background: #def3e9; color: #164e36; }
+.mf-course-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem; padding: .5rem 0; }
+.mf-bridge-host { border: 1px solid #dce5ec; background: white; display: block; width: 100%; height: calc(100vh - 190px); min-height: 550px; }
+.mf-chart { max-width: 600px; }
+#multi-framework-app details { padding: .5rem 0; }
+#multi-framework-app summary { cursor: pointer; }

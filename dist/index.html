@@ -13,6 +13,7 @@
 	<!-- Custom styles -->
 	<link rel="stylesheet" href="css/main.css">
 	<link rel="stylesheet" href="css/loading.css">
+	<link rel="stylesheet" href="css/multi-framework.css">
 	
 	<!-- Boarding.js -->
 	<link rel="stylesheet" href="css/boarding_main.css" />
@@ -165,13 +166,23 @@
 	<script type="module">
 		'use strict'
 
-		import App from './js/app.js'
-						
 		window.addEventListener('DOMContentLoaded', function () {
 			window.fetch('config.json')
-			.then(response => response.json())
-			.then(data => {
+			.then(response => { if (!response.ok) throw new Error('config.json konnte nicht geladen werden.'); return response.json(); })
+			.then(async data => {
 				window.CONF = data;
+				if (Object.prototype.hasOwnProperty.call(data, 'MULTI_FRAMEWORK_CONTRACT')) {
+					const { safeRelativePath } = await import('./js/multiContract.js');
+					const path = safeRelativePath(data.MULTI_FRAMEWORK_CONTRACT);
+					const response = await fetch(path);
+					if (!response.ok) throw new Error('Multi-Framework-Produktvertrag konnte nicht geladen werden. Kein Legacy-Fallback.');
+					const contract = await response.json();
+					const { default: MultiFrameworkApp } = await import('./js/multiFramework.js');
+					window.App = new MultiFrameworkApp(contract);
+					window.App.init();
+					return;
+				}
+				const { default: App } = await import('./js/app.js');
 				
 				if (!window.App) {
 					window.App = new App()
@@ -180,7 +191,13 @@
 				}
 				window.App.renderView(window.App.SCO_FRAME, CONF.START_PAGE)
 			})
-			.catch(error => console.error(error));
+			.catch(error => {
+				console.error(error);
+				const message = document.createElement('main'); message.setAttribute('role', 'alert');
+				const heading = document.createElement('h1'); heading.textContent = 'Lernangebot konnte nicht sicher gestartet werden';
+				const detail = document.createElement('p'); detail.textContent = error.message;
+				message.append(heading, detail); document.body.replaceChildren(message); document.body.style.overflow = 'auto';
+			});
 			
 			var scoFrame = window.document.getElementById('sco-frame');
 			scoFrame.addEventListener('load', function () {
@@ -202,9 +219,8 @@
 			delete window.App;
 		});
 	</script>
-	<script type="module" src="js/adaptHelpers.js"></script>
 	<script type="module">
-		import { Boarding } from "/libraries/boarding.js";
+		import { Boarding } from "./libraries/boarding.js";
 		  
 		const boarding = new Boarding({
 			  animate: true, // Ob Animationen verwendet werden sollen oder nicht
