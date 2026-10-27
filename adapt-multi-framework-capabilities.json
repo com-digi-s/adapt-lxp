@@ -12,7 +12,7 @@
     "js/multiBridge.js": "39b293b92f5f398b926f3dbd51e04ae6d3591f34c9fc948558fef5448cb0e540",
     "js/multiContract.js": "d73a02b29acd4bcf040966b603f7eaf290e9d1232856f9d4f65328ca1e5920e7",
     "js/multiFramework.js": "370512d415ff4f39551f5a87f776a1eb88e86c2514f24076f75b563b7e1699e7",
-    "js/multiState.js": "1c22e8904dffc60b07bb6517194f73bad2dd9ab1f82b2b1cdc8e6f3e0914396a"
+    "js/multiState.js": "f48a281c1b11349bfa9faa21ae3f8899954b7a8465377190f69113e3f4b3707f"
   },
-  "implementationSha256": "2551a9b0a3b099ff4e8964125a0e63b46b12fc08592995c211c45bfb4f1181d6"
+  "implementationSha256": "2721e911d906816ca3ac1342802da1e1e2ec70561eaad8d88ecc1eab7ed93005"
 }

@@ -22,4 +22,11 @@ for(const root of ['../js','../dist/js']){
         assert.equal(bridge.LMSSetValue('cmi.suspend_data','safe in memory'),'false');assert.equal(bridge.LMSGetLastError(),'101');
         assert.equal(bridge.LMSFinish(''),'false');const count=saves;assert.equal(bridge.LMSFinish(''),'false');assert.equal(saves,count);
     });
+    test(`${root}: outer finalization explicitly suspends its learner attempt exactly once for LMS resume`,async()=>{
+        const {StateTransport,createState}=await loadModule('multiState',root),c=fixture(),values=new Map(),calls=[];
+        const api={LMSInitialize:()=> 'true',LMSGetLastError:()=> '0',LMSSetValue:(key,value)=>{calls.push([key,value]);values.set(key,value);return'true';},LMSGetValue:key=>values.get(key)||'',LMSCommit:()=> 'true',LMSFinish:()=> 'true'};
+        const transport=new StateTransport({contract:c,api,storage:{setItem(){},getItem(){return null;}},environment:{}});
+        assert.equal(transport.finish(createState(c),false),true);assert.equal(transport.finish(createState(c),false),true);
+        assert.deepEqual(calls.filter(([key])=>key==='cmi.core.exit'),[['cmi.core.exit','suspend']]);
+    });
 }

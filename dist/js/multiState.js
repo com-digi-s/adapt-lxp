@@ -187,6 +187,9 @@ export class StateTransport {
         try {
             const seconds = Math.floor((Date.now() - this.startedAt) / 1000);
             const duration = `${String(Math.floor(seconds / 3600)).padStart(4, '0')}:${String(Math.floor(seconds / 60) % 60).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
+            // Suspend the single outer SCO so a subsequent launch resumes this
+            // learner/attempt payload rather than starting an unbound attempt.
+            if (!success(this.api.LMSSetValue('cmi.core.exit', 'suspend'))) throw new Error(this.diagnostic('Wiederaufnahme-Status abgewiesen'));
             if (!success(this.api.LMSSetValue('cmi.core.session_time', duration))) throw new Error(this.diagnostic('Sitzungszeit abgewiesen'));
             if (!success(this.api.LMSCommit('')) || !success(this.api.LMSFinish(''))) throw new Error(this.diagnostic('Finalisierung abgewiesen'));
             return (this.finishResult = saved);
