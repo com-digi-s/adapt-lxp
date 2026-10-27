@@ -9,8 +9,12 @@ unsupported or inconsistent contracts stop with a visible error; they never
 fall back to the legacy course catalogue. Packages without this property retain
 the existing legacy runtime.
 
-One wrapper presents framework cards, framework-specific courses, diagnostics,
-results/PDF/JSON reports, configured domain radar, pathways and glossary links.
+One wrapper retains the established LXP navbar, photo/quote dashboard,
+expandable modules/course progress, learning pulse/radar and footer. A compact
+framework selector is added to the original navbar; no separate technical
+framework-card landing page replaces the learner experience. The presentation
+iframe uses the original dashboard styles, isolated from the navbar's styles.
+Courses, diagnostics, reports, pathways and glossary links are framework-scoped.
 All relationships use explicit IDs. Each course runs below an API-bearing host
 frame with its own immutable launch context. This preserves a genuine outer LMS
 API and keeps late child unload calls bound to their original course/attempt.
@@ -28,8 +32,10 @@ SCO payloads, component fingerprints and test/attempt identities. Local keys are
 scoped to package/schema/profile/attempt; optional `LOCAL_PROFILE_ID` and
 `LOCAL_ATTEMPT_ID` select explicit local contexts. The default shared-device
 profile is not multi-user protection. Old global `cmi.*` localStorage values are
-never imported. The dashboard offers a guarded migration of a proven old package
-envelope plus explicit, confirmed alias/fingerprint plan. It preserves a backup,
+never imported. Separate technical tools, reachable from the discreet storage
+status, offer guarded migration of a proven old package envelope plus an explicit,
+confirmed alias/fingerprint plan. Migration/file-upload controls do not occupy
+the normal learner dashboard. The operation preserves a backup,
 rejects alias collisions and does not repeat an applied migration.
 
 Regular relevant changes save immediately, with idempotent outer finalization.
@@ -39,6 +45,13 @@ failed initialization/read/write/commit/readback is visible. The conservative
 downloadable local/in-memory backup. Explicit local use can store larger state
 while visibly withholding LMS release; local success is never reported as remote
 success. No target-LMS conformance is claimed by the local or API-harness tests.
+
+XP continues to count actual completed components, including diagnostics, within
+the selected framework; it is not a competency score. The learning radar shows
+module/course completion. Dated learning-pulse samples are recorded from actual
+visible content time and observed XP only; existing states without dated samples
+do not acquire fabricated historical activity. Real save failures remain visible
+even when the storage-details panel is closed.
 
 Run `npm run build:multi` to publish byte-identical new runtime modules/CSS and
 regenerate `adapt-multi-framework-capabilities.json` with hashes of the actual

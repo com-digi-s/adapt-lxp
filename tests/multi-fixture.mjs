@@ -6,11 +6,13 @@ export async function loadModule(name, root = '../js') {
         const dependency = await moduleURL(match[1].slice(2, -3), root);
         source = source.replace(match[1], dependency);
     }
+    source += `\n//# sourceURL=lxp-test-${root.includes('dist') ? 'dist' : 'source'}-${name}.js\n`;
     return import('data:text/javascript;base64,' + Buffer.from(source).toString('base64'));
 }
 async function moduleURL(name, root) {
     let source = await readFile(new URL(`${root}/${name}.js`, import.meta.url), 'utf8');
     for (const match of [...source.matchAll(/from '(\.\/[^']+\.js)'/g)]) source = source.replace(match[1], await moduleURL(match[1].slice(2, -3), root));
+    source += `\n//# sourceURL=lxp-test-${root.includes('dist') ? 'dist' : 'source'}-${name}.js\n`;
     return 'data:text/javascript;base64,' + Buffer.from(source).toString('base64');
 }
 export function fixture() {

@@ -3,6 +3,8 @@ import { createState, hydrateState, StateTransport, findLMS, migrateLegacy } fro
 import { createBridge, scoRecord } from './multiBridge.js';
 import { attachCorePersistence } from './corePersistence.js';
 import { collectAssessment, percentage, reportData } from './multiAssessment.js';
+import { spoorCourseProgress } from './courseProgress.js';
+import { renderDashboard, renderCourseOverview, courseProgressValue } from './multiDashboard.js';
 
 function node(tag, text, attributes = {}) {
     const element = document.createElement(tag);
@@ -11,12 +13,13 @@ function node(tag, text, attributes = {}) {
     return element;
 }
 function button(label, action, attributes = {}) {
-    const element = node('button', label, { type: 'button', ...attributes });
+    const element = node('button', label, { type: 'button', class: 'btn btn-secondary', ...attributes });
     element.addEventListener('click', () => { try { action(); } catch (error) { window.App.warn(error.message); } }); return element;
 }
 function uid() { return globalThis.crypto && globalThis.crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + '-' + Math.random().toString(36).slice(2); }
 function phaseLabel(phase) { return phase === 'entry' ? 'Einstiegstest' : 'Abschlusstest'; }
 function numericOrder(a, b) { const left = BigInt(a.number), right = BigInt(b.number); return left < right ? -1 : left > right ? 1 : 0; }
+function frameworkLabel(framework) { return framework.label.includes(framework.version) ? framework.label : framework.label + ' · ' + framework.version; }
 
 export class MultiFrameworkApp {
     constructor(contract, options = {}) {
@@ -40,37 +43,193 @@ export class MultiFrameworkApp {
     }
     init() {
         document.body.classList.add('multi-framework-mode'); document.title = this.contract.package.title;
-        document.querySelectorAll('body > header, body > #sco-frame').forEach(element => element.remove());
+        // Keep the established shell. Only the framework selector is new;
+        // existing Home/glossary/breadcrumb/help/XP nodes remain in place.
+        this.header = document.querySelector('body > header');
+        this.dashboardFrame = document.getElementById('sco-frame');
+        if (!this.header || !this.dashboardFrame) throw new Error('Die ursprüngliche LXP-Navigation oder Inhaltsfläche fehlt.');
         this.shell = node('main', null, { id: 'multi-framework-app' });
-        this.navigation = node('nav', null, { 'aria-label': 'Kompetenzrahmen-Navigation', class: 'mf-navigation' });
-        this.navigation.append(button('Alle Kompetenzrahmen', () => this.showFrameworks(), { 'data-action': 'all-frameworks' }), node('strong', this.contract.package.title));
-        this.statusElement = node('div', null, { id: 'mf-storage-status', role: 'status', 'aria-live': 'polite' });
+        this.courseArea = node('section', null, { id: 'mf-course-area', hidden: '', 'aria-label': 'Lernkurs' });
+        this.shell.append(this.dashboardFrame, this.courseArea); document.body.append(this.shell);
+        this.dashboardFrame.setAttribute('title', 'Lernübersicht'); this.dashboardFrame.removeAttribute('style');
+        const doc = this.dashboardFrame.contentDocument;
+        doc.open();
+        doc.write('<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base href="' + new URL('.', window.location.href).href.replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '"><link rel="stylesheet" href="views/dashboard/css/font-awesome.css"><link rel="stylesheet" href="views/dashboard/css/bootstrap.min.css"><link rel="stylesheet" href="views/dashboard/css/dashboard.css"><link rel="stylesheet" href="css/multi-framework.css"></head><body class="mf-dashboard-document"><section id="mf-content"></section></body></html>');
+        doc.close();
+        this.content = doc.getElementById('mf-content');
+        this.dashboardFrame.contentWindow.App = this;
+        this.installNavigation();
+        this.statusElement = node('details', null, { id: 'mf-storage-status', class: 'mf-storage' });
+        const summary = node('summary', null, { 'aria-label': 'Speicherstatus', title: 'Speicherstatus' });
+        summary.append(node('span', '●', { 'aria-hidden': 'true' }));
+        this.statusText = node('p'); this.statusPanel = node('div', null, { class: 'mf-storage-panel' });
+        this.statusPanel.append(this.statusText, button('Sicherung herunterladen', () => this.downloadBackup()), button('Technische Werkzeuge', () => this.showDiagnostics(), { class: 'btn btn-link' }));
+        this.statusElement.append(summary, this.statusPanel);
+        this.header.querySelector('.navbar-nav').append(node('li', null, { class: 'nav-item mf-storage-item' }));
+        this.header.querySelector('.mf-storage-item').append(this.statusElement);
+        this.feedback = node('aside', null, { id: 'mf-feedback', 'aria-live': 'polite', hidden: '' });
+        this.storageAlert = node('div', null, { id: 'mf-storage-alert', role: 'alert', hidden: '' });
         this.notice = node('div', null, { id: 'mf-notices', 'aria-live': 'polite' });
-        this.content = node('section', null, { id: 'mf-content' }); this.courseArea = node('section', null, { id: 'mf-course-area', hidden: '' });
-        this.shell.append(this.navigation, this.statusElement, this.notice, this.content, this.courseArea); document.body.append(this.shell);
+        this.feedback.append(this.storageAlert, this.notice); document.body.insertBefore(this.feedback, this.shell);
         this.renderStatus(); this.renderWarnings();
         if (this.loadBlocked) {
             this.content.append(node('h1', 'Gespeicherter Zustand konnte nicht sicher geladen werden'), node('p', 'Der LMS-Zustand wird nicht überschrieben. Bitte sichern Sie den vorhandenen Zustand und wenden Sie sich an die Kursbetreuung.'));
             this.content.append(button('Vorhandene lokale Sicherung herunterladen', () => this.downloadLocalBackup())); return this;
         }
-        this.showFrameworks();
+        this.showFramework(this.preferredFramework());
         window.addEventListener('beforeunload', () => this.stopApp()); window.addEventListener('unload', () => this.stopApp());
-        document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') this.saveActive(); });
+        document.addEventListener('visibilitychange', () => this.saveActive());
+        window.addEventListener('resize', () => this.updateLayout());
+        if (window.ResizeObserver) { this.layoutObserver = new window.ResizeObserver(() => this.updateLayout()); this.layoutObserver.observe(this.header.querySelector('#main-navbar')); this.layoutObserver.observe(this.feedback); }
+        this.updateLayout();
         return this;
+    }
+    preferredFramework() {
+        return this.catalog.frameworks.has(this.state.activeFrameworkId) ? this.state.activeFrameworkId :
+            (this.contract.frameworks.find(framework => framework.prefix === 'DigComp') || this.contract.frameworks[0]).id;
+    }
+    installNavigation() {
+        const bar = this.header.querySelector('#main-navbar .container-fluid');
+        this.frameworkSelector = node('select', null, { 'data-framework-selector': '', 'aria-label': 'Kompetenzrahmen wählen', class: 'form-select form-select-sm mf-framework-selector' });
+        this.contract.frameworks.forEach(framework => this.frameworkSelector.append(node('option', frameworkLabel(framework), { value: framework.id })));
+        this.frameworkSelector.hidden = this.contract.frameworks.length < 2;
+        this.frameworkSelector.addEventListener('change', () => this.showFramework(this.frameworkSelector.value));
+        bar.insertBefore(this.frameworkSelector, this.header.querySelector('#breadcrumb-container'));
+        this.header.querySelector('.navbar-brand').addEventListener('click', event => { event.preventDefault(); this.showFramework(this.preferredFramework()); });
+        this.header.querySelector('.navbar-brand').setAttribute('aria-label', 'Zur Lernübersicht');
+        this.installGlossary();
+    }
+    installGlossary() {
+        const root = this.header.querySelector('#template_glossary');
+        root.replaceChildren();
+        const toggle = button('', () => { const open = panel.hidden; panel.hidden = !open; toggle.setAttribute('aria-expanded', String(open)); if (open) input.focus(); }, { class: 'nav-link mf-glossary-toggle', 'aria-label': 'Glossar durchsuchen', 'aria-expanded': 'false' });
+        toggle.append(node('i', null, { class: 'fa-solid fa-magnifying-glass fa-xl', 'aria-hidden': 'true' }));
+        const panel = node('div', null, { class: 'dropdown-menu mf-glossary-menu', hidden: '' });
+        const input = node('input', null, { type: 'search', class: 'form-control', placeholder: 'Begriff suchen', 'aria-label': 'Glossar durchsuchen' });
+        const results = node('div', null, { class: 'mf-glossary-results', 'aria-live': 'polite' });
+        const update = () => {
+            results.replaceChildren();
+            const terms = this.contract.glossary.filter(term => term.frameworkId === this.state.activeFrameworkId), query = input.value.trim().toLocaleLowerCase();
+            if (!terms.length) { results.append(node('p', 'Für diesen Kompetenzrahmen sind keine Glossareinträge hinterlegt.', { class: 'text-muted' })); return; }
+            if (query.length < 3) { results.append(node('p', 'Mindestens drei Zeichen eingeben.', { class: 'text-muted' })); return; }
+            const matches = terms.filter(term => term.term.toLocaleLowerCase().includes(query) || String(term.definition || '').toLocaleLowerCase().includes(query));
+            if (!matches.length) results.append(node('p', 'Keine passenden Begriffe gefunden.', { class: 'text-muted' }));
+            matches.slice(0, 25).forEach(term => {
+                const entry = node('article', null, { class: 'glossary-term' }); entry.append(node('strong', term.term));
+                if (term.definition) entry.append(node('p', term.definition, { class: 'glossary-definition' }));
+                term.targets.forEach(target => entry.append(button(this.catalog.scos.get(target.scoId).label, () => { panel.hidden = true; toggle.setAttribute('aria-expanded', 'false'); this.launchSCO(target.scoId, target.contentId); }, { class: 'btn btn-link text-start' })));
+                results.append(entry);
+            });
+        };
+        input.addEventListener('input', update); panel.append(input, results); root.append(toggle, panel); this.refreshGlossary = () => { input.value = ''; update(); panel.hidden = true; toggle.setAttribute('aria-expanded', 'false'); };
+        const dismiss = () => { panel.hidden = true; toggle.setAttribute('aria-expanded', 'false'); if (this.statusElement) this.statusElement.open = false; };
+        document.addEventListener('click', event => { if (!root.contains(event.target)) { panel.hidden = true; toggle.setAttribute('aria-expanded', 'false'); } if (this.statusElement && !this.statusElement.contains(event.target)) this.statusElement.open = false; });
+        document.addEventListener('keydown', event => { if (event.key === 'Escape') dismiss(); });
+        window.addEventListener('blur', dismiss);
+    }
+    updateLayout() {
+        const height = this.header?.querySelector('#main-navbar').getBoundingClientRect().height || 56;
+        const feedbackHeight = this.feedback && !this.feedback.hidden ? this.feedback.getBoundingClientRect().height : 0;
+        document.documentElement.style.setProperty('--lxp-nav-height', height + 'px');
+        document.documentElement.style.setProperty('--lxp-feedback-height', feedbackHeight + 'px');
+    }
+    updateNavigation(sco = null) {
+        const framework = this.catalog.frameworks.get(this.state.activeFrameworkId || this.preferredFramework());
+        this.frameworkSelector.value = framework.id;
+        if (this.statusElement) this.statusElement.open = false;
+        this.dashboardFrame.setAttribute('title', 'Lernübersicht: ' + frameworkLabel(framework));
+        this.header.querySelector('#breadcrumb-container').hidden = !sco;
+        const list = this.header.querySelector('.breadcrumb'); list.replaceChildren();
+        if (sco) {
+            const item = node('li', null, { class: 'breadcrumb-item' });
+            item.append(button(frameworkLabel(framework), () => this.showFramework(framework.id), { class: 'btn btn-link p-0' })); list.append(item);
+            const module = this.catalog.modules.get(sco.moduleId);
+            if (module) { const entry = node('li', null, { class: 'breadcrumb-item' }); entry.append(button(module.label, () => this.showModule(module.id), { class: 'btn btn-link p-0' })); list.append(entry); }
+            list.append(node('li', sco.label, { class: 'breadcrumb-item active', 'aria-current': 'page', title: sco.label }));
+        }
+        this.updateExperience(); this.refreshGlossary(); this.updateLayout();
+    }
+    updateExperience() {
+        const target = this.header && this.header.querySelector('#template_xp');
+        if (target) { const value = this.getExperiencePoints(this.state.activeFrameworkId || this.preferredFramework()), label = (value === null ? '—' : value) + ' XP'; if (target.textContent !== label) target.textContent = label; }
+    }
+    getCourseProgress(scoId, absolute = false) {
+        const sco = this.catalog.scos.get(scoId), record = this.state.scoStates[scoId];
+        if (!sco || !record) return 0;
+        const controller = this.activeContext && this.activeContext.scoId === scoId && this.controllers.get(this.activeContext.launchId);
+        const models = controller && controller.Adapt && controller.Adapt.components && controller.Adapt.components.models;
+        if (models && models.length) {
+            const required = models.filter(model => model.get('_isAvailable') !== false && model.get('_isOptional') !== true && (typeof model.getAncestorModels !== 'function' || model.getAncestorModels().every(parent => parent.get('_isAvailable') !== false && parent.get('_isOptional') !== true)));
+            const completed = required.filter(model => model.get('_isComplete') === true).length;
+            if (required.length) return absolute ? completed : completed / required.length;
+        }
+        if (record.native && record.native.components) {
+            const components = Object.values(record.native.components).filter(value => value.required !== false && value.state && typeof value.state._isComplete === 'boolean');
+            if (components.length) { const completed = components.filter(value => value.state._isComplete).length; return absolute ? completed : completed / components.length; }
+        }
+        if (!absolute) return courseProgressValue(record, window);
+        if (!record.payload) return record.native?.complete ? null : 0;
+        if (!this.nativeProgressCache) this.nativeProgressCache = new Map();
+        const cached = this.nativeProgressCache.get(scoId);
+        if (cached && cached.payload === record.payload) return cached.completed;
+        let completed = null;
+        try {
+            const data = JSON.parse(record.payload), serializer = window.SCORMSuspendData;
+            if (courseProgressValue({ ...record, values: {}, native: null }, window) !== null && serializer && typeof serializer.deserialize === 'function') completed = spoorCourseProgress(data, value => serializer.deserialize(value), true);
+        } catch (_) { /* Unknown native payloads remain opaque, including XP. */ }
+        this.nativeProgressCache.set(scoId, { payload: record.payload, completed }); return completed;
+    }
+    getExperiencePoints(frameworkId) { const values = this.contract.scos.filter(sco => sco.frameworkId === frameworkId).map(sco => this.getCourseProgress(sco.id, true)); return values.some(value => value === null) ? null : values.reduce((sum, value) => sum + value, 0); }
+    observeLearningTime() {
+        const session = this.learningSession; if (!session) return;
+        const now = Date.now(), elapsed = Math.max(0, now - session.lastTick); session.lastTick = now;
+        if (session.visible && elapsed) {
+            const record = this.state.scoStates[session.scoId];
+            if (record) {
+                const date = new Date(now).toLocaleDateString('sv-SE');
+                if (!record.activityMs || typeof record.activityMs !== 'object' || Array.isArray(record.activityMs)) record.activityMs = {};
+                record.activityMs[date] = (Number.isFinite(record.activityMs[date]) && record.activityMs[date] >= 0 ? record.activityMs[date] : 0) + elapsed;
+                const xp = this.getExperiencePoints(record.frameworkId);
+                if (Number.isFinite(xp)) { if (!record.activityXP || typeof record.activityXP !== 'object' || Array.isArray(record.activityXP)) record.activityXP = {}; record.activityXP[date] = {value: xp, at: now}; }
+            }
+        }
+        session.visible = document.visibilityState !== 'hidden';
+    }
+    getLearningActivity(frameworkId) {
+        const days = new Map(), xpValues = new Map();
+        this.contract.scos.filter(sco => sco.frameworkId === frameworkId).forEach(sco => Object.entries(this.state.scoStates[sco.id]?.activityMs || {}).forEach(([date, milliseconds]) => {
+            if (/^\d{4}-\d{2}-\d{2}$/.test(date) && Number.isFinite(milliseconds) && milliseconds >= 0) {
+                days.set(date, (days.get(date) || 0) + milliseconds);
+                const xp = this.state.scoStates[sco.id]?.activityXP?.[date];
+                if (xp && Number.isFinite(xp.value) && xp.value >= 0 && Number.isFinite(xp.at) && (!xpValues.has(date) || xpValues.get(date).at < xp.at)) xpValues.set(date, xp);
+            }
+        }));
+        return [...days].sort(([a], [b]) => a.localeCompare(b)).map(([date, milliseconds]) => ({ date, minutes: milliseconds / 60000, ...(xpValues.has(date) ? {xp: xpValues.get(date).value} : {}) }));
+    }
+    renderView(_frame, path) {
+        if (path !== 'views/dashboard/index.html' && path !== 'views/courses/index.html') throw new Error('Diese Ansicht ist im Lernangebot nicht verfügbar.');
+        return this.showFramework(this.preferredFramework());
     }
     warn(message) { if (!this.warnings.includes(message)) this.warnings.push(message); this.renderWarnings(); }
     renderWarnings() {
         if (!this.notice) return; this.notice.replaceChildren();
-        this.warnings.forEach(message => this.notice.append(node('p', message, { role: 'alert' })));
+        this.warnings.filter(message => !message.startsWith('Paketrevision geändert:')).forEach(message => this.notice.append(node('p', message, { role: 'alert' })));
+        this.refreshFeedback();
     }
     renderStatus() {
         if (!this.statusElement) return;
         const status = this.storageStatus || this.transport.status;
-        this.statusElement.className = 'mf-storage mf-storage-' + status.kind;
-        this.statusElement.replaceChildren(node('span', status.message), button('Sicherung herunterladen', () => this.downloadBackup()));
+        this.statusElement.className = 'mf-storage mf-storage-' + status.kind + (status.overBudget ? ' mf-storage-over-budget' : '');
+        this.statusElement.querySelector('summary').setAttribute('aria-label', status.kind === 'error' ? 'Speichern fehlgeschlagen' : status.kind === 'lms' ? 'Im LMS gespeichert' : 'Lokal gespeichert');
+        this.statusElement.querySelector('summary').setAttribute('title', status.kind === 'error' ? status.message : status.kind === 'lms' ? 'Im LMS gespeichert' : status.overBudget ? 'Lokal gespeichert. LMS-Freigabe offen: Speicherbudget überschritten.' : 'Lokal gespeichert');
+        this.statusText.textContent = status.message;
+        if (this.storageAlert) { this.storageAlert.hidden = status.kind !== 'error'; this.storageAlert.replaceChildren(); if (status.kind === 'error') this.storageAlert.append(node('span', status.message), button('Sicherung herunterladen', () => this.downloadBackup(), { class: 'btn btn-outline-danger btn-sm' })); }
+        this.refreshFeedback();
     }
+    refreshFeedback() { if (this.feedback) { this.feedback.hidden = this.storageAlert.hidden && !this.notice.childNodes.length; this.updateLayout(); } }
     save() {
         if (this.loadBlocked || this.closed) return false;
+        this.observeLearningTime();
         const result = this.transport.save(this.state, progress(this.contract, this.state).complete);
         this.updateProgressLabels(); return result;
     }
@@ -92,25 +251,25 @@ export class MultiFrameworkApp {
     }
     closeCourse() {
         this.saveActive();
+        this.learningSession = null;
         if (this.launchHost) { this.launchHost.remove(); this.launchHost = null; }
         this.SCO_FRAME = null; this.activeContext = null; this.courseArea.hidden = true;
+        if (this.dashboardFrame) this.dashboardFrame.hidden = false;
     }
     resetContent() {
+        if (this.dashboardView && this.dashboardView.destroy) this.dashboardView.destroy(); this.dashboardView = null;
         this.charts.forEach(chart => chart.destroy && chart.destroy()); this.charts = [];
-        this.content.replaceChildren(); this.content.hidden = false;
+        this.content.replaceChildren(); this.content.className = ''; this.content.hidden = false;
+        if (this.dashboardFrame && typeof this.dashboardFrame.contentWindow.scrollTo === 'function') this.dashboardFrame.contentWindow.scrollTo(0, 0);
     }
     showFrameworks() {
+        return this.showFramework(this.preferredFramework());
+    }
+    showDiagnostics() {
         if (this.loadBlocked) return;
-        this.closeCourse(); this.resetContent(); this.state.activeFrameworkId = null; this.save();
-        this.content.append(node('h1', 'Alle Kompetenzrahmen'));
-        this.content.append(node('p', 'Die Lernkurse und Diagnoseergebnisse bleiben je Kompetenzrahmen getrennt. Der Paketabschluss umfasst alle Pflicht-Lernkurse.'));
-        const grid = node('div', null, { class: 'mf-cards' });
-        this.contract.frameworks.forEach(fw => {
-            const card = node('article', null, { class: 'mf-card', 'data-framework-id': fw.id });
-            card.append(node('h2', fw.label + ' · ' + fw.version), this.progressLabel(fw.id));
-            card.append(button('Kompetenzrahmen öffnen', () => this.showFramework(fw.id), { 'data-open-framework': fw.id })); grid.append(card);
-        });
-        this.content.append(grid, this.progressLabel(null)); this.renderMigration();
+        this.closeCourse(); this.resetContent(); this.statusElement.open = false;
+        this.content.setAttribute('data-view', 'tools'); this.content.append(node('h1', 'Technische Werkzeuge'), button('Zur Lernübersicht', () => this.showFramework(this.preferredFramework())));
+        this.renderMigration(); this.updateNavigation();
     }
     renderMigration() {
         const section = node('details', null, { 'data-section': 'migration' }); section.append(node('summary', 'Bekannten Altbestand migrieren'));
@@ -142,10 +301,21 @@ export class MultiFrameworkApp {
     updateProgressLabels() {
         if (!this.shell) return;
         this.shell.querySelectorAll('[data-progress-framework]').forEach(element => this.fillProgressLabel(element, element.getAttribute('data-progress-framework') === '*' ? null : element.getAttribute('data-progress-framework')));
+        this.updateExperience();
     }
     showFramework(frameworkId) {
+        if (this.loadBlocked) return;
         const framework = this.catalog.frameworks.get(frameworkId); if (!framework) throw new Error('Unbekannter Kompetenzrahmen.');
         this.closeCourse(); this.resetContent(); this.state.activeFrameworkId = frameworkId; this.save();
+        this.updateNavigation();
+        this.dashboardView = renderDashboard(this, frameworkId);
+    }
+    showModule(moduleId) {
+        const module = this.catalog.modules.get(moduleId); if (!module) throw new Error('Unbekanntes Modul.');
+        this.showFramework(module.frameworkId); this.resetContent(); renderCourseOverview(this, moduleId);
+    }
+    renderUnadaptedFramework(frameworkId) {
+        const framework = this.catalog.frameworks.get(frameworkId);
         this.content.append(node('h1', framework.label + ' · ' + framework.version), this.progressLabel(frameworkId));
         const bookmark = this.state.frameworkBookmarks[frameworkId];
         if (bookmark) this.content.append(button('Letzten Kurs fortsetzen', () => this.launchSCO(bookmark.scoId, bookmark.contentId), { 'data-resume-framework': frameworkId }));
@@ -225,6 +395,7 @@ export class MultiFrameworkApp {
         const path = launchPath(sco, location); // Validate before bookmark or iframe mutation.
         if (this.closed || this.loadBlocked) throw new Error('Laufzeit ist geschlossen oder wegen Speicherfehler gesperrt.');
         this.closeCourse(); this.resetContent(); this.content.hidden = true; this.courseArea.hidden = false;
+        this.dashboardFrame.hidden = true;
         this.state.activeFrameworkId = sco.frameworkId;
         const assessment = this.contract.assessments.find(as => as.scoId === sco.id);
         let context = { scoId, frameworkId: sco.frameworkId, role: sco.role, assessmentId: assessment ? assessment.id : null, launchId: uid() };
@@ -240,20 +411,20 @@ export class MultiFrameworkApp {
         context = Object.freeze({ ...context, attemptId: record.activeAttemptId || null });
         this.launchRecords.set(context.launchId, record);
         this.activeContext = context; this.state.frameworkBookmarks[sco.frameworkId] = { scoId, contentId: location || null };
-        this.courseArea.replaceChildren(); const toolbar = node('div', null, { class: 'mf-course-toolbar' });
-        toolbar.append(button('Zur Rahmenübersicht', () => this.showFramework(sco.frameworkId)), node('strong', this.catalog.frameworks.get(sco.frameworkId).label + ' · ' + sco.label));
-        if (assessment) toolbar.append(button('Testergebnis anzeigen', () => this.calculateActiveResult(), { 'data-action': 'test-result' }));
-        this.courseArea.append(toolbar);
+        this.courseArea.replaceChildren();
+        if (assessment) { const toolbar = node('div', null, { class: 'mf-course-toolbar' }); toolbar.append(button('Testergebnis anzeigen', () => this.calculateActiveResult(), { class: 'btn btn-outline-secondary btn-sm', 'data-action': 'test-result' })); this.courseArea.append(toolbar); }
         // Each launch has a permanent API-bearing parent window. A genuine outer
         // API is never overwritten, and an old SCO cannot acquire a new bridge.
-        const host = node('iframe', null, { class: 'mf-bridge-host', title: sco.label, 'data-sco-id': scoId, 'data-launch-id': context.launchId });
+        const host = node('iframe', null, { class: 'mf-bridge-host', title: sco.label, 'data-sco-id': scoId, 'data-launch-id': context.launchId, allowfullscreen: '' });
         this.launchHost = host; this.courseArea.append(host);
         const hostWindow = host.contentWindow, doc = host.contentDocument;
         doc.documentElement.lang = document.documentElement.lang; doc.body.style.margin = '0'; doc.documentElement.style.height = doc.body.style.height = '100%';
         hostWindow.App = this; hostWindow.__lxpLaunchContext = context; hostWindow.API = createBridge(this, context);
-        const frame = doc.createElement('iframe'); frame.id = 'sco-frame'; frame.title = sco.label; frame.style.cssText = 'border:0;width:100%;height:100%;display:block';
+        const frame = doc.createElement('iframe'); frame.id = 'sco-frame'; frame.title = sco.label; frame.setAttribute('allowfullscreen', ''); frame.style.cssText = 'border:0;width:100%;height:100%;display:block';
         doc.body.append(frame); this.SCO_FRAME = frame; this.contexts.set(frame.contentWindow, context);
         frame.addEventListener('load', () => this.bindChild(frame, context));
+        this.learningSession = { scoId, lastTick: Date.now(), visible: document.visibilityState !== 'hidden' };
+        this.updateNavigation(sco);
         frame.src = path; this.save(); return context;
     }
     bindChild(frame, context) {
@@ -316,9 +487,11 @@ export class MultiFrameworkApp {
     }
     showResult(attempt) {
         const report = reportData(this.contract, attempt); this.closeCourse(); this.resetContent();
-        this.content.append(button('Zur Rahmenübersicht', () => this.showFramework(attempt.frameworkId)), node('h1', report.framework + ' · ' + report.version + ' · ' + phaseLabel(report.phase)), node('p', `${report.score}/${report.maxScore} Punkte · ${report.percentage.toFixed(1)} %`), node('p', 'Dieser Bericht bezieht sich ausschließlich auf die tatsächlich enthaltenen Testfragen und die ausdrücklich zugeordneten Kursgruppen und didaktischen Domänen. Keine rahmenübergreifende Gesamtkompetenzwertung.'));
+        this.state.activeFrameworkId = attempt.frameworkId; this.updateNavigation();
+        this.content.setAttribute('data-view', 'results'); this.content.className = 'mf-results container-fluid py-3';
+        this.content.append(button('Zur Lernübersicht', () => this.showFramework(attempt.frameworkId)), node('h1', frameworkLabel(this.catalog.frameworks.get(attempt.frameworkId)) + ' · ' + phaseLabel(report.phase)), node('p', `${report.score}/${report.maxScore} Punkte · ${report.percentage.toFixed(1)} %`, { class: 'lead' }), node('p', 'Ergebnis der tatsächlich enthaltenen Testfragen. Die Auswertung gehört ausschließlich zu diesem Kompetenzrahmen.', { class: 'text-muted' }));
         const list = node('ul'); report.groups.forEach(group => list.append(node('li', `${group.kind}: ${group.label} · ${group.score}/${group.maxScore} · ${group.percentage.toFixed(1)} %`))); this.content.append(list);
-        this.content.append(button('Bericht als PDF herunterladen', () => this.downloadReport(attempt)), button('Rohdaten als JSON herunterladen', () => this.downloadJSON(report.filename + '.json', { ...report, attempt })));
+        this.content.append(button('Bericht als PDF herunterladen', () => this.downloadReport(attempt), { class: 'btn btn-success mr-2' }), button('Rohdaten als JSON herunterladen', () => this.downloadJSON(report.filename + '.json', { ...report, attempt }), { class: 'btn btn-secondary' }));
     }
     downloadReport(attempt) {
         const report = reportData(this.contract, attempt);

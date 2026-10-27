@@ -5,14 +5,19 @@
   "persistenceContract": 1,
   "launchContext": "explicit-sco-id",
   "implementationFiles": {
-    "css/multi-framework.css": "c29794f8e6b7f475dccb0c4303f9bfa60437bf5d920f265c9561417fc8b309b8",
-    "index.html": "ab0ea3f3364393664250490280f03915ec52c710baad9365f9fb50aedce450df",
+    "css/multi-framework.css": "2c410f5040d517569f7ebb044e731eb45a5beed5e57178e2bf55905166165331",
+    "index.html": "d9fbc19a6d78ab3a9d6e7bd9c64a431fca15728a085b75d2912b218038da21fe",
     "js/corePersistence.js": "004bfc4dc21f001ace438d6319d8dec147a60f8fbf5d62927bc7664f46980fcc",
+    "js/courseProgress.js": "9cf632c75dbfb2b85caf539583ad9b3cc5fcff0494a1c65dcb14241f75c7f63f",
     "js/multiAssessment.js": "150d8550c03d2bedf38fc8f29da93e367999ecc745542f27c8bd7caedea4cc00",
     "js/multiBridge.js": "d620a43e6f2f67943ebc582c72cf4e241ff4e69104dec93d2b163599eb5c1bfb",
     "js/multiContract.js": "adbd7626d2a6e269409283bc999f3f7656769ce418446dbf03d4e739fa32744e",
-    "js/multiFramework.js": "2245b9f9eba2e25c35c115523c9c4b338564e5e4d56f9f149e64b5163f9fbdaa",
-    "js/multiState.js": "b2a932964f60a837b219d5813e10c7cb4592c855443eda251b40e246b1aca536"
+    "js/multiDashboard.js": "7c9cc50ca7f8bc5fc217e527262b0ff51fe34664af508298d775e4b9db0c12f4",
+    "js/multiFramework.js": "30ce753bf58d2583694ae956de87698e43f374e245e35d123a6eb1d9aef70cce",
+    "js/multiState.js": "b2a932964f60a837b219d5813e10c7cb4592c855443eda251b40e246b1aca536",
+    "views/dashboard/css/bootstrap.min.css": "7633b7c0c97d19e682feee8afa2738523fcb2a14544a550572caeecd2eefe66b",
+    "views/dashboard/css/dashboard.css": "32411ebe2f23cba1354b15380f6a4c09a8bc468d7bc6c8085811faed0b078a98",
+    "views/dashboard/css/font-awesome.css": "659dceb233e6e352b3a088498fa6e1f8c3cd2e44cda18e0126aefb965e17f8c7"
   },
-  "implementationSha256": "05ea0777b66de7019523e654aad3df5dc5dd240cd1192d09632f1f4091baef5e"
+  "implementationSha256": "2d31e78fa67058ab778a3ac52eb7102eb28544236dcb8c74964af1f845e1bebd"
 }
