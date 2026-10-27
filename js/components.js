@@ -1,5 +1,6 @@
 'use strict'
 import { aggregateQuizBankScores, assessmentPercentage } from './assessmentScores.js';
+import { averageCourseProgress, boundedCourseProgress } from './courseProgress.js';
 
 export class GlossaryDropdown extends React.Component {
   constructor(props) {
@@ -196,6 +197,7 @@ export class CoursePathway extends React.Component {
 }
 
 function ProgressBar (score) {
+  score = boundedCourseProgress(score);
   return <span className="progress mb-n1 mr-3 progress-custom">
     <span id="progressbar"
     className="progress-bar bg-success"
@@ -273,7 +275,7 @@ export class CollapsibleCard extends React.Component {
         <div className="card-header" onClick={this.toggleOpen}>
           <h6 className={`card-title font-weight-bold mb-0 ${courses ? '' : 'mt-0'}`}>
             <div style={{float: "left", width: "90%"}}>{window.CONF.SCOS[mod].label}
-			{ProgressBar(Object.values(scores).reduce((a, b) => a + b, 0) / Object.values(scores).length, 'small')}</div>
+			{ProgressBar(averageCourseProgress(scores), 'small')}</div>
 			<div style={{float: "right", color: "darkgray"}}>{isOpen ? '▲' : '▼'}</div>
           </h6>
         </div>

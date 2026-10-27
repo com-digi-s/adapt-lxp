@@ -1,7 +1,8 @@
 'use strict'
 import * as adaptHelpers from './adaptHelpers.js'
 import { createSCOBridge, installSCOBridge } from './scormBridge.js'
-import { attachCorePersistence, nativeCourseProgress } from './corePersistence.js'
+import { attachCorePersistence, nativeCourseProgress, allSelectedCoursesComplete } from './corePersistence.js'
+import { courseScoresOfModule, averageCourseProgress, sumCourseScores } from './courseProgress.js'
 import * as jQuery from '../libraries/jquery-2.2.4.min.js'
 
 import {
@@ -556,64 +557,31 @@ export class App {
 	}
 	
     calculateCourseScoresOfModule(id, absolute = false) {
-        let scores = {};
-        // get all courses for module from config
-        if (typeof window.CONF.SCOS[id].courses !== 'undefined') {
-            window.CONF.SCOS[id].courses.forEach((course) => {
-                const compCourseId = id + '.' + course.id;
-                scores[course.id] = this.calculateScore(compCourseId, absolute);
-            })
-        } else {
-            scores = {
-                0: this.calculateScore(id, absolute)
-            }
-        }
-
-        return scores
+        return courseScoresOfModule(window.CONF.SCOS, id, (courseId, absolute) => this.calculateScore(courseId, absolute), absolute);
     }
 
     calculateAverageModuleScores() {
         const averageModuleScores = {};
 
-        Object.values(window.CONF.SCOS).forEach((module) => {
-            const progressModule = this.calculateCourseScoresOfModule(module.id);
-			let averageScore = 0;
-
-			Object.values(progressModule).forEach((courseScore) => {
-				averageScore += courseScore;
-			})
-
-			averageModuleScores[module.id] = averageScore / Object.values(progressModule).length;
+        Object.keys(window.CONF.SCOS).forEach((id) => {
+			averageModuleScores[id] = averageCourseProgress(this.calculateCourseScoresOfModule(id));
         })
 
         return averageModuleScores;
     }
 	
 	checkAllCoursesCompletion() {
-		const adaptData = this.DATA["cmi.suspend_data"].adaptData;
-		let allCoursesCompleted = true;
-
-		for (const courseId in adaptData) {
-			if (adaptData.hasOwnProperty(courseId)) {
-				const isCourseCompleted = this.isCompleted(courseId);
-
-				if (!isCourseCompleted) {
-					allCoursesCompleted = false;
-				}
-			}
-		}
-
-		return allCoursesCompleted;
+		return allSelectedCoursesComplete(window.CONF.SCOS, id => this.isCompleted(id));
 	}
 
     calculateXP() {
         const scores = {};
 
         Object.keys(window.CONF.SCOS).forEach((id) => {
-            scores[id] = Object.values(this.calculateCourseScoresOfModule(id, true)).reduce((a, b) => a + b)
+            scores[id] = sumCourseScores(this.calculateCourseScoresOfModule(id, true));
         });
 
-        const xp = Object.values(scores).reduce((a, b) => a + b);
+        const xp = sumCourseScores(scores);
 
         return xp.toFixed(0);
     }

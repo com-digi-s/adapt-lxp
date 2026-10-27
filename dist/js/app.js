@@ -6,7 +6,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 import * as adaptHelpers from './adaptHelpers.js';
 import { createSCOBridge, installSCOBridge } from './scormBridge.js';
-import { attachCorePersistence, nativeCourseProgress } from './corePersistence.js';
+import { attachCorePersistence, nativeCourseProgress, allSelectedCoursesComplete } from './corePersistence.js';
+import { courseScoresOfModule, averageCourseProgress, sumCourseScores } from './courseProgress.js';
 import * as jQuery from '../libraries/jquery-2.2.4.min.js';
 
 import { timeIntToString } from './utils.js';
@@ -586,20 +587,7 @@ export var App = function () {
 
 			var absolute = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-			var scores = {};
-			// get all courses for module from config
-			if (typeof window.CONF.SCOS[id].courses !== 'undefined') {
-				window.CONF.SCOS[id].courses.forEach(function (course) {
-					var compCourseId = id + '.' + course.id;
-					scores[course.id] = _this4.calculateScore(compCourseId, absolute);
-				});
-			} else {
-				scores = {
-					0: this.calculateScore(id, absolute)
-				};
-			}
-
-			return scores;
+			return courseScoresOfModule(window.CONF.SCOS, id, function (courseId, absolute) { return _this4.calculateScore(courseId, absolute); }, absolute);
 		}
 	}, {
 		key: 'calculateAverageModuleScores',
@@ -608,15 +596,8 @@ export var App = function () {
 
 			var averageModuleScores = {};
 
-			Object.values(window.CONF.SCOS).forEach(function (module) {
-				var progressModule = _this5.calculateCourseScoresOfModule(module.id);
-				var averageScore = 0;
-
-				Object.values(progressModule).forEach(function (courseScore) {
-					averageScore += courseScore;
-				});
-
-				averageModuleScores[module.id] = averageScore / Object.values(progressModule).length;
+			Object.keys(window.CONF.SCOS).forEach(function (id) {
+				averageModuleScores[id] = averageCourseProgress(_this5.calculateCourseScoresOfModule(id));
 			});
 
 			return averageModuleScores;
@@ -624,20 +605,8 @@ export var App = function () {
 	}, {
 		key: 'checkAllCoursesCompletion',
 		value: function checkAllCoursesCompletion() {
-			var adaptData = this.DATA["cmi.suspend_data"].adaptData;
-			var allCoursesCompleted = true;
-
-			for (var courseId in adaptData) {
-				if (adaptData.hasOwnProperty(courseId)) {
-					var isCourseCompleted = this.isCompleted(courseId);
-
-					if (!isCourseCompleted) {
-						allCoursesCompleted = false;
-					}
-				}
-			}
-
-			return allCoursesCompleted;
+			var app = this;
+			return allSelectedCoursesComplete(window.CONF.SCOS, function (id) { return app.isCompleted(id); });
 		}
 	}, {
 		key: 'calculateXP',
@@ -647,14 +616,10 @@ export var App = function () {
 			var scores = {};
 
 			Object.keys(window.CONF.SCOS).forEach(function (id) {
-				scores[id] = Object.values(_this6.calculateCourseScoresOfModule(id, true)).reduce(function (a, b) {
-					return a + b;
-				});
+				scores[id] = sumCourseScores(_this6.calculateCourseScoresOfModule(id, true));
 			});
 
-			var xp = Object.values(scores).reduce(function (a, b) {
-				return a + b;
-			});
+			var xp = sumCourseScores(scores);
 
 			return xp.toFixed(0);
 		}

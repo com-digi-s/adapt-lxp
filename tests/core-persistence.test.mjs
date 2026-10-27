@@ -40,7 +40,24 @@ function appFixture() {
 
 for (const root of ['../js', '../dist/js']) {
     const source = await readFile(new URL(`${root}/corePersistence.js`, import.meta.url), 'utf8');
-    const { attachCorePersistence, allowedAttemptState, nativeCourseProgress } = await import('data:text/javascript;base64,' + Buffer.from(source).toString('base64'));
+    const { attachCorePersistence, allowedAttemptState, nativeCourseProgress, allSelectedCoursesComplete } = await import('data:text/javascript;base64,' + Buffer.from(source).toString('base64'));
+
+    test(`${root}: overall completion requires every enabled selected learning course, not visited diagnostics`, () => {
+        const modules = { M0: { enabled: true }, MX: { enabled: true },
+            M4: { enabled: true, courses: [{id:'1',disabled:true},{id:'2',enabled:true},{id:'3',enabled:true}] },
+            M1: {disabled:true,courses:[{id:'1',enabled:true}]} };
+        const seen=[];
+        assert.equal(allSelectedCoursesComplete(modules,id=>{seen.push(id);return id==='M4.2';}),false);
+        assert.deepEqual(seen,['M4.2','M4.3']);
+        assert.equal(allSelectedCoursesComplete(modules,()=>true),true);
+        assert.equal(allSelectedCoursesComplete(modules,()=>false),false);
+        assert.equal(allSelectedCoursesComplete({},()=>true),false);
+        assert.equal(allSelectedCoursesComplete({M0:{enabled:true},MX:{enabled:true}},()=>true),false);
+        const legacy={M4:{disabled:false,enabled:false,courses:[{id:'1',disabled:false,enabled:false},{id:'2',disabled:true,enabled:true}]}};
+        const legacyIds=[];
+        assert.equal(allSelectedCoursesComplete(legacy,id=>{legacyIds.push(id);return true;}),true);
+        assert.deepEqual(legacyIds,['M4.1'],'completion uses the same disabled-authoritative contract as the existing catalogue UI');
+    });
 
     test(`${root}: native dashboard progress is finite 0/50/100 and ignores optional/unavailable content`, () => {
         const app = appFixture();
@@ -60,6 +77,8 @@ for (const root of ['../js', '../dist/js']) {
         assert.equal(nativeCourseProgress(app.DATA, 'M0', true), 2);
         records.components = {};
         assert.equal(nativeCourseProgress(app.DATA, 'M0', false), 0);
+        records.complete = true;
+        assert.equal(nativeCourseProgress(app.DATA, 'M0', false), 1, 'all-optional courses respect actual Core course completion');
     });
 
     test(`${root}: partial real-model choice state roundtrips per SCO, without grading/submitting`, () => {

@@ -73,8 +73,10 @@ test('shared source and delivered scoring helper are byte-identical', async () =
 test('delivered React result report emits only genuine module/domain values, never NaN', async () => {
     const scoresSource = await readFile(new URL('../dist/js/assessmentScores.js', import.meta.url), 'utf8');
     const scoresURL = 'data:text/javascript;base64,' + Buffer.from(scoresSource).toString('base64');
+    const progressURL = 'data:text/javascript;base64,' + Buffer.from(await readFile(new URL('../dist/js/courseProgress.js', import.meta.url), 'utf8')).toString('base64');
     const componentSource = (await readFile(new URL('../dist/js/components.js', import.meta.url), 'utf8'))
-        .replace("'./assessmentScores.js'", JSON.stringify(scoresURL));
+        .replace("'./assessmentScores.js'", JSON.stringify(scoresURL))
+        .replace("'./courseProgress.js'", JSON.stringify(progressURL));
     const old = { React: globalThis.React, window: globalThis.window, Image: globalThis.Image };
     const reports = [];
     globalThis.React = {
