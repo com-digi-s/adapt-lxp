@@ -8,11 +8,11 @@
     "css/multi-framework.css": "c29794f8e6b7f475dccb0c4303f9bfa60437bf5d920f265c9561417fc8b309b8",
     "index.html": "a3953eefc27b634af8c3e52bfee60120d7d744ee52edb4d77b9c0964267ebfa2",
     "js/corePersistence.js": "004bfc4dc21f001ace438d6319d8dec147a60f8fbf5d62927bc7664f46980fcc",
-    "js/multiAssessment.js": "1e981532a39e94e6403b6e9d32da63e4e267bacd1ad043e3a7690c7c58825f94",
+    "js/multiAssessment.js": "150d8550c03d2bedf38fc8f29da93e367999ecc745542f27c8bd7caedea4cc00",
     "js/multiBridge.js": "39b293b92f5f398b926f3dbd51e04ae6d3591f34c9fc948558fef5448cb0e540",
     "js/multiContract.js": "b89b12a1494ea3273306cf9cf11e7dbe0bbbe19e9953024854ad3d66a22fe656",
     "js/multiFramework.js": "370512d415ff4f39551f5a87f776a1eb88e86c2514f24076f75b563b7e1699e7",
     "js/multiState.js": "1c22e8904dffc60b07bb6517194f73bad2dd9ab1f82b2b1cdc8e6f3e0914396a"
   },
-  "implementationSha256": "ef88163207f16bdfd58ebba8e4a92877dbac9bb01f8e1491fc8bdc33af4218c9"
+  "implementationSha256": "58737a6e8017e8df0bb8552615f2e2a67897c9a89f1bbc58cf077a325f52103c"
 }

@@ -12,10 +12,15 @@ function score(model) {
         maximum = correct.filter(Boolean).length * weight;
         points = correct.filter((value, i) => value && answers[i] === true).length * weight;
     } else if (type === 'infai-dragndrop') {
-        let offset = 0;
-        items.forEach((item, i) => {
-            const accepted = (item.accepted || []).map(() => offset++); maximum += accepted.length * weight;
-            if (accepted.includes(answers[i])) points += weight;
+        let offset = 0, answerOffset = 0;
+        items.forEach(item => {
+            if (!Array.isArray(item.accepted)) throw new Error('Nicht normalisierte Drag-and-drop-Zuordnung.');
+            const accepted = item.accepted.map(() => offset++); maximum += accepted.length * weight;
+            // Native answers are flattened slots per drop group, not one answer
+            // per item. Each accepted source index may earn points only once.
+            const choices = new Set(answers.slice(answerOffset, answerOffset + accepted.length));
+            points += accepted.filter(index => choices.has(index)).length * weight;
+            answerOffset += accepted.length;
         });
     } else if (type === 'slider' || type === 'textinput') {
         maximum = Number.isFinite(model.maxScore) ? model.maxScore : attr(model, '_maxScore');

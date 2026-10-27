@@ -46,4 +46,12 @@ for(const root of ['../js','../dist/js']){
             const result=collectAssessment(c,context,[q],blocks);assert.equal(result.score,.5);assert.equal(result.maxScore,2);
         }
     });
+    test(`${root}: native flattened drag-and-drop slots grade full/partial/zero without duplicate source credit`,()=>{
+        const c=setup(),context={scoId:'test-ai',frameworkId:'fw-ai',role:'entry',assessmentId:'as-ai'},blocks=[model({_id:'b',_assessment:{_quizBankID:111}})];
+        c.questions.find(q=>q.id==='q-fw-ai').component='infai-dragndrop';c.questions.find(q=>q.id==='q-fw-ai').maxPoints=6;c.assessments.find(as=>as.id==='as-ai').banks[0].maxPoints=6;
+        const q=model({_id:'same-runtime-id',_parentId:'b',_component:'infai-dragndrop',_isSubmitted:true,_questionWeight:2,_items:[{accepted:['first','second']},{accepted:['third']}],_userAnswer:[1,0,2]});
+        assert.equal(collectAssessment(c,context,[q],blocks).score,6);
+        q.attributes._userAnswer=[1,1,2];assert.equal(collectAssessment(c,context,[q],blocks).score,4);
+        q.attributes._userAnswer=[2,2,0];assert.equal(collectAssessment(c,context,[q],blocks).score,0);
+    });
 }
