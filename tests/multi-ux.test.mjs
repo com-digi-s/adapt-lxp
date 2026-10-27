@@ -217,6 +217,15 @@ for(const root of ['../js','../dist/js']){
         renderDashboard(app,'fw-ai');const missing=content.querySelector('#template_entryTest');assert.ok(missing.querySelector('[data-diagnostic-status="notProvided"]'));assert.equal(missing.querySelector('[data-launch-sco]'),null);assert.doesNotMatch(missing.textContent,/0\s*%|0\/\d|bestanden|abgeschlossen/i);assert.equal(buildDashboardModel(app,'fw-ai').diagnostics.entry.attempts.length,0);
     }));
 
+    test(root+': pathway flags retain distinct explicit module and course numbers',async()=>withDOM(async({document})=>{
+        const {renderDashboard}=await loadModule('multiDashboard',root),{createState}=await loadModule('multiState',root),contract=uxFixture(),other={...structuredClone(contract.scos[0]),id:'opaque-second-module-course',moduleId:'opaque-second-module'};
+        contract.modules.push({id:other.moduleId,frameworkId:'fw-dig',number:'9',label:'Other module'});contract.scos.push(other);contract.pathways.push({id:'opaque-cross-module-path',frameworkId:'fw-dig',label:'Two modules',courseIds:['opaque-dig',other.id]});
+        const content=document.createElement('section');document.body.append(content);const calls=[],app={contract,state:createState(contract),content,charts:[],launchSCO:id=>calls.push(id)};
+        renderDashboard(app,'fw-dig');assert.deepEqual(content.querySelectorAll('.milestone-label').map(control=>control.textContent),['M5.10','M9.10'],'Duplicate course numbers stay unambiguous across modules without parsing opaque IDs');
+        const flag=content.querySelector('[data-pathway-id="opaque-cross-module-path"] [data-launch-sco="opaque-second-module-course"]');assert.match(flag.getAttribute('aria-label'),/^M9\.10 /);flag.click();assert.equal(calls.at(-1),other.id);
+        renderDashboard(app,'fw-ai');assert.equal(content.querySelector('.milestone-label').textContent,'1.10','Other frameworks retain explicit numbers without a misleading DigComp M-prefix');
+    }));
+
     test(root+': init keeps the actual original navbar and presentation iframe, adds only compact framework selection',async()=>withDOM(async({document,window})=>{
         const {MultiFrameworkApp}=await loadModule('multiFramework',root),contract=uxFixture(),selectors=['header','#main-navbar','.navbar-brand','#template_glossary','#breadcrumb-container','#startBoarding','#template_xp','#sco-frame'],originals=new Map(selectors.map(selector=>[selector,document.querySelector(selector)]));for(const[selector,node]of originals)assert.ok(node,'Original index actually contains '+selector);
         const app=new MultiFrameworkApp(contract,{api:null,storage:memory(),environment:window});window.App=app;seed(app);app.init();

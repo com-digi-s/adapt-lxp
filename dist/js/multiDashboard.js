@@ -184,9 +184,11 @@ function pathways(doc, app, model) {
     model.pathways.forEach(path => {
         const view = element(doc, 'div', null, {class: 'pathway', 'data-pathway-id': path.id}), list = element(doc, 'ul', null, {class: 'list-inline'}); view.append(element(doc, 'h5', path.label, {class: 'pathway-title'}));
         path.courses.forEach((course, index) => {
-            const item = element(doc, 'li', null, {class: 'list-inline-item milestone' + (index < path.courses.length - 1 ? ' milestone-with-line' : ''), role: 'button', tabindex: 0, 'data-launch-sco': course.id, 'aria-label': course.label});
+            const module = model.modules.find(candidate => candidate.id === course.moduleId);
+            const label = (model.framework.prefix === 'DigComp' ? 'M' : '') + module.number + '.' + course.number;
+            const item = element(doc, 'li', null, {class: 'list-inline-item milestone' + (index < path.courses.length - 1 ? ' milestone-with-line' : ''), role: 'button', tabindex: 0, 'data-launch-sco': course.id, 'aria-label': label + ' ' + course.label});
             const icon = element(doc, 'div', null, {class: 'milestone-icon' + (course.complete ? ' completed' : '')}); icon.append(element(doc, 'i', null, {class: 'fa fa-flag text-secondary', 'aria-hidden': 'true'}));
-            item.append(icon, element(doc, 'div', course.number, {class: 'milestone-label'})); item.setAttribute('title', course.label);
+            item.append(icon, element(doc, 'div', label, {class: 'milestone-label'})); item.setAttribute('title', label + ' ' + course.label);
             const launch = safely(app, () => app.launchSCO(course.id)); item.addEventListener('click', launch); item.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') launch(event); }); list.append(item);
         }); view.append(list); container.append(view);
     }); card.append(container); section.append(card); return section;
