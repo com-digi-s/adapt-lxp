@@ -262,10 +262,15 @@ export class MultiFrameworkApp {
         try {
             childWindow.addEventListener('hashchange', () => { this.captureLocation(context, childWindow); this.save(); });
             childWindow.addEventListener('beforeunload', () => { const controller = this.controllers.get(context.launchId); if (controller && controller.save) controller.save(); this.captureLocation(context, childWindow); this.save(); });
+            // Published bundles attach through the injected bootstrap before
+            // iframe load. Their internal __AMD modules are not necessarily in
+            // the public RequireJS registry. Never request a guessed URL.
+            if (this.controllers.has(context.launchId)) return;
             const loader = childWindow.require;
-            if (typeof loader === 'function') loader(['core/js/adapt'], Adapt => this.attachAdaptPersistence(Adapt, childWindow), () => {
-                try { const Adapt = loader('coreJS/adapt'); if (Adapt) this.attachAdaptPersistence(Adapt, childWindow); } catch (_) { /* Bootstrap may attach later. */ }
-            });
+            if (typeof loader === 'function' && typeof loader.defined === 'function') {
+                const name = ['core/js/adapt', 'coreJS/adapt'].find(id => loader.defined(id));
+                if (name) this.attachAdaptPersistence(loader(name), childWindow);
+            }
         } catch (error) { this.warn(`Kursanbindung fehlgeschlagen: ${error.message}`); }
     }
     attachAdaptPersistence(Adapt, childWindow) {
