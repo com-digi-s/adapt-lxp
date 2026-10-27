@@ -100,6 +100,29 @@ for (const root of ['../js', '../dist/js']) {
         assert.deepEqual(reportData(contract,attempt).domains.map(domain=>domain.label), ['Verstehen','Anwenden','Bewerten']);
         assert.deepEqual(attempt,before);
     });
+    test(root + ': omitted areas remain explicitly not assessed in scoped screen and PDF reports, never scored as zero', async () => {
+        const {contract,attempt}=example(),before=structuredClone(attempt),recording=pdfRecorder();
+        contract.modules.push({id:'unasked-module',frameworkId:'fw-ai',number:'2',label:'Unasked module'});
+        contract.scos.push({id:'unasked-course-one',frameworkId:'fw-ai',role:'learning',moduleId:'module-fw-ai',number:'11',label:'Unasked course in partly assessed module'},
+            {id:'unasked-course-two',frameworkId:'fw-ai',role:'learning',moduleId:'unasked-module',number:'1',label:'Unasked course in unassessed module'});
+        contract.domains.push({id:'a',frameworkId:'fw-ai',label:'Anwenden'});
+        const report=reportData(contract,attempt);
+        assert.deepEqual(report.unassessed.modules.map(value=>value.id),['unasked-module']);
+        assert.deepEqual(report.unassessed.courses.map(value=>value.id),['unasked-course-one','unasked-course-two']);
+        assert.deepEqual(report.unassessed.domains.map(value=>value.id),['a']);
+        assert.equal(report.modules.length,1);assert.equal(report.courses.length,1);assert.equal(report.domains.length,1);
+        assert.doesNotMatch(JSON.stringify(report.unassessed),/score|maxScore|percentage|fw-dig|opaque-dig|Foreign domain/);
+        const app=application(contract);renderResult(app,attempt);
+        const section=app.content.querySelector('[data-report-unassessed]');assert.ok(section);
+        assert.match(section.innerText,/Nicht geprüfte Bereiche.*Nicht geprüft bedeutet nicht 0 %/);
+        assert.match(section.innerText,/Unasked module/);assert.match(section.innerText,/Unasked course in partly assessed module/);assert.match(section.innerText,/Anwenden/);
+        assert.equal(app.content.querySelectorAll('[data-report-module]').length,1);assert.equal(app.content.querySelectorAll('[data-report-domain]').length,1);
+        await downloadResultPDF(app,attempt,{PDF:recording.PDF,loadImage});
+        const text=recording.records.filter(record=>record.kind==='text').map(record=>record.value).join(' ');
+        assert.match(text,/Nicht geprüfte Bereiche/);assert.match(text,/Nicht geprüft bedeutet nicht 0 %/);assert.match(text,/Unasked module/);assert.match(text,/Anwenden/);assert.doesNotMatch(text,/DigComp|Foreign domain/);
+        assert.equal(recording.records.filter(record=>record.kind==='rect').length,2,'Unasked areas do not acquire result tiles');
+        assert.deepEqual(attempt,before);
+    });
     test(root + ': PDF contains actual branded layout, module/domain boxes, anonymous default and explicit framework', async () => {
         const { contract, attempt } = example(), app = application(contract), recording = pdfRecorder(); renderResult(app, attempt);
         const result = await downloadResultPDF(app, attempt, { PDF: recording.PDF, loadImage });

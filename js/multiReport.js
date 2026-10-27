@@ -7,6 +7,8 @@ const percent = value => value.toLocaleString('de-DE', { minimumFractionDigits: 
 const frameworkLabel = report => report.framework.includes(report.version) ? report.framework : report.framework + ' · ' + report.version;
 const scope = 'Die Werte beziehen sich auf die enthaltenen Testfragen, nicht auf den gesamten Kompetenzrahmen.';
 const domainDescription = 'Verstehen: Zusammenhänge erkennen. Anwenden: Wissen in Situationen einsetzen. Bewerten: Entscheidungen begründen und kritisch prüfen.';
+const unassessedDescription = 'Für diese Bereiche enthält dieser Test keine Fragen. Nicht geprüft bedeutet nicht 0 %.';
+const unassessedKinds = [['modules', 'Module'], ['courses', 'Kurse'], ['domains', 'Kognitive Domänen']];
 const logos = [
     { file: 'digitaks-logo.png', label: 'DigiTaKS*' },
     { file: 'dtecbw-logo.png', label: 'dtec.bw' },
@@ -74,6 +76,18 @@ export function renderResult(app, attempt) {
     const list = node(doc, 'ul', null, { class: 'mt-2' });
     report.courses.forEach(value => list.append(node(doc, 'li', `${value.label}: ${value.score}/${value.maxScore} Punkte · ${percent(value.percentage)}`)));
     details.append(list); content.append(details, node(doc, 'p', scope, { class: 'text-muted mf-report-scope' }));
+    if (unassessedKinds.some(([kind]) => report.unassessed[kind].length)) {
+        const excluded = node(doc, 'details', null, { class: 'mf-report-course-details', 'data-report-unassessed': '' });
+        excluded.append(node(doc, 'summary', 'Nicht geprüfte Bereiche'), node(doc, 'p', unassessedDescription, { class: 'text-muted mt-2' }));
+        unassessedKinds.forEach(([kind, title]) => {
+            if (!report.unassessed[kind].length) return;
+            excluded.append(node(doc, 'h3', title, { class: 'h6' }));
+            const list = node(doc, 'ul');
+            report.unassessed[kind].forEach(value => list.append(node(doc, 'li', (kind === 'modules' ? 'Modul ' + value.number + ' · ' : '') + value.label)));
+            excluded.append(list);
+        });
+        content.append(excluded);
+    }
     const footer = node(doc, 'footer', null, { class: 'mf-report-footer' });
     footer.append(node(doc, 'p', 'ComDigiS* wurde im Rahmen des Verbundprojekts DigiTaKS* entwickelt.', { class: 'text-muted' }));
     const partners = node(doc, 'div', null, { class: 'mf-report-partners' });
@@ -156,6 +170,14 @@ export async function downloadResultPDF(app, attempt, options = {}) {
         if (report.domains.every(value => ['verstehen', 'anwenden', 'bewerten'].includes(value.label.toLocaleLowerCase()))) paragraph(domainDescription);
         section('Kognitive Domänen', report.domains, 'domains');
         paragraph(scope, 9);
+        if (unassessedKinds.some(([kind]) => report.unassessed[kind].length)) {
+            if (y + 22 > bottom) nextPage();
+            paragraph('Nicht geprüfte Bereiche', 13);
+            paragraph(unassessedDescription, 9);
+            unassessedKinds.forEach(([kind, title]) => {
+                if (report.unassessed[kind].length) paragraph(title + ': ' + report.unassessed[kind].map(value => (kind === 'modules' ? 'Modul ' + value.number + ' – ' : '') + value.label).join('; '), 9);
+            });
+        }
         const pages = page;
         for (let index = 1; index <= pages; index++) {
             doc.setPage(index); doc.setTextColor(90, 90, 90);

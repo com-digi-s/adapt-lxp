@@ -107,7 +107,15 @@ export function reportData(contract, attempt) {
     const totalsAgree = values => ['score', 'maxScore'].every(key => Math.abs(values.reduce((sum, value) => sum + value[key], 0) - attempt[key]) < 0.000001);
     if (!valid(attempt) || expectedCourses.size || expectedDomains.size || !totalsAgree(courses) || !totalsAgree(domains)) throw new Error('Unvollständige oder widersprüchliche Berichtsgruppen.');
     const moduleGroups = [...modules.values()].sort((a, b) => BigInt(a.number) < BigInt(b.number) ? -1 : BigInt(a.number) > BigInt(b.number) ? 1 : 0).map(value => ({ ...value, percentage: percentage(value) }));
+    // A bounded assessment is not a score for every selected learning course.
+    // Excluded areas carry labels only, never inferred zero-point results.
+    const assessedCourses = new Set(courses.map(course => course.id)), assessedDomains = new Set(domains.map(domain => domain.id));
+    const unassessed = {
+        modules: contract.modules.filter(module => module.frameworkId === framework.id && !modules.has(module.id)).map(module => ({id:module.id, number:module.number, label:module.label})),
+        courses: contract.scos.filter(course => course.frameworkId === framework.id && course.role === 'learning' && !assessedCourses.has(course.id)).map(course => ({id:course.id, moduleId:course.moduleId, number:course.number, label:course.label})),
+        domains: contract.domains.filter(domain => domain.frameworkId === framework.id && !assessedDomains.has(domain.id)).map(domain => ({id:domain.id, label:domain.label}))
+    };
     const safe = value => String(value).replace(/[^a-zA-Z0-9_-]/g, '_');
-    return { frameworkId: framework.id, frameworkPrefix: framework.prefix, framework: framework.label, version: framework.version, phase: assessment.phase, score: attempt.score, maxScore: attempt.maxScore, percentage: percentage(attempt), groups, modules: moduleGroups, courses, domains,
+    return { frameworkId: framework.id, frameworkPrefix: framework.prefix, framework: framework.label, version: framework.version, phase: assessment.phase, score: attempt.score, maxScore: attempt.maxScore, percentage: percentage(attempt), groups, modules: moduleGroups, courses, domains, unassessed,
         filename: `Ergebnis-${safe(framework.id)}-${safe(framework.version)}-${safe(assessment.phase)}-${safe(attempt.attemptId || 'attempt')}` };
 }
