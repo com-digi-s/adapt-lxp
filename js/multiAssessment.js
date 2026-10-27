@@ -8,9 +8,25 @@ function score(model) {
     if (type === 'mcq' || type === 'gmcq') {
         items.forEach((item, i) => { if (item._shouldBeSelected) maximum += weight; if (answers[i] === true) points += item._shouldBeSelected ? weight : -weight; });
     } else if (type === 'matching') {
-        const correct = items.flatMap(item => (item._options || []).map(option => option._isCorrect === true));
-        maximum = correct.filter(Boolean).length * weight;
-        points = correct.filter((value, i) => value && answers[i] === true).length * weight;
+        // Native MatchingModel sets _selectable = _items.length, and
+        // setActiveOption deselects every other option in that same row.
+        // Several _isCorrect options are ALTERNATIVES, not extra score slots.
+        // See published Adapt 5.22.6 / MatchingModel (ComDigiS M3/3).
+        if (!Array.isArray(items) || !items.length || !Array.isArray(answers)) throw new Error('Ungültige Matching-Antwort.');
+        const optionCount = items.reduce((total, item) => total + (Array.isArray(item._options) ? item._options.length : 0), 0);
+        if (answers.length !== optionCount && answers.length !== 0) throw new Error('Unvollständiger Matching-Antwortvektor.');
+        if (!answers.every(value => typeof value === 'boolean')) throw new Error('Ungültiger Matching-Antwortvektor.');
+        let offset = 0;
+        maximum = items.length * weight;
+        items.forEach(item => {
+            const options = item._options;
+            if (!Array.isArray(options) || !options.length || !options.some(option => option._isCorrect === true)) throw new Error('Matching-Zeile ohne gültige Zuordnung.');
+            const selected = options.filter((option, index) => answers[offset + index] === true);
+            offset += options.length;
+            if (selected.length > 1) throw new Error('Mehrfachauswahl in einer Matching-Zeile ist nicht zulässig.');
+            if (attr(model, '_isSubmitted') === true && selected.length !== 1) throw new Error('Abgegebene Matching-Antwort enthält eine unbeantwortete Zeile.');
+            if (selected.length === 1 && selected[0]._isCorrect === true) points += weight;
+        });
     } else if (type === 'infai-dragndrop') {
         let offset = 0, answerOffset = 0;
         items.forEach(item => {
