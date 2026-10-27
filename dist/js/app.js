@@ -7,7 +7,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 import * as adaptHelpers from './adaptHelpers.js';
 import { createSCOBridge, installSCOBridge } from './scormBridge.js';
 import { attachCorePersistence, nativeCourseProgress, allSelectedCoursesComplete } from './corePersistence.js';
-import { courseScoresOfModule, averageCourseProgress, sumCourseScores } from './courseProgress.js';
+import { courseScoresOfModule, averageCourseProgress, sumCourseScores, spoorCourseProgress } from './courseProgress.js';
 import { scoLaunchPath, scoIdForLaunch } from './scoLaunch.js';
 import * as jQuery from '../libraries/jquery-2.2.4.min.js';
 
@@ -558,21 +558,9 @@ export var App = function () {
 			var absolute = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 			var nativeProgress = nativeCourseProgress(this.DATA, id, absolute);
 			if (nativeProgress !== null) return nativeProgress;
-
-			if (typeof this.DATA['cmi.suspend_data'].adaptData[id] !== 'undefined') {
-				if (typeof this.DATA['cmi.suspend_data'].adaptData[id].q !== 'undefined') {
-					var score = 0;
-
-					var componentStates = this.getComponentStates(id);
-					componentStates.forEach(function (q) {
-						score += q[2][1].filter(Boolean).length / q[2][1].length;
-					});
-
-					return absolute ? score : score / componentStates.length;
-				}
-			}
-
-			return 0;
+			return spoorCourseProgress(this.DATA['cmi.suspend_data'].adaptData[id], function (value) {
+				return window.SCORMSuspendData.deserialize(value);
+			}, absolute);
 		}
 	}, {
 		key: 'isCompleted',

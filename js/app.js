@@ -2,7 +2,7 @@
 import * as adaptHelpers from './adaptHelpers.js'
 import { createSCOBridge, installSCOBridge } from './scormBridge.js'
 import { attachCorePersistence, nativeCourseProgress, allSelectedCoursesComplete } from './corePersistence.js'
-import { courseScoresOfModule, averageCourseProgress, sumCourseScores } from './courseProgress.js'
+import { courseScoresOfModule, averageCourseProgress, sumCourseScores, spoorCourseProgress } from './courseProgress.js'
 import { scoLaunchPath, scoIdForLaunch } from './scoLaunch.js'
 import * as jQuery from '../libraries/jquery-2.2.4.min.js'
 
@@ -535,20 +535,8 @@ export class App {
     calculateScore(id, absolute = false) {
         const nativeProgress = nativeCourseProgress(this.DATA, id, absolute);
         if (nativeProgress !== null) return nativeProgress;
-        if (typeof this.DATA['cmi.suspend_data'].adaptData[id] !== 'undefined') {
-            if (typeof this.DATA['cmi.suspend_data'].adaptData[id].q !== 'undefined') {
-                let score = 0;
-
-				const componentStates = this.getComponentStates(id);
-				componentStates.forEach(function (q) {
-					score += (q[2][1]).filter(Boolean).length / (q[2][1]).length;
-				})
-
-				return absolute ? score : score / componentStates.length;
-            }
-        }
-
-        return 0;
+        return spoorCourseProgress(this.DATA['cmi.suspend_data'].adaptData[id],
+            value => window.SCORMSuspendData.deserialize(value), absolute);
     }
 	
 	isCompleted(courseId) {

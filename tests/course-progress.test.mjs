@@ -56,6 +56,28 @@ async function deliveredApp() {
 }
 const App=await deliveredApp();
 
+test('delivered App uses native Spoor completion, keeps Core-only precedence and fails closed on opaque data',()=>{
+    const old=globalThis.window;
+    globalThis.window={CONF:{COMPLETION_THRESHOLD:1},SCORMSuspendData:{deserialize:()=>[
+        [[0,0],[true,true,false],[[0,0],[true,true,true,false],[[false,true]]]],
+        [[1,0],[false,false,false],[[],[true,false],[[]]]]
+    ]}};
+    const app=Object.create(App.prototype);
+    app.DATA={'cmi.suspend_data':{adaptData:{'AILit.1':{q:'native'},'AILit.2':'opaque'},customData:{}}};
+    try{
+        assert.equal(app.calculateScore('AILit.1'),1);
+        assert.equal(app.calculateScore('AILit.1',true),2);
+        assert.equal(app.isCompleted('AILit.1'),true);
+        assert.equal(app.calculateScore('AILit.2'),0);
+        assert.equal(app.calculateScore('missing'),0);
+        app.DATA['cmi.suspend_data'].customData.nativeAdapt={'AILit.1':{format:1,components:{text:{required:true,state:{_isComplete:false}}}}};
+        assert.equal(app.calculateScore('AILit.1'),0,'genuine Core-only state remains authoritative');
+        delete app.DATA['cmi.suspend_data'].customData.nativeAdapt;
+        window.SCORMSuspendData.deserialize=()=>{throw Error('Invalid serialized data');};
+        assert.equal(app.calculateScore('AILit.1'),0);
+    }finally{globalThis.window=old;}
+});
+
 test('delivered App module average, XP and stats exclude disabled courses and modules consistently',()=>{
     const old=globalThis.window;
     globalThis.window={CONF:{SCOS:{
