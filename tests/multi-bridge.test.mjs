@@ -21,6 +21,8 @@ for(const root of ['../js','../dist/js']){
         const bridge=createBridge(app,{scoId:'opaque-ai',frameworkId:'fw-ai',role:'learning',assessmentId:null});
         assert.equal(bridge.LMSSetValue('cmi.suspend_data','safe in memory'),'false');assert.equal(bridge.LMSGetLastError(),'101');
         assert.equal(bridge.LMSFinish(''),'false');const count=saves;assert.equal(bridge.LMSFinish(''),'false');assert.equal(saves,count);
+        assert.equal(bridge.LMSGetValue('cmi.suspend_data'),'safe in memory');assert.equal(bridge.LMSGetLastError(),'0');
+        assert.equal(bridge.LMSFinish(''),'false');assert.equal(bridge.LMSGetLastError(),'101');assert.equal(saves,count);
     });
     test(`${root}: outer finalization explicitly suspends its learner attempt exactly once for LMS resume`,async()=>{
         const {StateTransport,createState}=await loadModule('multiState',root),c=fixture(),values=new Map(),calls=[];

@@ -9,10 +9,10 @@
     "index.html": "ab0ea3f3364393664250490280f03915ec52c710baad9365f9fb50aedce450df",
     "js/corePersistence.js": "004bfc4dc21f001ace438d6319d8dec147a60f8fbf5d62927bc7664f46980fcc",
     "js/multiAssessment.js": "150d8550c03d2bedf38fc8f29da93e367999ecc745542f27c8bd7caedea4cc00",
-    "js/multiBridge.js": "39b293b92f5f398b926f3dbd51e04ae6d3591f34c9fc948558fef5448cb0e540",
+    "js/multiBridge.js": "d620a43e6f2f67943ebc582c72cf4e241ff4e69104dec93d2b163599eb5c1bfb",
     "js/multiContract.js": "adbd7626d2a6e269409283bc999f3f7656769ce418446dbf03d4e739fa32744e",
     "js/multiFramework.js": "2245b9f9eba2e25c35c115523c9c4b338564e5e4d56f9f149e64b5163f9fbdaa",
     "js/multiState.js": "b2a932964f60a837b219d5813e10c7cb4592c855443eda251b40e246b1aca536"
   },
-  "implementationSha256": "78797ddc1ba40b1e306c540514995f39efd2aea06e9c61098f9ef1cda96f28c5"
+  "implementationSha256": "05ea0777b66de7019523e654aad3df5dc5dd240cd1192d09632f1f4091baef5e"
 }

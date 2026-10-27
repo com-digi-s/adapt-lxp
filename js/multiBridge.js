@@ -9,7 +9,7 @@ export function scoRecord(app, context) {
 export function createBridge(app, launchContext) {
     const context = Object.freeze(clone(launchContext));
     const boundRecord = scoRecord(app, context);
-    let lastError = '0', finished = false;
+    let lastError = '0', finished = false, finishResult = null;
     function record() { return boundRecord; }
     function persist() {
         if (app.save() === false) { lastError = '101'; return 'false'; }
@@ -40,7 +40,10 @@ export function createBridge(app, launchContext) {
             } catch (error) { app.warn(error.message); lastError = '101'; return 'false'; }
         },
         LMSCommit() { return persist(); },
-        LMSFinish() { if (finished) return lastError === '0' ? 'true' : 'false'; finished = true; return persist(); },
+        LMSFinish() {
+            if (finished) { lastError = finishResult === 'true' ? '0' : '101'; return finishResult; }
+            finished = true; finishResult = persist(); return finishResult;
+        },
         LMSGetLastError() { return lastError; },
         LMSGetErrorString(code) { return String(code) === '0' ? 'No error' : 'Could not persist SCO data'; },
         LMSGetDiagnostic() { return lastError === '0' ? 'No error' : app.transport.status.message; }
