@@ -10,7 +10,28 @@ export function localStateKey(contract, profileId = 'shared-device', attemptId =
 export function fingerprint(sco) { return sco.source.componentFingerprint || sco.source.contentFingerprint || sco.source.buildSha256; }
 function plainObject(value) { return value && typeof value === 'object' && !Array.isArray(value); }
 function validScores(value, allowed) {
-    return plainObject(value) && Object.entries(value).every(([id, score]) => allowed.has(id) && plainObject(score) && Number.isFinite(score.score) && Number.isFinite(score.maxScore) && score.maxScore > 0 && score.score >= 0 && score.score <= score.maxScore);
+    return plainObject(value) && Object.keys(value).length === allowed.size && Object.entries(value).every(([id, score]) => allowed.has(id) && plainObject(score) && Number.isFinite(score.score) && Number.isFinite(score.maxScore) && score.maxScore > 0 && score.score >= 0 && score.score <= score.maxScore);
+}
+function validAttempt(attempt, id, test, contract) {
+    let valid = !['__proto__', 'constructor', 'prototype'].includes(id) && plainObject(attempt) && id === attempt.attemptId && attempt.frameworkId === test.frameworkId && attempt.assessmentId === test.id && attempt.phase === test.phase && typeof attempt.completed === 'boolean';
+    if (!valid || !attempt.completed) return valid;
+    valid = Number.isFinite(attempt.score) && Number.isFinite(attempt.maxScore) && attempt.maxScore > 0 && attempt.score >= 0 && attempt.score <= attempt.maxScore && typeof attempt.completedAt === 'string' && Number.isFinite(Date.parse(attempt.completedAt)) &&
+        validScores(attempt.banks, new Set(test.banks.map(bank => bank.id))) && validScores(attempt.courses, new Set(test.banks.map(bank => bank.targetCourseId))) && validScores(attempt.domains, new Set(test.banks.map(bank => bank.domainId))) && validScores(attempt.questions, new Set(test.banks.flatMap(bank => bank.questionIds)));
+    if (!valid) return false;
+    const equal = (a,b) => Math.abs(a-b) < 0.000001, groups = { banks: {}, courses: {}, domains: {} };
+    let points = 0, maximum = 0;
+    for (const bank of test.banks) {
+        for (const questionId of bank.questionIds) {
+            const question = contract.questions.find(q => q.id === questionId), value = attempt.questions[questionId];
+            if (!question || !equal(value.maxScore, question.maxPoints)) return false;
+            points += value.score; maximum += value.maxScore;
+            for (const [kind, key] of [['banks', bank.id], ['courses', bank.targetCourseId], ['domains', bank.domainId]]) {
+                if (!groups[kind][key]) groups[kind][key] = {score:0,maxScore:0};
+                groups[kind][key].score += value.score; groups[kind][key].maxScore += value.maxScore;
+            }
+        }
+    }
+    return equal(points, attempt.score) && equal(maximum, attempt.maxScore) && Object.entries(groups).every(([kind, values]) => Object.entries(values).every(([key,value]) => equal(value.score, attempt[kind][key].score) && equal(value.maxScore, attempt[kind][key].maxScore)));
 }
 export function hydrateState(contract, input) {
     const state = createState(contract), warnings = [];
@@ -39,12 +60,7 @@ export function hydrateState(contract, input) {
             if (!state.assessmentAttempts[fw]) state.assessmentAttempts[fw] = {};
             state.assessmentAttempts[fw][testId] = {};
             Object.entries(attempts).forEach(([id, attempt]) => {
-                let valid = !['__proto__', 'constructor', 'prototype'].includes(id) && plainObject(attempt) && id === attempt.attemptId && attempt.frameworkId === fw && attempt.assessmentId === testId && attempt.phase === test.phase && typeof attempt.completed === 'boolean';
-                if (valid && attempt.completed) {
-                    valid = Number.isFinite(attempt.score) && Number.isFinite(attempt.maxScore) && attempt.maxScore > 0 && attempt.score >= 0 && attempt.score <= attempt.maxScore && typeof attempt.completedAt === 'string' &&
-                        validScores(attempt.banks, new Set(test.banks.map(bank => bank.id))) && validScores(attempt.courses, new Set(test.banks.map(bank => bank.targetCourseId))) && validScores(attempt.domains, new Set(test.banks.map(bank => bank.domainId))) && validScores(attempt.questions, new Set(test.banks.flatMap(bank => bank.questionIds)));
-                }
-                if (valid) state.assessmentAttempts[fw][testId][id] = attempt;
+                if (validAttempt(attempt, id, test, contract)) state.assessmentAttempts[fw][testId][id] = attempt;
                 else warnings.push(`Ungültiger Testversuch nicht übernommen: ${testId}/${id}`);
             });
         });
@@ -91,9 +107,16 @@ export function migrateLegacy(contract, envelope, plan, current = createState(co
     }
     Object.entries(data.assessmentAttempts || {}).forEach(([oldId, attempts]) => {
         const alias = tests[oldId], assessment = alias && contract.assessments.find(as => as.id === alias.assessmentId && as.frameworkId === alias.frameworkId);
-        if (!assessment || !state.scoStates[assessment.scoId] || alias.sourceFingerprint !== alias.targetFingerprint || alias.targetFingerprint !== fingerprint(scos.get(assessment.scoId))) { rejected.push(`assessment:${oldId}`); return; }
+        if (!assessment || !state.scoStates[assessment.scoId] || !alias.sourceFingerprint || !envelope.fingerprints || envelope.fingerprints[oldId] !== alias.sourceFingerprint || alias.sourceFingerprint !== alias.targetFingerprint || alias.targetFingerprint !== fingerprint(scos.get(assessment.scoId)) || !plainObject(attempts)) { rejected.push(`assessment:${oldId}`); return; }
         if (!state.assessmentAttempts[assessment.frameworkId]) state.assessmentAttempts[assessment.frameworkId] = {};
-        state.assessmentAttempts[assessment.frameworkId][assessment.id] = clone(attempts);
+        if (!state.assessmentAttempts[assessment.frameworkId][assessment.id]) state.assessmentAttempts[assessment.frameworkId][assessment.id] = {};
+        Object.entries(attempts).forEach(([id, attempt]) => {
+            if (!plainObject(attempt) || attempt.frameworkId !== (alias.sourceFrameworkId || alias.frameworkId) || attempt.assessmentId !== (alias.sourceAssessmentId || oldId) || attempt.phase !== assessment.phase) { rejected.push(`assessment:${oldId}/${id}`); return; }
+            const candidate = { ...clone(attempt), frameworkId: assessment.frameworkId, assessmentId: assessment.id };
+            if (!validAttempt(candidate, id, assessment, contract)) { rejected.push(`assessment:${oldId}/${id}`); return; }
+            if (Object.prototype.hasOwnProperty.call(state.assessmentAttempts[assessment.frameworkId][assessment.id], id)) { rejected.push(`assessment-collision:${oldId}/${id}`); return; }
+            state.assessmentAttempts[assessment.frameworkId][assessment.id][id] = candidate;
+        });
     });
     const knownCustom = new Set(['nativeAdapt', 'scoState']);
     Object.keys(data.customData || {}).filter(key => !knownCustom.has(key)).forEach(key => {
