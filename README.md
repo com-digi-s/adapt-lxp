@@ -22,6 +22,24 @@ Native bootstraps can continue calling
 `parent.App.attachAdaptPersistence(Adapt, window)`. `App.SCO_FRAME` is the actual
 course iframe, not its bridge host.
 
+Diagnostics retain native **Absenden**: submitting the completed test opens its
+result directly, after the native answer/SCORM handlers have finished. No second
+result button is offered on an unfinished test. Reports restore the familiar
+ComDigiS* module/domain tiles, explanations and DigiTaKS*/partner branding, using
+the selected framework's explicit mappings and configured domain order. The PDF
+is downloaded with one explicit click rather than an unsolicited download.
+**Antworten ansehen** reopens the latest submitted native answers without
+regrading or starting another attempt; historical reports never link to newer
+answers. Starting a new attempt remains an explicit, separate action.
+
+Glossary search retains ranked word-by-word matches without silently hiding
+results after the first 25. Learning-path flags retain both module and course
+numbers; information dialogs retain keyboard focus and Escape handling. These
+presentation changes do not change the authored `et`/`at` question pool, test
+selection, assessment identities or stored answer format. A representative
+question selection belongs in the authoring/export configuration, not in a
+hidden runtime sampling rule.
+
 Completion requires **every required learning course across all frameworks**,
 with at least one required course. Tests and optional courses are not denominator
 terms. The outer LMS gets incomplete/completed, never a fabricated score100 or
