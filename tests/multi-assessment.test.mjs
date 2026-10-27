@@ -7,7 +7,7 @@ function setup(){
     for(const [fw,course,test,assessment]of[['fw-dig','opaque-dig','test-dig','as-dig'],['fw-ai','opaque-ai','test-ai','as-ai']]){
         c.domains.push({id:'domain',frameworkId:fw,label:'Configured domain '+fw});
         c.frameworks.find(v=>v.id===fw).diagnostics.entry={intent:'require',status:'provided',reason:null};
-        c.scos.push({...structuredClone(c.scos.find(s=>s.id===course)),id:test,role:'entry',requiredForCompletion:false,moduleId:undefined,number:undefined,launch:{root:'scos/'+test,entry:'index.html',manifestHref:'index.html'},source:{kind:'generated-assessment',buildSha256:'a'.repeat(64),catalogueSha256:'a'.repeat(64),generatorSha256:'b'.repeat(64),templateSha256:'c'.repeat(64),questions:[{questionId:'q-'+fw,sourceCourseId:course,sourceComponentId:'same-native-id'}]}});
+        c.scos.push({...structuredClone(c.scos.find(s=>s.id===course)),id:test,role:'entry',requiredForCompletion:false,moduleId:undefined,number:undefined,launch:{root:'scos/'+test,entry:'index.html',manifestHref:'index.html'},source:{kind:'generated-assessment',assessmentId:assessment,buildSha256:'a'.repeat(64),catalogueSha256:'a'.repeat(64),generatorSha256:'b'.repeat(64),templateSha256:'c'.repeat(64),manifest:{sha256:'a'.repeat(64),resourceId:'resource',href:'index.html'},questions:[{questionId:'q-'+fw,sourceCourseId:course,sourceComponentId:'same-native-id'}]}});
         c.questions.push({id:'q-'+fw,sourceCourseId:course,sourceComponentId:'same-native-id',runtimeQuestionId:'same-runtime-id',component:'mcq',tags:['et'],available:true,selfAssessment:false,maxPoints:2});
         c.assessments.push({id:assessment,frameworkId:fw,scoId:test,phase:'entry',banks:[{id:'bank-'+fw,runtimeBankId:111,targetCourseId:course,domainId:'domain',questionIds:['q-'+fw],maxPoints:2}]});
     }return c;
@@ -15,6 +15,10 @@ function setup(){
 for(const root of ['../js','../dist/js']){
     const {collectAssessment,reportData,percentage}=await loadModule('multiAssessment',root);
     const {validateContract}=await loadModule('multiContract',root);
+    test(`${root}: generated provenance must identify precisely the actual source-question set`,()=>{
+        const c=setup();validateContract(c);
+        for(const change of [v=>v.scos.find(s=>s.id==='test-dig').source.assessmentId='other',v=>v.scos.find(s=>s.id==='test-dig').source.questions[0].sourceCourseId='opaque-ai',v=>v.scos.find(s=>s.id==='test-dig').source.questions.push({...v.scos.find(s=>s.id==='test-dig').source.questions[0]}),v=>v.scos.find(s=>s.id==='test-dig').source.manifest.sha256='invalid']){const bad=structuredClone(c);change(bad);assert.throws(()=>validateContract(bad));}
+    });
     test(`${root}: same native bank and component IDs never mix framework scores or report labels`,()=>{
         const c=setup();validateContract(c);
         const blocks=[model({_id:'b',_assessment:{_quizBankID:111,_isEnabled:true}})];

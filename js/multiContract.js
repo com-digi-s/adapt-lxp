@@ -22,6 +22,13 @@ function deepFreeze(value) {
     }
     return value;
 }
+export function validateCapabilities(capability) {
+    requireThat(object(capability) && capability.capability === 'multi-framework' && capability.version === 1 && capability.packageContract === 'adapt-lxp-multi-framework@1' && capability.persistenceContract === 1 && capability.launchContext === 'explicit-sco-id', 'Wrapper unterstützt den benötigten Multi-Framework-/Persistenzvertrag nicht.');
+    requireThat(object(capability.implementationFiles) && SHA256.test(capability.implementationSha256 || ''), 'Geprüfter Wrapperbuild fehlt.');
+    ['js/multiContract.js', 'js/multiState.js', 'js/multiBridge.js', 'js/multiAssessment.js', 'js/multiFramework.js', 'js/corePersistence.js', 'index.html'].forEach(file => requireThat(SHA256.test(capability.implementationFiles[file] || ''), 'Unvollständiger Multi-Framework-Wrapperbuild.'));
+    Object.entries(capability.implementationFiles).forEach(([path, sha]) => { safeRelativePath(path); requireThat(SHA256.test(sha), 'Ungültige Wrapper-Buildprüfsumme.'); });
+    return capability;
+}
 
 // Decode exactly once. Encoded separators, double encodings and URL aliases are
 // rejected rather than interpreted differently by ZIP, browser and manifest.
@@ -89,18 +96,19 @@ export function validateContract(input) {
         requireThat(!roots.some(other => root === other || root.startsWith(other + '/') || other.startsWith(root + '/')), 'Kursverzeichnisse kollidieren oder überlappen.'); roots.push(root);
         const src = sco.source;
         requireThat(object(src) && SHA256.test(src.buildSha256 || '') && SHA256.test(src.catalogueSha256 || ''), 'Echter Quellbuild-/Katalogfingerabdruck fehlt.');
+        requireThat((src.componentFingerprint === undefined || SHA256.test(src.componentFingerprint)) && (src.contentFingerprint === undefined || SHA256.test(src.contentFingerprint)), 'Ungültiger Inhalts-/Komponentenfingerabdruck.');
         if (sco.role === 'learning') {
             requireThat(['aat-published', 'native-registered'].includes(src.kind) && text(src.originId) && text(src.courseId) && text(src.title) && src.title === src.publishedTitle && text(src.language), 'Ungültige Veröffentlichung: Bitte Kurs erneut veröffentlichen.');
             requireThat(object(src.manifest) && SHA256.test(src.manifest.sha256 || '') && text(src.manifest.resourceId) && src.manifest.href === sco.launch.manifestHref, 'Nachweis des gewählten Manifest-Einstiegs fehlt.');
         } else {
-            requireThat(src.kind === 'generated-assessment' && SHA256.test(src.generatorSha256 || '') && SHA256.test(src.templateSha256 || '') && Array.isArray(src.questions) && src.questions.length > 0, 'Generatorprovenienz des Tests fehlt.');
+            requireThat(src.kind === 'generated-assessment' && identifier(src.assessmentId) && SHA256.test(src.generatorSha256 || '') && SHA256.test(src.templateSha256 || '') && Array.isArray(src.questions) && src.questions.length > 0 && object(src.manifest) && SHA256.test(src.manifest.sha256 || '') && text(src.manifest.resourceId) && src.manifest.href === sco.launch.manifestHref, 'Generatorprovenienz des Tests fehlt.');
         }
     });
     questions.forEach(q => {
         const course = scos.get(q.sourceCourseId);
         requireThat(course && course.role === 'learning' && identifier(q.sourceComponentId) && identifier(q.runtimeQuestionId || q.sourceComponentId) && ['mcq', 'gmcq', 'matching', 'slider', 'textinput', 'infai-dragndrop'].includes(q.component) && q.available === true && q.selfAssessment === false && Number.isFinite(q.maxPoints) && q.maxPoints > 0 && Array.isArray(q.tags), 'Ungültige oder nicht unterstützte Diagnosefrage.');
     });
-    const assessmentScos = new Set(), phases = new Set();
+    const assessmentScos = new Set(), phases = new Set(), globalBankIds = new Set();
     assessments.forEach(as => {
         const sco = scos.get(as.scoId), phaseKey = JSON.stringify([as.frameworkId, as.phase]);
         requireThat(frameworks.has(as.frameworkId) && sco && sco.frameworkId === as.frameworkId && sco.role === as.phase && ['entry', 'final'].includes(as.phase) && !assessmentScos.has(as.scoId) && !phases.has(phaseKey) && Array.isArray(as.banks) && as.banks.length > 0, 'Ungültige oder doppelte Testzuordnung.');
@@ -108,8 +116,8 @@ export function validateContract(input) {
         const bankIds = new Set(), runtimeIds = new Set(), sourceQuestions = new Set();
         as.banks.forEach(bank => {
             const course = scos.get(bank.targetCourseId);
-            requireThat(identifier(bank.id) && !bankIds.has(bank.id) && Number.isInteger(bank.runtimeBankId) && bank.runtimeBankId > 0 && !runtimeIds.has(bank.runtimeBankId) && course && course.role === 'learning' && course.frameworkId === as.frameworkId && domains.has(JSON.stringify([as.frameworkId, bank.domainId])) && Array.isArray(bank.questionIds) && bank.questionIds.length > 0, 'Ungültige Testbank oder rahmenfremde Referenz.');
-            bankIds.add(bank.id); runtimeIds.add(bank.runtimeBankId);
+            requireThat(identifier(bank.id) && !bankIds.has(bank.id) && !globalBankIds.has(bank.id) && Number.isInteger(bank.runtimeBankId) && bank.runtimeBankId > 0 && !runtimeIds.has(bank.runtimeBankId) && course && course.role === 'learning' && course.frameworkId === as.frameworkId && domains.has(JSON.stringify([as.frameworkId, bank.domainId])) && Array.isArray(bank.questionIds) && bank.questionIds.length > 0, 'Ungültige Testbank oder rahmenfremde Referenz.');
+            bankIds.add(bank.id); globalBankIds.add(bank.id); runtimeIds.add(bank.runtimeBankId);
             let max = 0;
             bank.questionIds.forEach(id => {
                 const q = questions.get(id), sourceKey = q && JSON.stringify([q.sourceCourseId, q.sourceComponentId]);
@@ -118,6 +126,12 @@ export function validateContract(input) {
             });
             requireThat(Number.isFinite(bank.maxPoints) && bank.maxPoints > 0 && Math.abs(max - bank.maxPoints) < 0.000001, 'Maximalpunkte der Testbank stimmen nicht.');
         });
+        const expectedQuestions = new Set(as.banks.flatMap(bank => bank.questionIds));
+        requireThat(sco.source.assessmentId === as.id && sco.source.questions.length === expectedQuestions.size && sco.source.questions.every(ref => {
+            if (!object(ref) || !expectedQuestions.has(ref.questionId)) return false;
+            const question = questions.get(ref.questionId); expectedQuestions.delete(ref.questionId);
+            return question && ref.sourceCourseId === question.sourceCourseId && ref.sourceComponentId === question.sourceComponentId;
+        }) && expectedQuestions.size === 0, 'Generatorprovenienz und tatsächliche Testfragen stimmen nicht überein.');
     });
     scos.forEach(sco => requireThat(sco.role === 'learning' || assessmentScos.has(sco.id), 'Test-SCO ohne Testauftrag.'));
     frameworks.forEach(fw => ['entry', 'final'].forEach(phase => {

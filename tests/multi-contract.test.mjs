@@ -5,7 +5,11 @@ import { createHash } from 'node:crypto';
 import { loadModule, fixture } from './multi-fixture.mjs';
 
 for (const root of ['../js','../dist/js']) {
-    const {validateContract,launchPath,safeRelativePath,progress,courseComplete} = await loadModule('multiContract',root);
+    const {validateContract,validateCapabilities,launchPath,safeRelativePath,progress,courseComplete} = await loadModule('multiContract',root);
+    test(`${root}: wrapper capability version and complete implementation declaration are mandatory`, async () => {
+        const cap=JSON.parse(await readFile(new URL('../dist/adapt-multi-framework-capabilities.json',import.meta.url),'utf8'));
+        assert.equal(validateCapabilities(cap),cap);assert.throws(()=>validateCapabilities({...cap,version:2}));assert.throws(()=>validateCapabilities({...cap,persistenceContract:2}));assert.throws(()=>validateCapabilities({...cap,implementationFiles:{}}));
+    });
     test(`${root}: typed product graph is immutable and opaque IDs separate both frameworks`, () => {
         const input=fixture(), catalog=validateContract(input);
         assert.equal(catalog.scos.get('opaque-ai').frameworkId,'fw-ai');

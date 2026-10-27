@@ -172,8 +172,11 @@
 			.then(async data => {
 				window.CONF = data;
 				if (Object.prototype.hasOwnProperty.call(data, 'MULTI_FRAMEWORK_CONTRACT')) {
-					const { safeRelativePath } = await import('./js/multiContract.js');
+					const { safeRelativePath, validateCapabilities } = await import('./js/multiContract.js');
 					const path = safeRelativePath(data.MULTI_FRAMEWORK_CONTRACT);
+					const capabilityResponse = await fetch('adapt-multi-framework-capabilities.json');
+					if (!capabilityResponse.ok) throw new Error('Geprüfte Multi-Framework-Wrapperfähigkeit fehlt.');
+					validateCapabilities(await capabilityResponse.json());
 					const response = await fetch(path);
 					if (!response.ok) throw new Error('Multi-Framework-Produktvertrag konnte nicht geladen werden. Kein Legacy-Fallback.');
 					const contract = await response.json();
