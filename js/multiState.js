@@ -37,11 +37,16 @@ export function hydrateState(contract, input) {
     const state = createState(contract), warnings = [];
     if (!input) return { state, warnings };
     if (input.stateVersion !== 1 || input.packageId !== contract.package.id) throw new Error('Gespeicherter Zustand gehört zu einem anderen Paket oder Zustandsschema.');
-    const source = clone(input), scos = new Map(contract.scos.map(sco => [sco.id, sco])), frameworks = new Set(contract.frameworks.map(fw => fw.id));
+    const source = clone(input), scos = new Map(contract.scos.map(sco => [sco.id, sco])), frameworks = new Set(contract.frameworks.map(fw => fw.id)), changedTests = new Set();
     if (source.activeFrameworkId && frameworks.has(source.activeFrameworkId)) state.activeFrameworkId = source.activeFrameworkId;
     else if (source.activeFrameworkId) warnings.push('Aktiver Kompetenzrahmen ist nicht mehr enthalten.');
     Object.entries(source.scoStates || {}).forEach(([id, record]) => {
         const sco = scos.get(id);
+        if (sco && sco.role !== 'learning' && plainObject(record) && record.frameworkId === sco.frameworkId && record.fingerprint !== fingerprint(sco)) {
+            changedTests.add(id);
+            warnings.push(`Test „${sco.label}“ wurde aktualisiert. Bisherige Antworten werden nicht den neuen Fragen zugeordnet. Bitte den Test neu beginnen.`);
+            return;
+        }
         if (!sco || !plainObject(record) || record.fingerprint !== fingerprint(sco) || record.frameworkId !== sco.frameworkId || typeof record.payload !== 'string' || !plainObject(record.values) || !Object.values(record.values).every(value => typeof value === 'string') || (record.native !== null && record.native !== undefined && !plainObject(record.native))) {
             warnings.push(`Kurszustand nicht übernommen (entfernt oder inkompatibel): ${id}`); return;
         }
@@ -50,12 +55,13 @@ export function hydrateState(contract, input) {
     Object.entries(source.frameworkBookmarks || {}).forEach(([fw, bookmark]) => {
         const sco = bookmark && scos.get(bookmark.scoId);
         if (frameworks.has(fw) && sco && sco.frameworkId === fw && state.scoStates[sco.id]) state.frameworkBookmarks[fw] = bookmark;
-        else warnings.push(`Lesezeichen nicht übernommen: ${fw}`);
+        else if (!bookmark || !changedTests.has(bookmark.scoId)) warnings.push(`Lesezeichen nicht übernommen: ${fw}`);
     });
     Object.entries(source.assessmentAttempts || {}).forEach(([fw, tests]) => {
         if (!frameworks.has(fw) || !tests || typeof tests !== 'object') { warnings.push(`Testergebnisse nicht übernommen: ${fw}`); return; }
         Object.entries(tests).forEach(([testId, attempts]) => {
             const test = contract.assessments.find(as => as.id === testId && as.frameworkId === fw);
+            if (test && changedTests.has(test.scoId)) return; // Already explained with the human-readable test label.
             if (!test || !state.scoStates[test.scoId] || !plainObject(attempts)) { warnings.push(`Testergebnis nicht übernommen: ${testId}`); return; }
             if (!state.assessmentAttempts[fw]) state.assessmentAttempts[fw] = {};
             state.assessmentAttempts[fw][testId] = {};

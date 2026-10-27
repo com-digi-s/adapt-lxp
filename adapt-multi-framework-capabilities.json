@@ -16,10 +16,10 @@
     "js/multiFramework.js": "d5f6a71a98f61cd7ff758a7f0b21d78628fa2b2e7c3e0e4ac72fadb99fe8e352",
     "js/multiGlossary.js": "fa4688b1f92152880728af3b55705b4849de0d7c9253fc54abdcc8b81dfe0176",
     "js/multiReport.js": "6c9693109db995b2bee0e3aae36c2068872c5f6b80b6780c26aff056643a1977",
-    "js/multiState.js": "b2a932964f60a837b219d5813e10c7cb4592c855443eda251b40e246b1aca536",
+    "js/multiState.js": "4236c500edf49b96e16b696d6b6464eae6c464a1b6c4dc8271c1494683904da6",
     "views/dashboard/css/bootstrap.min.css": "7633b7c0c97d19e682feee8afa2738523fcb2a14544a550572caeecd2eefe66b",
     "views/dashboard/css/dashboard.css": "32411ebe2f23cba1354b15380f6a4c09a8bc468d7bc6c8085811faed0b078a98",
     "views/dashboard/css/font-awesome.css": "659dceb233e6e352b3a088498fa6e1f8c3cd2e44cda18e0126aefb965e17f8c7"
   },
-  "implementationSha256": "d6cf0e1fe3b0885a22f44bc9ffbb86c19f8902fab00c14978b26ccb07ca80ccc"
+  "implementationSha256": "a277d488867bbbaf6010a5597f74b4ce621fdcc613281ea2d76001756c6565f5"
 }

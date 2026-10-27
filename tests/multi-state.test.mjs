@@ -67,6 +67,16 @@ for(const root of ['../js','../dist/js']){
   s.assessmentAttempts[fw]['test-dig']='corrupt';const h=hydrateState(c,s);assert.equal(h.state.assessmentAttempts[fw]?.['test-dig'],undefined);assert.ok(h.warnings.length);
   s.assessmentAttempts[fw]['test-dig']={a1:{...attempt,frameworkId:'foreign'}};assert.equal(hydrateState(c,s).state.assessmentAttempts[fw]['test-dig'].a1,undefined);
  });
+ test(root+': changed test selections explain the reset once while preserving learning state and original backup data',()=>{
+  const c=diagnostic(fixture()),s=createState(c),sco=c.scos.find(x=>x.id==='diag-dig'),learning=c.scos[0];
+  sco.label='DigComp – Einstiegstest';s.scoStates[sco.id]=record(sco,'old native test answers');s.scoStates[learning.id]=record(learning,'actual unchanged learning progress');
+  s.frameworkBookmarks[sco.frameworkId]={scoId:sco.id,contentId:'test-page'};s.assessmentAttempts[sco.frameworkId]={'test-dig':{old:{attemptId:'old'}}};
+  const before=structuredClone(s),changed=structuredClone(c);changed.scos.find(x=>x.id===sco.id).source.buildSha256='f'.repeat(64);
+  const result=hydrateState(changed,s);
+  assert.equal(result.state.scoStates[sco.id],undefined);assert.equal(result.state.assessmentAttempts[sco.frameworkId]?.['test-dig'],undefined);
+  assert.deepEqual(result.state.scoStates[learning.id],s.scoStates[learning.id]);assert.deepEqual(s,before,'The exact original input remains available for the enclosing backup mechanism');
+  assert.equal(result.warnings.length,1);assert.match(result.warnings[0],/DigComp – Einstiegstest.*aktualisiert.*neu beginnen/);assert.doesNotMatch(result.warnings[0],/diag-dig|test-dig/);
+ });
  test(root+': explicit local mode roundtrips large state but never claims remote LMS success',()=>{
   const c=fixture(),s=createState(c),storage=memory(),events=[];s.scoStates[c.scos[0].id]=record(c.scos[0],'large'.repeat(2000));
   const transport=new StateTransport({contract:c,storage,environment:{},onStatus:s=>events.push(s)});
