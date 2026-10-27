@@ -118,18 +118,39 @@ function progressBar(doc, value, attributes = {}) {
 function infoModal(doc, owner, title, description, extra) {
     const id = 'infoModal' + owner;
     const icon = element(doc, 'i', null, {class: 'fas fa-info-circle ml-2', role: 'button', tabindex: 0, 'aria-label': 'Informationen: ' + title, 'aria-controls': id}); icon.style.cursor = 'pointer';
-    const modal = element(doc, 'div', null, {class: 'modal fade', id, tabindex: -1, role: 'dialog', 'aria-labelledby': id + 'Label', 'aria-hidden': 'true'});
+    const modal = element(doc, 'div', null, {class: 'modal fade', id, tabindex: -1, role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': id + 'Label', 'aria-hidden': 'true'});
     const dialog = element(doc, 'div', null, {class: 'modal-dialog', role: 'document'}), content = element(doc, 'div', null, {class: 'modal-content'}), header = element(doc, 'div', null, {class: 'modal-header'});
     header.append(element(doc, 'h5', title, {class: 'modal-title', id: id + 'Label'}));
     const close = action(doc, '×', () => hide(), {class: 'close', 'aria-label': 'Schließen'}); header.append(close);
     const body = element(doc, 'div', description, {class: 'modal-body'}); content.append(header, body);
     if (extra) { const footer = element(doc, 'div', null, {class: 'modal-footer'}); footer.append(extra); content.append(footer); }
-    dialog.append(content); modal.append(dialog); let backdrop = null;
-    function hide() { modal.style.display = 'none'; modal.classList.remove('show'); modal.setAttribute('aria-hidden', 'true'); doc.body.classList.remove('modal-open'); if (backdrop) backdrop.remove(); backdrop = null; if (icon.focus) icon.focus(); }
-    function show(event) { if (event) { event.preventDefault(); event.stopPropagation(); } modal.style.display = 'block'; modal.classList.add('show'); modal.setAttribute('aria-hidden', 'false'); doc.body.classList.add('modal-open'); backdrop = element(doc, 'div', null, {class: 'modal-backdrop fade show'}); doc.body.append(backdrop); if (close.focus) close.focus(); }
+    dialog.append(content); modal.append(dialog); let backdrop = null, opened = false, previousFocus = null;
+    function focusable() {
+        return [...modal.querySelectorAll('a[href], button, input, select, textarea, [tabindex]')].filter(control => !control.disabled && !control.hidden && control.getAttribute('tabindex') !== '-1' && control.getAttribute('aria-hidden') !== 'true' && (!control.getClientRects || control.getClientRects().length > 0));
+    }
+    function keepFocus(event) { if (opened && !modal.contains(event.target)) close.focus(); }
+    function keyboard(event) {
+        if (!opened) return;
+        if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); hide(); return; }
+        if (event.key !== 'Tab') return;
+        const controls = focusable(), first = controls[0] || close, last = controls[controls.length - 1] || close;
+        if (!modal.contains(doc.activeElement) || event.shiftKey && doc.activeElement === first || !event.shiftKey && doc.activeElement === last) {
+            event.preventDefault(); (event.shiftKey ? last : first).focus();
+        }
+    }
+    function detach() { if (doc.removeEventListener) { doc.removeEventListener('keydown', keyboard, true); doc.removeEventListener('focusin', keepFocus, true); } }
+    function hide(returnFocus = true) {
+        if (!opened) return; opened = false; detach(); modal.style.display = 'none'; modal.classList.remove('show'); modal.setAttribute('aria-hidden', 'true'); doc.body.classList.remove('modal-open'); if (backdrop) backdrop.remove(); backdrop = null;
+        if (returnFocus) { const target = previousFocus && previousFocus.focus && previousFocus.isConnected !== false ? previousFocus : icon; target.focus(); }
+    }
+    function show(event) {
+        if (event) { event.preventDefault(); event.stopPropagation(); } if (opened) return;
+        previousFocus = doc.activeElement; opened = true; modal.style.display = 'block'; modal.classList.add('show'); modal.setAttribute('aria-hidden', 'false'); doc.body.classList.add('modal-open'); backdrop = element(doc, 'div', null, {class: 'modal-backdrop fade show'}); doc.body.append(backdrop);
+        doc.addEventListener('keydown', keyboard, true); doc.addEventListener('focusin', keepFocus, true); close.focus();
+    }
     icon.addEventListener('click', show); icon.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') show(event); });
-    modal.addEventListener('click', event => { if (event.target === modal) hide(); }); modal.addEventListener('keydown', event => { if (event.key === 'Escape') hide(); });
-    return {icon, modal, destroy: () => { if (backdrop) backdrop.remove(); doc.body.classList.remove('modal-open'); }};
+    modal.addEventListener('click', event => { if (event.target === modal) hide(); });
+    return {icon, modal, destroy: () => hide(false)};
 }
 function section(doc, app, id, title, description, templateId, modalOwner, modalExtra) {
     const outer = element(doc, 'section', null, {id, class: 'mx-3 my-3'}), row = element(doc, 'div', null, {class: 'row'}), column = element(doc, 'div', null, {class: 'col'});

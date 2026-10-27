@@ -96,6 +96,7 @@ class Document{
     querySelectorAll(selector){return [this.documentElement,...this.documentElement.querySelectorAll(selector)].filter((element,index)=>index>0||element.matches(selector));}
     querySelector(selector){return this.querySelectorAll(selector)[0]||null;}
     addEventListener(type,listener){this.defaultView.addEventListener(type,listener);}
+    removeEventListener(type,listener){this.listeners.set(type,(this.listeners.get(type)||[]).filter(value=>value!==listener));}
     open(){this.buffer='';return this;}
     write(value){this.buffer=(this.buffer||'')+String(value);this.parse(this.buffer);}
     close(){this.parse(this.buffer||'');}
@@ -224,6 +225,27 @@ for(const root of ['../js','../dist/js']){
         renderDashboard(app,'fw-dig');assert.deepEqual(content.querySelectorAll('.milestone-label').map(control=>control.textContent),['M5.10','M9.10'],'Duplicate course numbers stay unambiguous across modules without parsing opaque IDs');
         const flag=content.querySelector('[data-pathway-id="opaque-cross-module-path"] [data-launch-sco="opaque-second-module-course"]');assert.match(flag.getAttribute('aria-label'),/^M9\.10 /);flag.click();assert.equal(calls.at(-1),other.id);
         renderDashboard(app,'fw-ai');assert.equal(content.querySelector('.milestone-label').textContent,'1.10','Other frameworks retain explicit numbers without a misleading DigComp M-prefix');
+    }));
+
+    test(root+': information dialogs contain keyboard focus, close through document Escape and clean up',async()=>withDOM(async({document})=>{
+        const {renderDashboard}=await loadModule('multiDashboard',root),{createState}=await loadModule('multiState',root),contract=uxFixture(),content=document.createElement('section');document.body.append(content);
+        const app={contract,state:createState(contract),content,charts:[],launchSCO(){}},view=renderDashboard(app,'fw-dig'),icon=content.querySelector('[aria-controls="infoModalCompetences"]'),modal=content.querySelector('#infoModalCompetences'),close=modal.querySelector('button'),last=modal.querySelector('a[href]');
+        const keyboard=(key,shiftKey=false)=>{const event={key,shiftKey,preventDefault(){this.prevented=true;},stopPropagation(){}};for(const listener of [...document.listeners.get('keydown')||[]])listener(event);return event;};
+        icon.focus();icon.click();assert.equal(modal.getAttribute('aria-modal'),'true');assert.equal(document.activeElement,close);assert.equal(document.listeners.get('keydown').length,1);
+        assert.equal(keyboard('Tab',true).prevented,true);assert.equal(document.activeElement,last,'Shift+Tab on the first control wraps to the final dialog action');
+        assert.equal(keyboard('Tab').prevented,true);assert.equal(document.activeElement,close,'Tab on the final control wraps back into the dialog');
+        const outside=document.querySelector('.navbar-brand');outside.focus();for(const listener of document.listeners.get('focusin')||[])listener({target:outside});assert.equal(document.activeElement,close,'Programmatic focus leaving the dialog is returned');
+        outside.focus();keyboard('Escape');assert.equal(modal.getAttribute('aria-hidden'),'true');assert.equal(document.activeElement,icon);assert.equal(document.listeners.get('keydown').length,0);assert.equal(document.listeners.get('focusin').length,0);assert.equal(document.querySelector('.modal-backdrop'),null);
+        icon.click();view.destroy();assert.equal(document.listeners.get('keydown').length,0);assert.equal(document.listeners.get('focusin').length,0);assert.equal(document.querySelector('.modal-backdrop'),null,'Replacing the dashboard cannot leave a modal overlay behind');
+    }));
+
+    test(root+': integrated glossary keeps multiword matches, all results and framework-scoped launch targets',async()=>withDOM(async({document,window})=>{
+        const {MultiFrameworkApp}=await loadModule('multiFramework',root),contract=uxFixture();contract.glossary=[...['Software','Computer','Computersoftware'].map((term,index)=>({id:'dig-term-'+index,frameworkId:'fw-dig',term,definition:'Definition',targets:[{scoId:'opaque-dig',contentId:'page-'+index}]})),...Array.from({length:40},(_,index)=>({id:'data-'+index,frameworkId:'fw-dig',term:'Datenbegriff '+index,targets:[{scoId:'opaque-dig',contentId:'data-'+index}]})),{id:'foreign-term',frameworkId:'fw-ai',term:'Computer AILit',targets:[{scoId:'opaque-ai',contentId:'page-ai'}]}];
+        const app=new MultiFrameworkApp(contract,{api:null,storage:memory(),environment:window});window.App=app;app.init();const panel=document.querySelector('.mf-glossary-menu'),input=panel.querySelector('input'),terms=()=>panel.querySelectorAll('.glossary-term strong').map(control=>control.textContent);
+        input.value='computer software';input.dispatchEvent({type:'input'});assert.deepEqual(terms(),['Computersoftware','Computer','Software']);assert.equal(panel.textContent.includes('Computer AILit'),false,'An active-framework search cannot expose another framework');
+        input.value='daten';input.dispatchEvent({type:'input'});assert.equal(terms().length,40,'No matching entries disappear behind the previous implicit 25-entry limit');
+        const calls=[];app.launchSCO=(...args)=>calls.push(args);panel.querySelector('.glossary-term button').click();assert.deepEqual(calls.at(-1),['opaque-dig','data-0']);
+        app.showFramework('fw-ai');input.value='computer software';input.dispatchEvent({type:'input'});assert.deepEqual(terms(),['Computer AILit']);panel.querySelector('.glossary-term button').click();assert.deepEqual(calls.at(-1),['opaque-ai','page-ai']);
     }));
 
     test(root+': init keeps the actual original navbar and presentation iframe, adds only compact framework selection',async()=>withDOM(async({document,window})=>{
