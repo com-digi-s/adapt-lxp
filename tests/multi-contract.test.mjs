@@ -25,6 +25,8 @@ for (const root of ['../js','../dist/js']) {
     test(`${root}: safe exact manifest paths reject alias traversal and external starts`, () => {
         for(const value of ['../index.html','/index.html','https://example.org/x','x\\y','a//b','a/./b','a/%2e%2e/b','a/%252e%252e/b','a/%2fb','a/%5cb','a/%00b','a/%3fb','a/%','a/b#x\n','a/b?x=%00','a/b?x=%2500'])assert.throws(()=>safeRelativePath(value,true),value);
         assert.equal(safeRelativePath('index_lms.html?lang=de#/id/page',true),'index_lms.html?lang=de#/id/page');
+        const contract=fixture();contract.scos[0].launch.entry='different-file.html';assert.throws(()=>validateContract(contract),/Manifestressource/);
+        contract.scos[0].launch.entry='index_lms.html?unconfirmed=1';assert.throws(()=>validateContract(contract),/Manifestressource/);
     });
     test(`${root}: real all-course completion stays separate from test scores, optional courses and 75 percent`, () => {
         const contract=fixture(),state={scoStates:{'opaque-dig':{values:{'cmi.core.lesson_status':'completed'}}}};

@@ -10,9 +10,9 @@
     "js/corePersistence.js": "004bfc4dc21f001ace438d6319d8dec147a60f8fbf5d62927bc7664f46980fcc",
     "js/multiAssessment.js": "150d8550c03d2bedf38fc8f29da93e367999ecc745542f27c8bd7caedea4cc00",
     "js/multiBridge.js": "39b293b92f5f398b926f3dbd51e04ae6d3591f34c9fc948558fef5448cb0e540",
-    "js/multiContract.js": "d73a02b29acd4bcf040966b603f7eaf290e9d1232856f9d4f65328ca1e5920e7",
+    "js/multiContract.js": "adbd7626d2a6e269409283bc999f3f7656769ce418446dbf03d4e739fa32744e",
     "js/multiFramework.js": "370512d415ff4f39551f5a87f776a1eb88e86c2514f24076f75b563b7e1699e7",
     "js/multiState.js": "f48a281c1b11349bfa9faa21ae3f8899954b7a8465377190f69113e3f4b3707f"
   },
-  "implementationSha256": "2721e911d906816ca3ac1342802da1e1e2ec70561eaad8d88ecc1eab7ed93005"
+  "implementationSha256": "57da3ea7d33a5d8d75a06c923438a2ccb11bbc62a1a5b1e9f81d26741449af1f"
 }

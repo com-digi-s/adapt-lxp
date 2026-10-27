@@ -92,7 +92,7 @@ export function validateContract(input) {
         } else requireThat(sco.requiredForCompletion === false, 'Diagnostik ist keine Pflicht-Lerneinheit.');
         requireThat(object(sco.launch) && text(sco.launch.manifestHref), 'Manifesttreuer Kurseinstieg fehlt.');
         const root = safeRelativePath(sco.launch.root); launchPath(sco);
-        safeRelativePath(sco.launch.manifestHref, true);
+        requireThat(safeRelativePath(sco.launch.entry, true) === safeRelativePath(sco.launch.manifestHref, true), 'Kurseinstieg stimmt nicht mit der gewählten Manifestressource überein.');
         requireThat(!roots.some(other => root === other || root.startsWith(other + '/') || other.startsWith(root + '/')), 'Kursverzeichnisse kollidieren oder überlappen.'); roots.push(root);
         const src = sco.source;
         requireThat(object(src) && SHA256.test(src.buildSha256 || '') && SHA256.test(src.catalogueSha256 || ''), 'Echter Quellbuild-/Katalogfingerabdruck fehlt.');
