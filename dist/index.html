@@ -108,7 +108,9 @@
 		  
 		  if (src.includes('scos')) {
 			  // Parse the src attribute to generate the breadcrumb items
-			  let breadcrumbItems = src
+			  // Route fragments/query strings are not package directories. In
+			  // particular index_lms.html#/id/... must never become breadcrumbs.
+			  let breadcrumbItems = src.split(/[?#]/)[0]
 				.split('/')
 				.filter((item) => item !== 'scos')
 				.map((item) => {
