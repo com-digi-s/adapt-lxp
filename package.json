@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Allows SCORM 1.2 courses exported from the Adapt Framework (individual SCOs) to be wrapped inside an app with overarching LXP-functionalities. This app patches the SCORM 1.2 APIs of the individual SCOs and uses the input parameters to hypercall the actual SCORM API. It may in future use the same principle for other APIs (e.g. xAPI, cmi5).  This application works standalone (logs to localStorage) and with an LMS.",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test tests/*.test.mjs",
     "build": "babel src --out-dir dist --source-maps --watch"
   },
   "repository": {
