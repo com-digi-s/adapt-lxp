@@ -70,6 +70,17 @@
 ### **Flow & User Interaction**:
 
 - **SCO Launch**: The `launchSCO` method loads specific modules (SCOs) into an iframe. Event listeners are dynamically added to track user interactions with elements inside the iframe, especially for keyboard navigation (e.g., arrow keys for tab navigation).
+
+  Packaging tools should copy the selected SCO resource's `href` from its
+  `imsmanifest.xml` into that course's optional `launchFile` configuration, for
+  example `{ "id": "1", "launchFile": "index_lms.html" }`. A direct module
+  without a `courses` array can also define `launchFile`. Only package-relative
+  paths are accepted. Older catalogues without the field retain `index.html`.
+  This distinction matters: an Adapt SCORM build's `index.html` may intentionally
+  start a non-persistent offline API, whereas its manifest's `index_lms.html`
+  discovers the parent LMS/LXP API. Do not rewrite the standalone entry to hide
+  an incorrect LMS launch path. Local persistence tests do not establish LMS
+  conformance.
 - **Completion Tracking**: The app tracks module completion through `isCompleted` and `calculateScore` methods, checking whether a module or course has met the required thresholds.
   
 ### **Other Dependencies/External Libraries**:

@@ -8,6 +8,7 @@ import * as adaptHelpers from './adaptHelpers.js';
 import { createSCOBridge, installSCOBridge } from './scormBridge.js';
 import { attachCorePersistence, nativeCourseProgress, allSelectedCoursesComplete } from './corePersistence.js';
 import { courseScoresOfModule, averageCourseProgress, sumCourseScores } from './courseProgress.js';
+import { scoLaunchPath, scoIdForLaunch } from './scoLaunch.js';
 import * as jQuery from '../libraries/jquery-2.2.4.min.js';
 
 import { timeIntToString } from './utils.js';
@@ -192,9 +193,7 @@ export var App = function () {
 	}, {
 		key: 'attachAdaptPersistence',
 		value: function attachAdaptPersistence(Adapt, childWindow) {
-			var path = childWindow.location.pathname.split('/scos/')[1];
-			if (!path) throw new Error('Cannot identify Adapt SCO for persistence');
-			var scoId = path.split('/index.html')[0].replace('/', '.');
+			var scoId = scoIdForLaunch(window.CONF.SCOS, childWindow.location.href, window.location.href);
 			return attachCorePersistence(this, Adapt, childWindow, scoId);
 		}
 	}, {
@@ -365,6 +364,8 @@ export var App = function () {
 			var contentPath = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
 
 			if (this.scoIdExists(scoId)) {
+				// Validate before mutating bookmark/state or navigating the iframe.
+				var path = scoLaunchPath(window.CONF.SCOS, scoId, contentPath);
 				this.SCO_FRAME.onload = function () {
 					var subAPI = _this3.SCO_FRAME.contentWindow.API;
 
@@ -537,8 +538,6 @@ export var App = function () {
 				this.setCustomInteraction('launchSco#' + scoId);
 
 				this.SCORM_API.save();
-
-				var path = 'scos/' + scoId.replace('.', '/') + '/index.html#' + contentPath;
 
 				installSCOBridge(this, scoId, window);
 				this.SCO_FRAME.setAttribute('src', path);
