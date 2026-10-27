@@ -85,19 +85,27 @@ export function collectAssessment(contract, context, components, blocks) {
 }
 export function reportData(contract, attempt) {
     const framework = contract.frameworks.find(fw => fw.id === attempt.frameworkId), assessment = contract.assessments.find(as => as.id === attempt.assessmentId && as.frameworkId === attempt.frameworkId);
-    if (!framework || !assessment || percentage(attempt) === null) throw new Error('Ungültiges Testergebnis.');
-    const groups = [];
+    if (!framework || !assessment || attempt.phase !== assessment.phase || percentage(attempt) === null) throw new Error('Ungültiges Testergebnis.');
+    const groups = [], modules = new Map(), expectedCourses = new Set(assessment.banks.map(bank => bank.targetCourseId)), expectedDomains = new Set(assessment.banks.map(bank => bank.domainId));
+    const valid = value => value && Number.isFinite(value.score) && Number.isFinite(value.maxScore) && value.maxScore > 0 && value.score >= 0 && value.score <= value.maxScore;
     Object.entries(attempt.courses).forEach(([id, value]) => {
         const sco = contract.scos.find(course => course.id === id && course.frameworkId === framework.id);
-        if (!sco || percentage(value) === null) throw new Error('Ungültige Kursgruppe im Bericht.');
-        groups.push({ kind: 'Kurs', id, label: sco.label, ...value, percentage: percentage(value) });
+        const module = sco && contract.modules.find(candidate => candidate.id === sco.moduleId && candidate.frameworkId === framework.id);
+        if (!sco || sco.role !== 'learning' || !module || !expectedCourses.delete(id) || !valid(value)) throw new Error('Ungültige Kursgruppe im Bericht.');
+        groups.push({ kind: 'Kurs', id, moduleId: module.id, number: sco.number, label: sco.label, ...value, percentage: percentage(value) });
+        if (!modules.has(module.id)) modules.set(module.id, { kind: 'Modul', id: module.id, number: module.number, label: module.label, score: 0, maxScore: 0 });
+        const summary = modules.get(module.id); summary.score += value.score; summary.maxScore += value.maxScore;
     });
     Object.entries(attempt.domains).forEach(([id, value]) => {
         const domain = contract.domains.find(candidate => candidate.id === id && candidate.frameworkId === framework.id);
-        if (!domain || percentage(value) === null) throw new Error('Ungültige Domäne im Bericht.');
+        if (!domain || !expectedDomains.delete(id) || !valid(value)) throw new Error('Ungültige Domäne im Bericht.');
         groups.push({ kind: 'Didaktische Domäne', id, label: domain.label, ...value, percentage: percentage(value) });
     });
+    const courses = groups.filter(group => group.kind === 'Kurs'), domains = groups.filter(group => group.kind === 'Didaktische Domäne');
+    const totalsAgree = values => ['score', 'maxScore'].every(key => Math.abs(values.reduce((sum, value) => sum + value[key], 0) - attempt[key]) < 0.000001);
+    if (!valid(attempt) || expectedCourses.size || expectedDomains.size || !totalsAgree(courses) || !totalsAgree(domains)) throw new Error('Unvollständige oder widersprüchliche Berichtsgruppen.');
+    const moduleGroups = [...modules.values()].sort((a, b) => BigInt(a.number) < BigInt(b.number) ? -1 : BigInt(a.number) > BigInt(b.number) ? 1 : 0).map(value => ({ ...value, percentage: percentage(value) }));
     const safe = value => String(value).replace(/[^a-zA-Z0-9_-]/g, '_');
-    return { framework: framework.label, version: framework.version, phase: assessment.phase, score: attempt.score, maxScore: attempt.maxScore, percentage: percentage(attempt), groups,
+    return { frameworkId: framework.id, frameworkPrefix: framework.prefix, framework: framework.label, version: framework.version, phase: assessment.phase, score: attempt.score, maxScore: attempt.maxScore, percentage: percentage(attempt), groups, modules: moduleGroups, courses, domains,
         filename: `Ergebnis-${safe(framework.id)}-${safe(framework.version)}-${safe(assessment.phase)}-${safe(attempt.attemptId || 'attempt')}` };
 }

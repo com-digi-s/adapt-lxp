@@ -5,6 +5,7 @@ import { attachCorePersistence } from './corePersistence.js';
 import { collectAssessment, percentage, reportData } from './multiAssessment.js';
 import { spoorCourseProgress } from './courseProgress.js';
 import { renderDashboard, renderCourseOverview, courseProgressValue } from './multiDashboard.js';
+import { renderResult, downloadResultPDF } from './multiReport.js';
 
 function node(tag, text, attributes = {}) {
     const element = document.createElement(tag);
@@ -250,6 +251,9 @@ export class MultiFrameworkApp {
         this.finishResult = this.transport.finish(this.state, progress(this.contract, this.state).complete); return this.finishResult;
     }
     closeCourse() {
+        if (this.pendingAssessmentResult) {
+            clearTimeout(this.pendingAssessmentResult.timer); this.pendingAssessmentResult = null;
+        }
         this.saveActive();
         this.learningSession = null;
         if (this.launchHost) { this.launchHost.remove(); this.launchHost = null; }
@@ -394,10 +398,12 @@ export class MultiFrameworkApp {
         const location = contentId === undefined ? (remembered && remembered.scoId === scoId ? remembered.contentId : stored && stored.contentId) : contentId;
         const path = launchPath(sco, location); // Validate before bookmark or iframe mutation.
         if (this.closed || this.loadBlocked) throw new Error('Laufzeit ist geschlossen oder wegen Speicherfehler gesperrt.');
+        const assessment = this.contract.assessments.find(as => as.scoId === sco.id);
+        const finished = assessment && !options.newAttempt && stored && this.attempts(assessment)[stored.activeAttemptId];
+        if (finished && finished.completed) { this.showResult(finished); return null; }
         this.closeCourse(); this.resetContent(); this.content.hidden = true; this.courseArea.hidden = false;
         this.dashboardFrame.hidden = true;
         this.state.activeFrameworkId = sco.frameworkId;
-        const assessment = this.contract.assessments.find(as => as.scoId === sco.id);
         let context = { scoId, frameworkId: sco.frameworkId, role: sco.role, assessmentId: assessment ? assessment.id : null, launchId: uid() };
         if (options.newAttempt) delete this.state.scoStates[scoId];
         const record = scoRecord(this, context);
@@ -412,7 +418,6 @@ export class MultiFrameworkApp {
         this.launchRecords.set(context.launchId, record);
         this.activeContext = context; this.state.frameworkBookmarks[sco.frameworkId] = { scoId, contentId: location || null };
         this.courseArea.replaceChildren();
-        if (assessment) { const toolbar = node('div', null, { class: 'mf-course-toolbar' }); toolbar.append(button('Testergebnis anzeigen', () => this.calculateActiveResult(), { class: 'btn btn-outline-secondary btn-sm', 'data-action': 'test-result' })); this.courseArea.append(toolbar); }
         // Each launch has a permanent API-bearing parent window. A genuine outer
         // API is never overwritten, and an old SCO cannot acquire a new bridge.
         const host = node('iframe', null, { class: 'mf-bridge-host', title: sco.label, 'data-sco-id': scoId, 'data-launch-id': context.launchId, allowfullscreen: '' });
@@ -462,7 +467,10 @@ export class MultiFrameworkApp {
             const complete = () => {
                 if (Adapt.course.get('_isComplete') === true) {
                     record.values['cmi.core.lesson_status'] = 'completed';
-                    if (context.assessmentId) { try { this.calculateResult(Adapt, context); } catch (error) { this.warn(error.message); } }
+                    if (context.assessmentId) {
+                        try { this.calculateResult(Adapt, context); this.scheduleAssessmentResult(Adapt, context); }
+                        catch (error) { this.warn(error.message); }
+                    }
                 }
                 this.save();
             };
@@ -480,25 +488,35 @@ export class MultiFrameworkApp {
         const result = { ...previous, ...value, completed: true, completedAt: previous.completedAt || new Date().toISOString() };
         attempts[context.attemptId] = result; this.save(); return result;
     }
+    scheduleAssessmentResult(Adapt, context) {
+        if (this.closed || this.activeContext !== context || this.pendingAssessmentResult?.launchId === context.launchId) return;
+        if (this.pendingAssessmentResult) clearTimeout(this.pendingAssessmentResult.timer);
+        // SubmitAll and Spoor must finish their current native event stack before
+        // the report replaces the frame. Never let a late old course steal focus.
+        const timer = setTimeout(() => {
+            this.pendingAssessmentResult = null;
+            if (this.closed || this.activeContext !== context) return;
+            try {
+                const controller = this.controllers.get(context.launchId);
+                if (controller && controller.save) controller.save();
+                this.showResult(this.calculateResult(Adapt, context));
+            } catch (error) { this.warn(error.message); }
+        }, 0);
+        this.pendingAssessmentResult = { launchId: context.launchId, timer };
+    }
     calculateActiveResult() {
         const context = this.activeContext, controller = context && this.controllers.get(context.launchId);
         if (!controller || !controller.Adapt) throw new Error('Testanbindung noch nicht bereit.');
         const result = this.calculateResult(controller.Adapt, context); this.showResult(result);
     }
     showResult(attempt) {
-        const report = reportData(this.contract, attempt); this.closeCourse(); this.resetContent();
+        reportData(this.contract, attempt); this.closeCourse(); this.resetContent();
         this.state.activeFrameworkId = attempt.frameworkId; this.updateNavigation();
-        this.content.setAttribute('data-view', 'results'); this.content.className = 'mf-results container-fluid py-3';
-        this.content.append(button('Zur Lernübersicht', () => this.showFramework(attempt.frameworkId)), node('h1', frameworkLabel(this.catalog.frameworks.get(attempt.frameworkId)) + ' · ' + phaseLabel(report.phase)), node('p', `${report.score}/${report.maxScore} Punkte · ${report.percentage.toFixed(1)} %`, { class: 'lead' }), node('p', 'Ergebnis der tatsächlich enthaltenen Testfragen. Die Auswertung gehört ausschließlich zu diesem Kompetenzrahmen.', { class: 'text-muted' }));
-        const list = node('ul'); report.groups.forEach(group => list.append(node('li', `${group.kind}: ${group.label} · ${group.score}/${group.maxScore} · ${group.percentage.toFixed(1)} %`))); this.content.append(list);
-        this.content.append(button('Bericht als PDF herunterladen', () => this.downloadReport(attempt), { class: 'btn btn-success mr-2' }), button('Rohdaten als JSON herunterladen', () => this.downloadJSON(report.filename + '.json', { ...report, attempt }), { class: 'btn btn-secondary' }));
+        renderResult(this, attempt);
+        this.content.querySelector('h1').focus();
     }
     downloadReport(attempt) {
-        const report = reportData(this.contract, attempt);
-        if (!window.jspdf) throw new Error('PDF-Bibliothek nicht verfügbar. Rohdaten können als JSON gesichert werden.');
-        const doc = new window.jspdf.jsPDF(); let y = 20;
-        const lines = [report.framework + ' · ' + report.version, phaseLabel(report.phase), `${report.score}/${report.maxScore} Punkte · ${report.percentage.toFixed(1)} %`, 'Bezug: tatsächliche Testfragen, keine Gesamtaussage über beide Rahmen.', ...report.groups.map(group => `${group.kind}: ${group.label} – ${group.score}/${group.maxScore} (${group.percentage.toFixed(1)} %)` )];
-        doc.setFontSize(12); lines.forEach(line => { const wrapped = doc.splitTextToSize(line, 175); if (y + wrapped.length * 7 > 280) { doc.addPage(); y = 20; } doc.text(wrapped, 18, y); y += wrapped.length * 7 + 4; }); doc.save(report.filename + '.pdf');
+        return downloadResultPDF(this, attempt);
     }
     downloadJSON(filename, data) {
         const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' }));
