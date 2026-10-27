@@ -53,8 +53,18 @@ export function renderResult(app, attempt) {
     heading.append(title, node(doc, 'img', null, { src: 'img/digitaks-logo.png', alt: 'DigiTaKS*', class: 'mf-report-project-logo' }));
     content.append(heading, node(doc, 'p', 'Geschafft! Hier sehen Sie, in welchen Themen und kognitiven Domänen Sie bereits sicher sind und wo sich weiteres Üben lohnt.'));
     const actions = node(doc, 'div', null, { class: 'mf-report-actions' });
-    const download = action(doc, 'Ergebnisbericht als PDF herunterladen', () => { downloadResultPDF(app, attempt).catch(() => {}); }, { class: 'btn btn-success', 'data-action': 'download-report' });
+    const download = action(doc, 'Ergebnisbericht als PDF herunterladen', async () => {
+        if (download.disabled) return;
+        download.disabled = true;
+        try { await downloadResultPDF(app, attempt); }
+        catch (_) { /* The inline status explains retry without losing results. */ }
+        finally { download.disabled = false; }
+    }, { class: 'btn btn-success', 'data-action': 'download-report' });
     actions.append(download, node(doc, 'p', '', { class: 'text-muted mb-0', role: 'status', 'aria-live': 'polite', 'data-report-feedback': '' }));
+    const assessment = app.contract.assessments.find(candidate => candidate.id === attempt.assessmentId && candidate.frameworkId === attempt.frameworkId);
+    if (attempt.completed && app.state?.scoStates?.[assessment.scoId]?.activeAttemptId === attempt.attemptId) {
+        actions.append(action(doc, 'Antworten ansehen', () => app.launchSCO(assessment.scoId, undefined, { review: true }), { class: 'btn btn-outline-secondary', 'data-action': 'review-answers' }));
+    }
     content.append(actions, tiles(doc, 'Module', report.modules, 'modules'));
     const domains = tiles(doc, 'Kognitive Domänen', report.domains, 'domains');
     if (report.domains.every(value => ['verstehen', 'anwenden', 'bewerten'].includes(value.label.toLocaleLowerCase()))) domains.append(node(doc, 'p', domainDescription, { class: 'text-muted mt-2' }));

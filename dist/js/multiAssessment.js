@@ -102,6 +102,8 @@ export function reportData(contract, attempt) {
         groups.push({ kind: 'Didaktische Domäne', id, label: domain.label, ...value, percentage: percentage(value) });
     });
     const courses = groups.filter(group => group.kind === 'Kurs'), domains = groups.filter(group => group.kind === 'Didaktische Domäne');
+    const domainOrder = new Map(contract.domains.filter(domain => domain.frameworkId === framework.id).map((domain, index) => [domain.id, index]));
+    domains.sort((left, right) => domainOrder.get(left.id) - domainOrder.get(right.id));
     const totalsAgree = values => ['score', 'maxScore'].every(key => Math.abs(values.reduce((sum, value) => sum + value[key], 0) - attempt[key]) < 0.000001);
     if (!valid(attempt) || expectedCourses.size || expectedDomains.size || !totalsAgree(courses) || !totalsAgree(domains)) throw new Error('Unvollständige oder widersprüchliche Berichtsgruppen.');
     const moduleGroups = [...modules.values()].sort((a, b) => BigInt(a.number) < BigInt(b.number) ? -1 : BigInt(a.number) > BigInt(b.number) ? 1 : 0).map(value => ({ ...value, percentage: percentage(value) }));

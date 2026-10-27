@@ -84,6 +84,22 @@ for (const root of ['../js', '../dist/js']) {
         assert.match(app.content.innerText, /Ergebnisse je Kurs/); assert.match(app.content.innerText, /DigiTaKS\*/); assert.doesNotMatch(app.content.innerText, /DigComp|JSON|Rohdaten/);
         assert.equal(app.content.querySelectorAll('[onerror]').length, 0); assert.deepEqual(attempt, before);
     });
+    test(root + ': submitted-answer review is offered only for the native attempt still held by the SCO', () => {
+        const {contract,attempt} = example(), app=application(contract), launches=[];
+        app.state={scoStates:{'assessment-sco':{activeAttemptId:attempt.attemptId}}};app.launchSCO=(...args)=>launches.push(args);renderResult(app,attempt);
+        const review=app.content.querySelector('[data-action="review-answers"]');assert.ok(review);review.listeners.click();assert.deepEqual(launches,[['assessment-sco',undefined,{review:true}]]);
+        const historical=application(contract);historical.state={scoStates:{'assessment-sco':{activeAttemptId:'newer-attempt'}}};renderResult(historical,attempt);assert.equal(historical.content.querySelector('[data-action="review-answers"]'),null,'A previous score must not be paired with a newer native answer set');
+        const missing=application(contract);renderResult(missing,attempt);assert.equal(missing.content.querySelector('[data-action="review-answers"]'),null);
+    });
+    test(root + ': report domains follow their configured pedagogical order, not answer insertion or another framework', () => {
+        const { contract, attempt } = example();
+        contract.domains = [{frameworkId:'fw-dig',id:'b',label:'Foreign'}, {frameworkId:'fw-ai',id:'v',label:'Verstehen'}, {frameworkId:'fw-ai',id:'a',label:'Anwenden'}, {frameworkId:'fw-ai',id:'b',label:'Bewerten'}];
+        contract.assessments[0].banks.push({targetCourseId:'opaque-ai',domainId:'a'}, {targetCourseId:'opaque-ai',domainId:'b'});
+        attempt.domains = {b:{score:0,maxScore:1},a:{score:0,maxScore:1},v:{score:1,maxScore:1}};
+        const before = structuredClone(attempt);
+        assert.deepEqual(reportData(contract,attempt).domains.map(domain=>domain.label), ['Verstehen','Anwenden','Bewerten']);
+        assert.deepEqual(attempt,before);
+    });
     test(root + ': PDF contains actual branded layout, module/domain boxes, anonymous default and explicit framework', async () => {
         const { contract, attempt } = example(), app = application(contract), recording = pdfRecorder(); renderResult(app, attempt);
         const result = await downloadResultPDF(app, attempt, { PDF: recording.PDF, loadImage });
@@ -115,5 +131,21 @@ for (const root of ['../js', '../dist/js']) {
         class FailingPDF extends recording.PDF { save() { throw Error('download blocked'); } }
         await assert.rejects(downloadResultPDF(app, attempt, { PDF: FailingPDF, loadImage }));
         assert.match(app.content.querySelector('[data-report-feedback]').textContent, /erneut.*Testergebnisse bleiben gespeichert/); assert.deepEqual(attempt, before);
+    });
+    test(root + ': slow report downloads ignore duplicate clicks and enable the action again afterwards', async () => {
+        const {contract,attempt}=example(),app=application(contract),recording=pdfRecorder(),previous=globalThis.window,pending=[];
+        class Image {
+            constructor(){this.naturalWidth=100;this.naturalHeight=30;}
+            set src(_value){pending.push(()=>this.onload());}
+        }
+        globalThis.window={Image,setTimeout,clearTimeout,location:new URL('https://unit.invalid/package/index.html'),jspdf:{jsPDF:recording.PDF}};
+        try {
+            renderResult(app,attempt);
+            const button=app.content.querySelector('[data-action="download-report"]');
+            const first=button.listeners.click(),second=button.listeners.click();
+            assert.equal(button.disabled,true);assert.equal(pending.length,4,'One logo load per report, not another report per click');
+            pending.splice(0).forEach(release=>release());await Promise.all([first,second]);
+            assert.equal(recording.records.filter(record=>record.kind==='save').length,1);assert.equal(button.disabled,false);
+        } finally {globalThis.window=previous;}
     });
 }

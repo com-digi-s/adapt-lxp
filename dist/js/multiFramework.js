@@ -402,11 +402,13 @@ export class MultiFrameworkApp {
         if (this.closed || this.loadBlocked) throw new Error('Laufzeit ist geschlossen oder wegen Speicherfehler gesperrt.');
         const assessment = this.contract.assessments.find(as => as.scoId === sco.id);
         const finished = assessment && !options.newAttempt && stored && this.attempts(assessment)[stored.activeAttemptId];
-        if (finished && finished.completed) { this.showResult(finished); return null; }
+        const review = options.review === true;
+        if (review && (options.newAttempt || !finished || !finished.completed)) throw new Error('Die Antworten können nur für den zuletzt abgeschlossenen Testversuch angezeigt werden.');
+        if (finished && finished.completed && !review) { this.showResult(finished); return null; }
         this.closeCourse(); this.resetContent(); this.content.hidden = true; this.courseArea.hidden = false;
         this.dashboardFrame.hidden = true;
         this.state.activeFrameworkId = sco.frameworkId;
-        let context = { scoId, frameworkId: sco.frameworkId, role: sco.role, assessmentId: assessment ? assessment.id : null, launchId: uid() };
+        let context = { scoId, frameworkId: sco.frameworkId, role: sco.role, assessmentId: assessment ? assessment.id : null, launchId: uid(), review };
         if (options.newAttempt) delete this.state.scoStates[scoId];
         const record = scoRecord(this, context);
         if (assessment) {
@@ -420,6 +422,11 @@ export class MultiFrameworkApp {
         this.launchRecords.set(context.launchId, record);
         this.activeContext = context; this.state.frameworkBookmarks[sco.frameworkId] = { scoId, contentId: location || null };
         this.courseArea.replaceChildren();
+        if (review) {
+            const toolbar = node('div', null, { class: 'mf-course-toolbar' });
+            toolbar.append(button('Zurück zum Ergebnisbericht', () => this.showResult(finished), { class: 'btn btn-outline-secondary btn-sm', 'data-action': 'review-result' }));
+            this.courseArea.append(toolbar);
+        }
         // Each launch has a permanent API-bearing parent window. A genuine outer
         // API is never overwritten, and an old SCO cannot acquire a new bridge.
         const host = node('iframe', null, { class: 'mf-bridge-host', title: sco.label, 'data-sco-id': scoId, 'data-launch-id': context.launchId, allowfullscreen: '' });
@@ -469,7 +476,7 @@ export class MultiFrameworkApp {
             const complete = () => {
                 if (Adapt.course.get('_isComplete') === true) {
                     record.values['cmi.core.lesson_status'] = 'completed';
-                    if (context.assessmentId) {
+                    if (context.assessmentId && !context.review) {
                         try { this.calculateResult(Adapt, context); this.scheduleAssessmentResult(Adapt, context); }
                         catch (error) { this.warn(error.message); }
                     }
@@ -491,7 +498,7 @@ export class MultiFrameworkApp {
         attempts[context.attemptId] = result; this.save(); return result;
     }
     scheduleAssessmentResult(Adapt, context) {
-        if (this.closed || this.activeContext !== context || this.pendingAssessmentResult?.launchId === context.launchId) return;
+        if (context.review || this.closed || this.activeContext !== context || this.pendingAssessmentResult?.launchId === context.launchId) return;
         if (this.pendingAssessmentResult) clearTimeout(this.pendingAssessmentResult.timer);
         // SubmitAll and Spoor must finish their current native event stack before
         // the report replaces the frame. Never let a late old course steal focus.
