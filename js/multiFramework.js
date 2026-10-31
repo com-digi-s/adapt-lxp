@@ -125,10 +125,14 @@ export class MultiFrameworkApp {
             });
         };
         input.addEventListener('input', update); panel.append(input, results); root.append(toggle, panel); this.refreshGlossary = () => { input.value = ''; update(); panel.hidden = true; toggle.setAttribute('aria-expanded', 'false'); };
-        const dismiss = () => { panel.hidden = true; toggle.setAttribute('aria-expanded', 'false'); if (this.statusElement) this.statusElement.open = false; };
+        const dismiss = (restoreFocus = false) => {
+            const hadGlossaryFocus = !panel.hidden && panel.contains(document.activeElement);
+            panel.hidden = true; toggle.setAttribute('aria-expanded', 'false'); if (this.statusElement) this.statusElement.open = false;
+            if (restoreFocus && hadGlossaryFocus) toggle.focus();
+        };
         document.addEventListener('click', event => { if (!root.contains(event.target)) { panel.hidden = true; toggle.setAttribute('aria-expanded', 'false'); } if (this.statusElement && !this.statusElement.contains(event.target)) this.statusElement.open = false; });
-        document.addEventListener('keydown', event => { if (event.key === 'Escape') dismiss(); });
-        window.addEventListener('blur', dismiss);
+        document.addEventListener('keydown', event => { if (event.key === 'Escape') dismiss(true); });
+        window.addEventListener('blur', () => dismiss());
     }
     updateLayout() {
         const height = this.header?.querySelector('#main-navbar').getBoundingClientRect().height || 56;

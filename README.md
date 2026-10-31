@@ -33,7 +33,9 @@ regrading or starting another attempt; historical reports never link to newer
 answers. Starting a new attempt remains an explicit, separate action.
 
 Glossary search retains ranked word-by-word matches without silently hiding
-results after the first 25. Learning-path flags retain both module and course
+results after the first 25. Escape returns focus from the dismissed glossary
+search field to its trigger; outside clicks and window blur do not steal focus.
+Learning-path flags retain both module and course
 numbers; information dialogs retain keyboard focus and Escape handling. These
 presentation changes do not change the authored `et`/`at` question pool, test
 selection, assessment identities or stored answer format. A representative

@@ -248,6 +248,23 @@ for(const root of ['../js','../dist/js']){
         app.showFramework('fw-ai');input.value='computer software';input.dispatchEvent({type:'input'});assert.deepEqual(terms(),['Computer AILit']);panel.querySelector('.glossary-term button').click();assert.deepEqual(calls.at(-1),['opaque-ai','page-ai']);
     }));
 
+    test(root+': glossary Escape returns keyboard focus from the hidden search field to its trigger',async()=>withDOM(async({document,window})=>{
+        const {MultiFrameworkApp}=await loadModule('multiFramework',root),app=new MultiFrameworkApp(uxFixture(),{api:null,storage:memory(),environment:window});window.App=app;app.init();
+        const toggle=document.querySelector('.mf-glossary-toggle'),panel=document.querySelector('.mf-glossary-menu'),input=panel.querySelector('input');
+        toggle.focus();toggle.click();assert.equal(panel.hidden,false);assert.equal(document.activeElement,input);
+        for(const listener of document.listeners.get('keydown')||[])listener({key:'Escape',target:input});
+        assert.equal(panel.hidden,true);assert.equal(toggle.getAttribute('aria-expanded'),'false');assert.equal(document.activeElement,toggle,'A dismissed search field must not retain keyboard focus');
+    }));
+
+    test(root+': glossary outside click and window blur dismiss without stealing focus',async()=>withDOM(async({document,window})=>{
+        const {MultiFrameworkApp}=await loadModule('multiFramework',root),app=new MultiFrameworkApp(uxFixture(),{api:null,storage:memory(),environment:window});window.App=app;app.init();
+        const toggle=document.querySelector('.mf-glossary-toggle'),panel=document.querySelector('.mf-glossary-menu'),outside=document.createElement('button');document.body.append(outside);
+        toggle.click();outside.focus();for(const listener of document.listeners.get('click')||[])listener({target:outside});
+        assert.equal(panel.hidden,true);assert.equal(document.activeElement,outside,'A pointer user keeps the focus of the actual outside target');
+        toggle.click();outside.focus();for(const listener of document.listeners.get('blur')||[])listener({type:'blur'});
+        assert.equal(panel.hidden,true);assert.equal(document.activeElement,outside,'Window blur is not an Escape request and must not steal focus');
+    }));
+
     test(root+': init keeps the actual original navbar and presentation iframe, adds only compact framework selection',async()=>withDOM(async({document,window})=>{
         const {MultiFrameworkApp}=await loadModule('multiFramework',root),contract=uxFixture(),selectors=['header','#main-navbar','.navbar-brand','#template_glossary','#breadcrumb-container','#startBoarding','#template_xp','#sco-frame'],originals=new Map(selectors.map(selector=>[selector,document.querySelector(selector)]));for(const[selector,node]of originals)assert.ok(node,'Original index actually contains '+selector);
         const app=new MultiFrameworkApp(contract,{api:null,storage:memory(),environment:window});window.App=app;seed(app);app.init();
