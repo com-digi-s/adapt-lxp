@@ -18,6 +18,11 @@ for (const root of ['../js','../dist/js']) {
         input.scos[0].label='mutated'; assert.notEqual(catalog.contract.scos[0].label,'mutated');
         assert.ok(Object.isFrozen(catalog.contract.scos[0]));
     });
+    test(`${root}: cross-framework reading links require learning courses, a safe unique resource and its digest`, () => {
+        const valid=fixture();valid.learningLinks=[{sourceScoId:'opaque-ai',targetScoId:'opaque-dig',contentId:'real-page',resourcePath:'course/de/assets/reference.md',resourceSha256:'a'.repeat(64)}];
+        assert.equal(validateContract(valid).contract.learningLinks[0].targetScoId,'opaque-dig');
+        for(const change of [v=>v.learningLinks=null,v=>v.learningLinks[0].targetScoId='missing',v=>v.learningLinks[0].sourceScoId='missing',v=>v.learningLinks[0].resourcePath='../reference.md',v=>v.learningLinks[0].resourcePath='https://elsewhere.invalid/a.md',v=>v.learningLinks[0].resourceSha256='',v=>v.learningLinks[0].contentId='',v=>v.learningLinks.push({...v.learningLinks[0]})]){const bad=structuredClone(valid);change(bad);assert.throws(()=>validateContract(bad));}
+    });
     test(`${root}: fixture, wrong version, real-source absence, bad graph and missing required scope fail closed`, () => {
         const cases=[v=>v.exampleOnly=true,v=>v.version=2,v=>v.scos[0].source.kind='fixture',v=>v.scos[0].source.publishedTitle='unpublished',v=>v.scos[0].source.manifest.resourceId='',v=>v.scos[0].source.buildSha256='hash',v=>v.scos[0].frameworkId='unknown',v=>v.scos[1].moduleId=v.scos[0].moduleId,v=>v.scos[1].launch.root=v.scos[0].launch.root+'/nested',v=>v.scos.forEach(s=>s.requiredForCompletion=false),v=>v.scos[1].number='01',v=>v.frameworks[1].prefix=v.frameworks[0].prefix,v=>v.pathways[0].courseIds=['opaque-dig'],v=>v.glossary[0].targets[0].scoId='opaque-dig',v=>v.frameworks[1].diagnostics.entry={intent:'require',status:'notProvided',reason:'no-assigned-questions'}];
         for(const change of cases){ const value=fixture();change(value);assert.throws(()=>validateContract(value)); }

@@ -141,6 +141,15 @@ export function validateContract(input) {
     }));
     pathways.forEach(path => requireThat(frameworks.has(path.frameworkId) && text(path.label) && Array.isArray(path.courseIds) && path.courseIds.length > 0 && path.courseIds.every(id => scos.has(id) && scos.get(id).role === 'learning' && scos.get(id).frameworkId === path.frameworkId), 'Ungültiger oder rahmenfremder Lernpfad.'));
     glossary.forEach(term => requireThat(frameworks.has(term.frameworkId) && text(term.term) && Array.isArray(term.targets) && term.targets.length > 0 && term.targets.every(target => scos.has(target.scoId) && scos.get(target.scoId).frameworkId === term.frameworkId && scos.get(target.scoId).role === 'learning' && identifier(target.contentId)), 'Ungültiges oder rahmenfremdes Glossarziel.'));
+    const linkKeys = new Set();
+    requireThat(contract.learningLinks === undefined || Array.isArray(contract.learningLinks), 'Weiterlernlinks: Liste fehlt.');
+    (contract.learningLinks || []).forEach(link => {
+        requireThat(object(link) && scos.get(link.sourceScoId)?.role === 'learning' && scos.get(link.targetScoId)?.role === 'learning'
+            && identifier(link.contentId) && SHA256.test(link.resourceSha256 || ''), 'Ungültiges Weiterlernziel oder fehlender Quelldatei-Nachweis.');
+        const path = safeRelativePath(link.resourcePath), key = JSON.stringify([link.sourceScoId, path]);
+        requireThat(path.toLowerCase().endsWith('.md') && !linkKeys.has(key), 'Mehrdeutiger Weiterlern-Dateipfad.');
+        linkKeys.add(key);
+    });
     requireThat(object(contract.completion) && contract.completion.policy === 'all-required-learning-courses' && contract.completion.outerScorePolicy === 'no-cross-framework-score' && contract.scos.some(sco => sco.role === 'learning' && sco.requiredForCompletion), 'Leerer Pflichtumfang oder nicht unterstützte Abschlussregel.');
     return { contract: deepFreeze(contract), frameworks, modules, scos, assessments, questions, domains, pathways, glossary };
 }

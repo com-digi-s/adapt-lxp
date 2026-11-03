@@ -26,7 +26,7 @@ function frameworkLabel(framework) { return framework.label.includes(framework.v
 export class MultiFrameworkApp {
     constructor(contract, options = {}) {
         this.catalog = validateContract(contract); this.contract = this.catalog.contract; this.contexts = new WeakMap();
-        this.controllers = new Map(); this.launchRecords = new Map(); this.state = createState(this.contract); this.warnings = []; this.closed = false; this.charts = [];
+        this.controllers = new Map(); this.launchRecords = new Map(); this.linkDocuments = new WeakSet(); this.state = createState(this.contract); this.warnings = []; this.closed = false; this.charts = [];
         const environment = options.environment || window;
         let storage = options.storage;
         if (storage === undefined) { try { storage = window.localStorage; } catch (_) { storage = null; } }
@@ -449,6 +449,7 @@ export class MultiFrameworkApp {
         const childWindow = frame.contentWindow;
         this.contexts.set(childWindow, context);
         try {
+            this.bindLearningLinks(childWindow, context);
             childWindow.addEventListener('hashchange', () => { this.captureLocation(context, childWindow); this.save(); });
             childWindow.addEventListener('beforeunload', () => { const controller = this.controllers.get(context.launchId); if (controller && controller.save) controller.save(); this.captureLocation(context, childWindow); this.save(); });
             // Published bundles attach through the injected bootstrap before
@@ -461,6 +462,34 @@ export class MultiFrameworkApp {
                 if (name) this.attachAdaptPersistence(loader(name), childWindow);
             }
         } catch (error) { this.warn(`Kursanbindung fehlgeschlagen: ${error.message}`); }
+    }
+    bindLearningLinks(childWindow, context) {
+        const doc = childWindow.document;
+        if (this.linkDocuments.has(doc)) return;
+        this.linkDocuments.add(doc);
+        const source = this.catalog.scos.get(context.scoId);
+        const base = new URL(source.launch.root + '/', window.location.href);
+        const links = new Map((this.contract.learningLinks || []).filter(link => link.sourceScoId === context.scoId)
+            .map(link => [new URL(link.resourcePath, base).href, link]));
+        if (!links.size) return;
+        // Capture before resource components or Adapt's router handle a link.
+        // Native anchor activation includes Enter and assistive technologies;
+        // no custom key handling or focus change is needed.
+        doc.addEventListener('click', event => {
+            const anchor = event.target?.closest?.('a[href]');
+            if (!anchor) return;
+            let url;
+            try { url = new URL(anchor.getAttribute('href'), doc.baseURI); } catch (_) { return; }
+            // Query/section suffixes do not change the verified physical asset.
+            url.hash = ''; url.search = '';
+            const link = links.get(url.href);
+            if (!link) return;
+            event.preventDefault(); event.stopPropagation();
+            // A detached old course must never redirect the active new launch.
+            if (this.closed || this.activeContext !== context) return;
+            try { this.launchSCO(link.targetScoId, link.contentId); }
+            catch (error) { this.warn(error.message); }
+        }, true);
     }
     attachAdaptPersistence(Adapt, childWindow) {
         const context = this.contexts.get(childWindow);

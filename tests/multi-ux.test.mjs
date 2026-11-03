@@ -287,4 +287,25 @@ for(const root of ['../js','../dist/js']){
         assert.equal(header.hidden,false);assert.notEqual(header.style.display,'none');assert.ok(app.launchHost.allowFullscreen&&app.SCO_FRAME.allowFullscreen);
         firstBridge.LMSSetValue('cmi.suspend_data','late opaque old-course state');assert.equal(app.state.scoStates['opaque-dig'].payload,'late opaque old-course state');assert.notEqual(app.state.scoStates['opaque-ai'].payload,'late opaque old-course state');app.showFramework('fw-ai');assertDashboard(app.content);assert.equal(document.querySelector('header'),header);assert.equal(app.courseArea.hidden,true);
     }));
+    test(root+': Markdown recommendations launch the exact page in its own framework, preserve state and ignore stale launches',async()=>withDOM(async({window})=>{
+        const {MultiFrameworkApp}=await loadModule('multiFramework',root),contract=uxFixture();
+        contract.learningLinks=[{sourceScoId:'opaque-ai',targetScoId:'opaque-dig',contentId:'source-page',resourcePath:'course/de/assets/reference.md',resourceSha256:'a'.repeat(64)}];
+        const app=new MultiFrameworkApp(contract,{api:null,storage:memory(),environment:window});window.App=app;app.init();
+        const context=app.launchSCO('opaque-ai'),frame=app.SCO_FRAME,doc=frame.contentDocument;
+        doc.baseURI='https://unit.invalid/package/scos/opaque-ai/index_lms.html';
+        app.bindChild(frame,context);app.bindChild(frame,context);
+        const anchor=doc.createElement('a');anchor.setAttribute('href','course/de/assets/reference.md?download=1#section');anchor.setAttribute('download','reference.md');anchor.setAttribute('target','_blank');doc.body.append(anchor);
+        const child=doc.createElement('strong');anchor.append(child);
+        app.state.scoStates['opaque-ai'].payload='my-original-answer';
+        const event={type:'click',target:child,detail:0,preventDefault(){this.prevented=true;},stopPropagation(){this.stopped=true;}};
+        // DOM adapter does not implement capture bubbling. Deliver the native
+        // click to the actual document listener; detail:0 is keyboard activation.
+        for(const listener of doc.listeners.get('click')||[])listener(event);
+        assert.ok(event.prevented&&event.stopped);assert.equal(app.activeContext.scoId,'opaque-dig');assert.equal(app.state.activeFrameworkId,'fw-dig');assert.equal(app.frameworkSelector.value,'fw-dig');
+        assert.equal(app.state.frameworkBookmarks['fw-dig'].contentId,'source-page');assert.match(app.SCO_FRAME.src,/#\/id\/source-page$/);assert.equal(app.state.scoStates['opaque-ai'].payload,'my-original-answer');
+        const current=app.activeContext;
+        for(const listener of doc.listeners.get('click')||[])listener({...event,target:anchor});
+        assert.equal(app.activeContext,current,'A detached source document cannot steal a new launch');
+        assert.equal((doc.listeners.get('click')||[]).length,1,'Repeated iframe binding installs one document handler');
+    }));
 }
