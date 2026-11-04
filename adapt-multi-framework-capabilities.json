@@ -15,7 +15,7 @@
     "js/multiBridge.js": "d620a43e6f2f67943ebc582c72cf4e241ff4e69104dec93d2b163599eb5c1bfb",
     "js/multiContract.js": "b83a510bd757e21b766d9fbc77c2779232b7b3be3b19375b0103beba856b344b",
     "js/multiDashboard.js": "e5a433ed4f5281a40767a24748ceab6217c2a1c2c9deabeef831afc196e55692",
-    "js/multiFramework.js": "2910e84b0e7ef84735ae290d04e2391d1c4493f908dd1c0b6f822d17e96ec832",
+    "js/multiFramework.js": "420288a7a392d61ce3b754a6fdc5d8830b40fae9f1edd92c1cb4fa40e443b67f",
     "js/multiGlossary.js": "fa4688b1f92152880728af3b55705b4849de0d7c9253fc54abdcc8b81dfe0176",
     "js/multiReport.js": "6c9693109db995b2bee0e3aae36c2068872c5f6b80b6780c26aff056643a1977",
     "js/multiState.js": "aab4e57a6118762e01ea71df1ec8856fb09117d41ad458377381755a3e2aed3b",
@@ -23,5 +23,5 @@
     "views/dashboard/css/dashboard.css": "32411ebe2f23cba1354b15380f6a4c09a8bc468d7bc6c8085811faed0b078a98",
     "views/dashboard/css/font-awesome.css": "659dceb233e6e352b3a088498fa6e1f8c3cd2e44cda18e0126aefb965e17f8c7"
   },
-  "implementationSha256": "f3ca466110301896e4e97c67216a07ba52d26fc98fc82166cff0d2263d9d6050"
+  "implementationSha256": "35f7bf15c1ee9cc5bf09e861413dd601d3958ede5dd1d02153431ac145ab58a2"
 }

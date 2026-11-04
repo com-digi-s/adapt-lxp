@@ -254,20 +254,28 @@ export class MultiFrameworkApp {
     }
     stopApp() {
         if (this.closed || this.loadBlocked) return this.finishResult;
+        const closingContext = this.activeContext;
         this.saveActive();
         // Let the active child flush its own native/Spoor finish while its
         // immutable bridge and the outer LMS session are still open.
         if (this.launchHost) { this.launchHost.remove(); this.launchHost = null; }
+        if (closingContext) this.controllers.delete(closingContext.launchId);
+        this.SCO_FRAME = null; this.activeContext = null;
         this.closed = true;
         this.finishResult = this.transport.finish(this.state, progress(this.contract, this.state).complete); return this.finishResult;
     }
     closeCourse() {
+        const closingContext = this.activeContext;
         if (this.pendingAssessmentResult) {
             clearTimeout(this.pendingAssessmentResult.timer); this.pendingAssessmentResult = null;
         }
         this.saveActive();
         this.learningSession = null;
         if (this.launchHost) { this.launchHost.remove(); this.launchHost = null; }
+        // Removing the host first lets native unload handlers flush through the
+        // still-bound controller. Do not retain its Adapt/window tree afterward;
+        // launchRecords and immutable old bridges keep only their own state.
+        if (closingContext) this.controllers.delete(closingContext.launchId);
         this.SCO_FRAME = null; this.activeContext = null; this.courseArea.hidden = true;
         if (this.dashboardFrame) this.dashboardFrame.hidden = false;
     }
@@ -451,6 +459,7 @@ export class MultiFrameworkApp {
         frame.src = path; this.save(); return context;
     }
     bindChild(frame, context) {
+        if (this.closed || this.activeContext !== context || this.SCO_FRAME !== frame || frame.isConnected === false) return;
         const childWindow = frame.contentWindow;
         this.contexts.set(childWindow, context);
         try {
@@ -499,6 +508,7 @@ export class MultiFrameworkApp {
     attachAdaptPersistence(Adapt, childWindow) {
         const context = this.contexts.get(childWindow);
         if (!context) throw new Error('Adapt-Kindfenster besitzt keinen unveränderlichen Startkontext.');
+        if (this.closed || this.activeContext !== context || this.SCO_FRAME?.contentWindow !== childWindow || this.SCO_FRAME?.isConnected === false) return null;
         if (Adapt.__multiLXPController) return Adapt.__multiLXPController;
         const record = scoRecord(this, context);
         const facade = { DATA: { 'cmi.suspend_data': { adaptData: {}, customData: { nativeAdapt: record.native ? { [context.scoId]: clone(record.native) } : {} } } }, SCORM_API: {} };
