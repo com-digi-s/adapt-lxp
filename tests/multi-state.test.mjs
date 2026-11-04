@@ -35,6 +35,8 @@ const environment=await codecEnvironment();
 for(const root of ['../js','../dist/js']){
  const {createState,hydrateState,fingerprint,localStateKey,encodeState,decodeState,migrateLegacy,findLMS,StateTransport}=await loadModule('multiState',root);
  const record=(sco,payload='{"q":"echte Antwort: äöü 😀"}')=>({frameworkId:sco.frameworkId,fingerprint:fingerprint(sco),payload,values:{'cmi.core.lesson_status':'incomplete'},native:null});
+ const compatibility=(scoId,previous)=>({version:1,rule:'markledge-generated-display-v1',proofs:[{previousFingerprint:previous,
+  path:`presentation-compatibility/${scoId}/${previous}.json`,sha256:'c'.repeat(64),componentDisplayTitles:[{componentId:'text-1',previousDisplayTitle:'Generated heading',currentDisplayTitle:''}]}]});
 
  test(root+': independent immutable defaults and package/profile/attempt keys',()=>{
   const c=fixture(),a=createState(c),b=createState(c),before=structuredClone(c);
@@ -59,6 +61,50 @@ for(const root of ['../js','../dist/js']){
   const changed=structuredClone(c);changed.scos[0].source.buildSha256='f'.repeat(64);
   const h=hydrateState(changed,s);assert.equal(h.state.scoStates[c.scos[0].id],undefined);assert.deepEqual(h.state.scoStates[c.scos[1].id],s.scoStates[c.scos[1].id]);assert.equal(h.state.frameworkBookmarks[c.frameworks[0].id],undefined);assert.ok(h.warnings.length);
   s.scoStates[c.scos[0].id].frameworkId=c.frameworks[1].id;assert.equal(hydrateState(c,s).state.scoStates[c.scos[0].id],undefined);
+ });
+ test(root+': proven presentation revision keeps exact learning payload/native state and rebases without touching input',()=>{
+  const old=fixture(),s=createState(old),sco=old.scos[0];s.scoStates[sco.id]=record(sco,'opaque native answers: ä\u0000😀');
+  s.scoStates[sco.id].values['cmi.core.lesson_status']='completed';s.scoStates[sco.id].native={format:1,components:{text:{required:true,state:{_isComplete:true}}}};
+  s.frameworkBookmarks[sco.frameworkId]={scoId:sco.id,contentId:'original-page'};
+  const current=structuredClone(old);current.package.revision='r2';current.scos[0].source.componentFingerprint='b'.repeat(64);
+  current.scos[0].source.presentationCompatibility=compatibility(sco.id,fingerprint(sco));
+  const before=structuredClone(s),result=hydrateState(current,s),expected={...before.scoStates[sco.id],fingerprint:fingerprint(current.scos[0])};
+  assert.deepEqual(result.state.scoStates[sco.id],expected);assert.deepEqual(result.state.frameworkBookmarks,s.frameworkBookmarks);assert.deepEqual(s,before);
+  assert.equal(result.state.contentRevision,'r2');
+  assert.deepEqual(result.warnings,['Paketrevision geändert: Abschluss wird anhand des aktuellen Pflichtumfangs neu berechnet.']);
+  const withoutProof=structuredClone(current);delete withoutProof.scos[0].source.presentationCompatibility;
+  assert.deepEqual(hydrateState(withoutProof,result.state).state.scoStates,result.state.scoStates,'Current saved state needs no legacy alias');
+  current.scos[0].source.presentationCompatibility.proofs.push(compatibility(sco.id,'d'.repeat(64)).proofs[0]);
+  const second=structuredClone(s);second.scoStates[sco.id].fingerprint='d'.repeat(64);
+  assert.equal(hydrateState(current,second).state.scoStates[sco.id].fingerprint,fingerprint(current.scos[0]));
+ });
+ test(root+': display aliases cannot cross package/framework/SCO or bypass normal record validation',()=>{
+  const old=fixture(),s=createState(old),sco=old.scos[0];s.scoStates[sco.id]=record(sco);const current=structuredClone(old);
+  current.scos[0].source.componentFingerprint='b'.repeat(64);current.scos[0].source.presentationCompatibility=compatibility(sco.id,fingerprint(sco));
+  current.scos[1].source.componentFingerprint='e'.repeat(64);
+  for(const mutate of [value=>value.scoStates[sco.id].frameworkId=old.frameworks[1].id,value=>value.scoStates[sco.id].payload={},
+   value=>value.scoStates[sco.id].values.bad=7,value=>value.scoStates[sco.id].native=[],value=>value.scoStates[sco.id].fingerprint='d'.repeat(64),
+   value=>{value.scoStates[old.scos[1].id]=value.scoStates[sco.id];delete value.scoStates[sco.id];}]){
+   const malformed=structuredClone(s);mutate(malformed);assert.deepEqual(hydrateState(current,malformed).state.scoStates,{});
+  }
+  assert.throws(()=>hydrateState(current,{...s,packageId:'other-package'}));
+  const malformed=structuredClone(current);malformed.scos[0].source.presentationCompatibility.proofs[0].path='foreign.json';
+  assert.throws(()=>hydrateState(malformed,s));assert.throws(()=>hydrateState(malformed,null),'Even an empty load cannot bypass evidence validation');
+ });
+ test(root+': diagnostic state never accepts a learning display alias',()=>{
+  const c=diagnostic(fixture()),s=createState(c),sco=c.scos.find(value=>value.id==='diag-dig');s.scoStates[sco.id]=record(sco);
+  const current=structuredClone(c),test=current.scos.find(value=>value.id===sco.id);test.source.buildSha256='d'.repeat(64);
+  test.source.presentationCompatibility=compatibility(test.id,fingerprint(sco));
+  assert.throws(()=>hydrateState(current,s));
+  delete test.source.presentationCompatibility;assert.equal(hydrateState(current,s).state.scoStates[sco.id],undefined);
+ });
+ test(root+': graphics-only proof preserves learning state without granting text fallback rows',()=>{
+  const old=fixture(),sco=old.scos[0],input=createState(old);input.scoStates[sco.id]=record(sco,'unchanged graphic course payload');
+  const current=structuredClone(old);current.scos[0].source.componentFingerprint='b'.repeat(64);
+  const proof=compatibility(sco.id,fingerprint(sco));proof.proofs[0].componentDisplayTitles=[];current.scos[0].source.presentationCompatibility=proof;
+  const before=structuredClone(input),result=hydrateState(current,input);
+  assert.deepEqual(result.state.scoStates[sco.id],{...before.scoStates[sco.id],fingerprint:fingerprint(current.scos[0])});
+  assert.deepEqual(input,before);
  });
  test(root+': malformed completed assessment attempts are dropped with warnings, genuine zero survives',()=>{
   const c=diagnostic(fixture()),s=createState(c),sco=c.scos.find(x=>x.id==='diag-dig');s.scoStates[sco.id]=record(sco);

@@ -58,6 +58,21 @@ confirmed alias/fingerprint plan. Migration/file-upload controls do not occupy
 the normal learner dashboard. The operation preserves a backup,
 rejects alias collisions and does not repeat an applied migration.
 
+An optional `source.presentationCompatibility` declaration retains learning
+state across two narrowly proven Markledge display repairs: suppressed duplicate
+text headings and replaced menu/page cover graphics. The exporter must replay a
+bounded, SHA-256-bound previous source against the actual delivered source.
+Questions, bodies, configuration, identities, hierarchy and completion flags
+remain exact; the existing learning fingerprint algorithm is unchanged. Core
+fallback completion also checks the old text-heading signature using current
+native defaults. Missing proofs keep the previous strict behavior; diagnostics
+never accept these aliases. The wrapper declares this support explicitly in its
+versioned capabilities.
+
+This does not recover records an earlier runtime has already discarded.
+Immutable `:before-update:` backups remain untouched; restoring one requires an
+explicit choice rather than silently replacing newer work.
+
 Regular relevant changes save immediately, with idempotent outer finalization.
 A real SCORM1.2 API must accept and return the exact compressed suspend payload;
 failed initialization/read/write/commit/readback is visible. The conservative

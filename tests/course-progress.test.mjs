@@ -51,6 +51,7 @@ async function deliveredApp() {
         './charts.js':'export function pulseChart(){} export function radarChart(){}'
     };
     for(const name of ['scormBridge','corePersistence','courseProgress','scoLaunch'])stubs[`./${name}.js`]=await sourceAt(`../dist/js/${name}.js`);
+    stubs['./corePersistence.js']=stubs['./corePersistence.js'].replace("'./multiContract.js'",JSON.stringify(dataURL(await sourceAt('../dist/js/multiContract.js'))));
     for(const [specifier,stub]of Object.entries(stubs))source=source.replace(JSON.stringify(specifier),JSON.stringify(dataURL(stub))).replace(`'${specifier}'`,JSON.stringify(dataURL(stub)));
     return (await import(dataURL(source))).App;
 }

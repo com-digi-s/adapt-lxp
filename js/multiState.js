@@ -1,4 +1,4 @@
-import { clone } from './multiContract.js';
+import { clone, validatePresentationCompatibility } from './multiContract.js';
 
 export function createState(contract) {
     return { stateVersion: 1, packageId: contract.package.id, contentRevision: contract.package.revision,
@@ -35,6 +35,7 @@ function validAttempt(attempt, id, test, contract) {
 }
 export function hydrateState(contract, input) {
     const state = createState(contract), warnings = [];
+    const aliases = new Map(contract.scos.map(sco => [sco.id, validatePresentationCompatibility(sco.source.presentationCompatibility, sco.id, fingerprint(sco), sco.role)]));
     if (!input) return { state, warnings };
     if (input.stateVersion !== 1 || input.packageId !== contract.package.id) throw new Error('Gespeicherter Zustand gehört zu einem anderen Paket oder Zustandsschema.');
     const source = clone(input), scos = new Map(contract.scos.map(sco => [sco.id, sco])), frameworks = new Set(contract.frameworks.map(fw => fw.id)), changedTests = new Set();
@@ -47,10 +48,12 @@ export function hydrateState(contract, input) {
             warnings.push(`Test „${sco.label}“ wurde aktualisiert. Bisherige Antworten werden nicht den neuen Fragen zugeordnet. Bitte den Test neu beginnen.`);
             return;
         }
-        if (!sco || !plainObject(record) || record.fingerprint !== fingerprint(sco) || record.frameworkId !== sco.frameworkId || typeof record.payload !== 'string' || !plainObject(record.values) || !Object.values(record.values).every(value => typeof value === 'string') || (record.native !== null && record.native !== undefined && !plainObject(record.native))) {
+        const presentationAlias = sco && sco.role === 'learning' && plainObject(record) && aliases.get(id)?.proofs.some(proof => proof.previousFingerprint === record.fingerprint);
+        if (!sco || !plainObject(record) || (record.fingerprint !== fingerprint(sco) && !presentationAlias) || record.frameworkId !== sco.frameworkId || typeof record.payload !== 'string' || !plainObject(record.values) || !Object.values(record.values).every(value => typeof value === 'string') || (record.native !== null && record.native !== undefined && !plainObject(record.native))) {
             warnings.push(`Kurszustand nicht übernommen (entfernt oder inkompatibel): ${id}`); return;
         }
         state.scoStates[id] = record;
+        if (presentationAlias) record.fingerprint = fingerprint(sco);
     });
     Object.entries(source.frameworkBookmarks || {}).forEach(([fw, bookmark]) => {
         const sco = bookmark && scos.get(bookmark.scoId);

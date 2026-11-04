@@ -18,6 +18,7 @@ async function appClass(root) {
         './charts.js': 'export function pulseChart(){} export function radarChart(){}'
     };
     for (const name of ['scormBridge', 'corePersistence', 'courseProgress', 'scoLaunch']) stubs[`./${name}.js`] = await sourceAt(`${root}/${name}.js`);
+    stubs['./corePersistence.js'] = stubs['./corePersistence.js'].replace("'./multiContract.js'", JSON.stringify(dataURL(await sourceAt(`${root}/multiContract.js`))));
     for (const [specifier, stub] of Object.entries(stubs)) source = source.replace(`'${specifier}'`, JSON.stringify(dataURL(stub)));
     return (await import(dataURL(source))).App;
 }

@@ -506,7 +506,8 @@ export class MultiFrameworkApp {
             const native = facade.DATA['cmi.suspend_data'].customData.nativeAdapt[context.scoId]; if (native) record.native = clone(native);
             this.captureLocation(context, childWindow); this.save();
         };
-        const controller = attachCorePersistence(facade, Adapt, childWindow, context.scoId);
+        const controller = attachCorePersistence(facade, Adapt, childWindow, context.scoId,
+            this.catalog.scos.get(context.scoId).source.presentationCompatibility);
         Adapt.__multiLXPController = controller; this.controllers.set(context.launchId, controller);
         const observe = () => {
             if (controller.__multiObserved || !Adapt.course || !Adapt.components || !Adapt.components.models.length) return;

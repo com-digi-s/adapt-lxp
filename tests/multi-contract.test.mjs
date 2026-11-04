@@ -5,10 +5,16 @@ import { createHash } from 'node:crypto';
 import { loadModule, fixture } from './multi-fixture.mjs';
 
 for (const root of ['../js','../dist/js']) {
-    const {validateContract,validateCapabilities,launchPath,safeRelativePath,progress,courseComplete} = await loadModule('multiContract',root);
+    const {validateContract,validateCapabilities,validatePresentationCompatibility,launchPath,safeRelativePath,progress,courseComplete} = await loadModule('multiContract',root);
+    const compatibility = (scoId = 'opaque-dig', previous = 'b'.repeat(64)) => ({version:1,rule:'markledge-generated-display-v1',proofs:[{
+        previousFingerprint:previous,path:`presentation-compatibility/${scoId}/${previous}.json`,sha256:'c'.repeat(64),
+        componentDisplayTitles:[{componentId:'text-1',previousDisplayTitle:'Generated heading',currentDisplayTitle:''}]
+    }]});
     test(`${root}: wrapper capability version and complete implementation declaration are mandatory`, async () => {
         const cap=JSON.parse(await readFile(new URL('../dist/adapt-multi-framework-capabilities.json',import.meta.url),'utf8'));
         assert.equal(validateCapabilities(cap),cap);assert.throws(()=>validateCapabilities({...cap,version:2}));assert.throws(()=>validateCapabilities({...cap,persistenceContract:2}));assert.throws(()=>validateCapabilities({...cap,implementationFiles:{}}));
+        assert.equal(validateCapabilities({...cap,presentationCompatibility:1}).presentationCompatibility,1);
+        for(const value of [0,2,true,null,{}])assert.throws(()=>validateCapabilities({...cap,presentationCompatibility:value}));
     });
     test(`${root}: typed product graph is immutable and opaque IDs separate both frameworks`, () => {
         const input=fixture(), catalog=validateContract(input);
@@ -22,6 +28,58 @@ for (const root of ['../js','../dist/js']) {
         const valid=fixture();valid.learningLinks=[{sourceScoId:'opaque-ai',targetScoId:'opaque-dig',contentId:'real-page',resourcePath:'course/de/assets/reference.md',resourceSha256:'a'.repeat(64)}];
         assert.equal(validateContract(valid).contract.learningLinks[0].targetScoId,'opaque-dig');
         for(const change of [v=>v.learningLinks=null,v=>v.learningLinks[0].targetScoId='missing',v=>v.learningLinks[0].sourceScoId='missing',v=>v.learningLinks[0].resourcePath='../reference.md',v=>v.learningLinks[0].resourcePath='https://elsewhere.invalid/a.md',v=>v.learningLinks[0].resourceSha256='',v=>v.learningLinks[0].contentId='',v=>v.learningLinks.push({...v.learningLinks[0]})]){const bad=structuredClone(valid);change(bad);assert.throws(()=>validateContract(bad));}
+    });
+    test(`${root}: display compatibility is a frozen learning-only exact evidence contract`, () => {
+        const input=fixture();input.scos[0].source.presentationCompatibility=compatibility();
+        const catalog=validateContract(input),proof=catalog.scos.get('opaque-dig').source.presentationCompatibility;
+        assert.deepEqual(proof,compatibility());assert.ok(Object.isFrozen(proof.proofs[0].componentDisplayTitles[0]));
+        input.scos[0].source.presentationCompatibility.proofs[0].componentDisplayTitles[0].previousDisplayTitle='mutated';
+        assert.equal(proof.proofs[0].componentDisplayTitles[0].previousDisplayTitle,'Generated heading');
+        const two=fixture();two.scos[0].source.presentationCompatibility=compatibility();
+        two.scos[0].source.presentationCompatibility.proofs.push(compatibility('opaque-dig','d'.repeat(64)).proofs[0]);
+        assert.equal(validateContract(two).scos.get('opaque-dig').source.presentationCompatibility.proofs.length,2);
+        assert.equal(validatePresentationCompatibility(undefined,'opaque-dig'),undefined);
+        assert.throws(()=>validatePresentationCompatibility(compatibility(),'opaque-dig','a'.repeat(64),'entry'));
+        assert.throws(()=>validatePresentationCompatibility(compatibility(),'opaque-dig','a'.repeat(64),'final'));
+    });
+    test(`${root}: malformed, self, duplicate and foreign display aliases fail closed`, () => {
+        const mutations=[value=>value.version=2,value=>value.rule='ignore-displayTitle',value=>value.extra=true,value=>value.extra=undefined,
+            value=>value.proofs=[],value=>value.proofs.push(structuredClone(value.proofs[0])),value=>value.proofs[0].extra=true,
+            value=>value.proofs[0].previousFingerprint='a'.repeat(64),value=>value.proofs[0].previousFingerprint='B'.repeat(64),
+            value=>value.proofs[0].sha256='hash',value=>value.proofs[0].path='../old.json',value=>value.proofs[0].path=value.proofs[0].path+'?x=1',
+            value=>value.proofs[0].path=value.proofs[0].path.replace('opaque-dig','opaque-ai'),
+            value=>delete value.proofs[0].componentDisplayTitles,value=>value.proofs[0].componentDisplayTitles=null,
+            value=>value.proofs[0].componentDisplayTitles.push({...value.proofs[0].componentDisplayTitles[0]}),
+            value=>value.proofs[0].componentDisplayTitles[0].extra=true,value=>value.proofs[0].componentDisplayTitles[0].componentId='constructor',
+            value=>value.proofs[0].componentDisplayTitles[0].componentId=' spaced ',value=>value.proofs[0].componentDisplayTitles[0].componentId='x'.repeat(257),
+            value=>value.proofs[0].componentDisplayTitles[0].previousDisplayTitle=' heading',value=>value.proofs[0].componentDisplayTitles[0].previousDisplayTitle='line\nbreak',
+            value=>value.proofs[0].componentDisplayTitles[0].previousDisplayTitle='<strong>heading</strong>',value=>value.proofs[0].componentDisplayTitles[0].previousDisplayTitle='Heading &amp; text',
+            value=>value.proofs[0].componentDisplayTitles[0].previousDisplayTitle='x'.repeat(4097),value=>value.proofs[0].componentDisplayTitles[0].currentDisplayTitle='replacement'];
+        for(const mutate of mutations){const input=fixture(),value=compatibility();mutate(value);input.scos[0].source.presentationCompatibility=value;assert.throws(()=>validateContract(input));}
+        for(const value of [null,[],false])assert.throws(()=>validatePresentationCompatibility(value,'opaque-dig','a'.repeat(64)));
+        assert.throws(()=>validatePresentationCompatibility(compatibility(),'opaque-dig','B'.repeat(64)),'Self aliases are case-independent');
+        const oversized=compatibility();oversized.proofs[0].componentDisplayTitles=Array.from({length:513},(_,index)=>({componentId:'text-'+index,previousDisplayTitle:'Heading',currentDisplayTitle:''}));
+        assert.throws(()=>validatePresentationCompatibility(oversized,'opaque-dig','a'.repeat(64)));
+        const three=compatibility();three.proofs.push(compatibility('opaque-dig','d'.repeat(64)).proofs[0],compatibility('opaque-dig','e'.repeat(64)).proofs[0]);
+        assert.throws(()=>validatePresentationCompatibility(three,'opaque-dig','a'.repeat(64)));
+        const sparse=compatibility();sparse.proofs[0].componentDisplayTitles=new Array(1);
+        assert.throws(()=>validatePresentationCompatibility(sparse,'opaque-dig','a'.repeat(64)));
+    });
+    test(`${root}: graphics-only display evidence needs no text heading fallback rows`, () => {
+        const input=fixture(),value=compatibility();value.proofs[0].componentDisplayTitles=[];
+        input.scos[0].source.presentationCompatibility=value;
+        assert.deepEqual(validateContract(input).scos.get('opaque-dig').source.presentationCompatibility,value);
+    });
+    test(`${root}: display proof text rejects lone surrogates but retains valid Unicode code points`, () => {
+        for(const field of ['componentId','previousDisplayTitle'])for(const surrogate of ['\ud800','\udfff']){
+            const input=fixture(),value=compatibility();value.proofs[0].componentDisplayTitles[0][field]='Text'+surrogate;
+            input.scos[0].source.presentationCompatibility=value;assert.throws(()=>validateContract(input));
+        }
+        const input=fixture(),value=compatibility(),row=value.proofs[0].componentDisplayTitles[0];
+        row.componentId='text-😀';row.previousDisplayTitle='Überschrift 😀';input.scos[0].source.presentationCompatibility=value;
+        assert.deepEqual(validateContract(input).scos.get('opaque-dig').source.presentationCompatibility,value);
+        row.componentId='😀'.repeat(128);row.previousDisplayTitle='😀'.repeat(2048);
+        assert.deepEqual(validateContract(input).scos.get('opaque-dig').source.presentationCompatibility,value,'The limits count UTF-16 units, not Unicode code points');
     });
     test(`${root}: fixture, wrong version, real-source absence, bad graph and missing required scope fail closed`, () => {
         const cases=[v=>v.exampleOnly=true,v=>v.version=2,v=>v.scos[0].source.kind='fixture',v=>v.scos[0].source.publishedTitle='unpublished',v=>v.scos[0].source.manifest.resourceId='',v=>v.scos[0].source.buildSha256='hash',v=>v.scos[0].frameworkId='unknown',v=>v.scos[1].moduleId=v.scos[0].moduleId,v=>v.scos[1].launch.root=v.scos[0].launch.root+'/nested',v=>v.scos.forEach(s=>s.requiredForCompletion=false),v=>v.scos[1].number='01',v=>v.frameworks[1].prefix=v.frameworks[0].prefix,v=>v.pathways[0].courseIds=['opaque-dig'],v=>v.glossary[0].targets[0].scoId='opaque-dig',v=>v.frameworks[1].diagnostics.entry={intent:'require',status:'notProvided',reason:'no-assigned-questions'}];

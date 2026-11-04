@@ -24,6 +24,7 @@ function deepFreeze(value) {
 }
 export function validateCapabilities(capability) {
     requireThat(object(capability) && capability.capability === 'multi-framework' && capability.version === 1 && capability.packageContract === 'adapt-lxp-multi-framework@1' && capability.persistenceContract === 1 && capability.launchContext === 'explicit-sco-id', 'Wrapper unterstützt den benötigten Multi-Framework-/Persistenzvertrag nicht.');
+    requireThat(capability.presentationCompatibility === undefined || capability.presentationCompatibility === 1, 'Nicht unterstützte Darstellungs-Kompatibilität.');
     requireThat(object(capability.implementationFiles) && SHA256.test(capability.implementationSha256 || ''), 'Geprüfter Wrapperbuild fehlt.');
     ['js/multiContract.js', 'js/multiState.js', 'js/multiBridge.js', 'js/multiAssessment.js', 'js/multiFramework.js', 'js/corePersistence.js', 'index.html'].forEach(file => requireThat(SHA256.test(capability.implementationFiles[file] || ''), 'Unvollständiger Multi-Framework-Wrapperbuild.'));
     Object.entries(capability.implementationFiles).forEach(([path, sha]) => { safeRelativePath(path); requireThat(SHA256.test(sha), 'Ungültige Wrapper-Buildprüfsumme.'); });
@@ -47,6 +48,44 @@ export function safeRelativePath(value, allowSuffix = false) {
     }
     return decoded + (match[2] || '') + (match[3] || '');
 }
+// These aliases are released only after the exporter has replayed the complete
+// old source against the current source. The browser never invents evidence or
+// treats a changed question/displayTitle as generally fingerprint-independent.
+export function validatePresentationCompatibility(value, scoId, currentFingerprint, role = 'learning') {
+    if (value === undefined) return value;
+    const exact = (record, keys) => object(record) && Object.keys(record).length === keys.length && keys.every(key => Object.hasOwn(record, key));
+    const list = (items, maximum, minimum = 0) => Array.isArray(items) && items.length >= minimum && items.length <= maximum && Object.keys(items).length === items.length;
+    const sha = candidate => typeof candidate === 'string' && /^[a-f0-9]{64}$/.test(candidate);
+    const wellFormed = candidate => {
+        for (const character of candidate) {
+            const point = character.codePointAt(0);
+            if (point >= 0xd800 && point <= 0xdfff) return false;
+        }
+        return true;
+    };
+    const plainTitle = candidate => typeof candidate === 'string' && candidate.length > 0 && candidate.length <= 4096 && candidate === candidate.trim() &&
+        wellFormed(candidate) && !/[\u0000-\u001f\u007f<>]/.test(candidate) && !/&(?:#[0-9]+|#[xX][0-9a-fA-F]+|[A-Za-z][A-Za-z0-9]+);/.test(candidate);
+    requireThat(role === 'learning' && typeof scoId === 'string' && /^[A-Za-z][A-Za-z0-9_-]*$/.test(scoId) &&
+        exact(value, ['version', 'rule', 'proofs']) && value.version === 1 && value.rule === 'markledge-generated-display-v1' &&
+        list(value.proofs, 2, 1), 'Ungültiger Darstellungs-Kompatibilitätsnachweis.');
+    const previous = new Set(), paths = new Set();
+    value.proofs.forEach(proof => {
+        requireThat(exact(proof, ['previousFingerprint', 'path', 'sha256', 'componentDisplayTitles']) && sha(proof.previousFingerprint) && sha(proof.sha256) &&
+            proof.previousFingerprint !== String(currentFingerprint).toLowerCase() && !previous.has(proof.previousFingerprint) && !paths.has(proof.path) &&
+            proof.path === `presentation-compatibility/${scoId}/${proof.previousFingerprint}.json` &&
+            list(proof.componentDisplayTitles, 512),
+        'Ungültiger oder doppelter Darstellungs-Kompatibilitätsbeleg.');
+        previous.add(proof.previousFingerprint); paths.add(proof.path);
+        const components = new Set();
+        proof.componentDisplayTitles.forEach(row => {
+            requireThat(exact(row, ['componentId', 'previousDisplayTitle', 'currentDisplayTitle']) && identifier(row.componentId) && wellFormed(row.componentId) && row.componentId.length <= 256 &&
+                row.componentId === row.componentId.trim() && !components.has(row.componentId) && plainTitle(row.previousDisplayTitle) && row.currentDisplayTitle === '',
+            'Ungültige oder doppelte Textüberschriften-Zuordnung.');
+            components.add(row.componentId);
+        });
+    });
+    return value;
+}
 export function launchPath(sco, contentId) {
     const root = safeRelativePath(sco.launch.root);
     const entry = safeRelativePath(sco.launch.entry, true);
@@ -59,6 +98,10 @@ export function launchPath(sco, contentId) {
 
 export function validateContract(input) {
     requireThat(object(input) && input.format === 'adapt-lxp-multi-framework' && input.version === 1 && input.exampleOnly === false, 'Nicht unterstützter Multi-Framework-Produktvertrag (Version 1 erforderlich).');
+    if (Array.isArray(input.scos)) input.scos.forEach(sco => {
+        if (object(sco) && object(sco.source)) validatePresentationCompatibility(sco.source.presentationCompatibility, sco.id,
+            sco.source.componentFingerprint || sco.source.contentFingerprint || sco.source.buildSha256, sco.role);
+    });
     const contract = clone(input), pkg = contract.package;
     requireThat(object(pkg) && identifier(pkg.id) && text(pkg.revision) && text(pkg.title) && text(pkg.catalogueRevision) && text(pkg.targetProfileId) && pkg.outerScorm === '1.2', 'Paketidentität, Katalogstand oder SCORM-1.2-Zielprofil fehlt.');
     requireThat(!pkg.manifestLaunch || safeRelativePath(pkg.manifestLaunch, true), 'Ungültiger äußerer Einstieg.');
@@ -97,6 +140,7 @@ export function validateContract(input) {
         const src = sco.source;
         requireThat(object(src) && SHA256.test(src.buildSha256 || '') && SHA256.test(src.catalogueSha256 || ''), 'Echter Quellbuild-/Katalogfingerabdruck fehlt.');
         requireThat((src.componentFingerprint === undefined || SHA256.test(src.componentFingerprint)) && (src.contentFingerprint === undefined || SHA256.test(src.contentFingerprint)), 'Ungültiger Inhalts-/Komponentenfingerabdruck.');
+        validatePresentationCompatibility(src.presentationCompatibility, sco.id, src.componentFingerprint || src.contentFingerprint || src.buildSha256, sco.role);
         if (sco.role === 'learning') {
             requireThat(['aat-published', 'native-registered'].includes(src.kind) && text(src.originId) && text(src.courseId) && text(src.title) && src.title === src.publishedTitle && text(src.language), 'Ungültige Veröffentlichung: Bitte Kurs erneut veröffentlichen.');
             requireThat(object(src.manifest) && SHA256.test(src.manifest.sha256 || '') && text(src.manifest.resourceId) && src.manifest.href === sco.launch.manifestHref, 'Nachweis des gewählten Manifest-Einstiegs fehlt.');

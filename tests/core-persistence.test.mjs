@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
 import { EventEmitter } from 'node:events';
 import { test } from 'node:test';
+import { loadModule } from './multi-fixture.mjs';
 
 function fixture(kind = 'matching', body = 'Original prompt') {
     const itemModels = [0, 1, 2, 3].map(index => {
@@ -39,8 +39,11 @@ function appFixture() {
 }
 
 for (const root of ['../js', '../dist/js']) {
-    const source = await readFile(new URL(`${root}/corePersistence.js`, import.meta.url), 'utf8');
-    const { attachCorePersistence, allowedAttemptState, nativeCourseProgress, allSelectedCoursesComplete } = await import('data:text/javascript;base64,' + Buffer.from(source).toString('base64'));
+    const { attachCorePersistence, allowedAttemptState, nativeCourseProgress, allSelectedCoursesComplete } = await loadModule('corePersistence', root);
+    const compatibility = (scoId = 'M0') => ({ version: 1, rule: 'markledge-generated-display-v1', proofs: [{
+        previousFingerprint: 'b'.repeat(64), path: `presentation-compatibility/${scoId}/${'b'.repeat(64)}.json`, sha256: 'c'.repeat(64),
+        componentDisplayTitles: [{ componentId: 'q1', previousDisplayTitle: 'Question', currentDisplayTitle: '' }]
+    }] });
 
     test(`${root}: overall completion requires every enabled selected learning course, not visited diagnostics`, () => {
         const modules = { M0: { enabled: true }, MX: { enabled: true },
@@ -172,6 +175,64 @@ for (const root of ['../js', '../dist/js']) {
             assert.equal(changed.model.get('_isSubmitted'), false, field);
             assert.equal(changed.model.restoreCount, 0, field);
         }
+    });
+
+    test(`${root}: proven generated text heading keeps real completion and rebases only on save`, () => {
+        const app = appFixture(), first = fixture('text');
+        first.model.attributes.displayTitle = 'Question';
+        const initial = attachCorePersistence(app, first.Adapt, first.child, 'M0');
+        first.model.attributes._isComplete = true;
+        first.model.attributes._isVisited = true;
+        initial.save();
+        const original = structuredClone(app.DATA['cmi.suspend_data'].customData.nativeAdapt.M0);
+        const restored = fixture('text'); restored.model.attributes.displayTitle = '';
+        const controller = attachCorePersistence(app, restored.Adapt, restored.child, 'M0', compatibility());
+        assert.equal(restored.model.get('_isComplete'), true);
+        assert.equal(restored.model.get('_isVisited'), true);
+        assert.equal(restored.model.get('_isSubmitted'), false);
+        assert.equal(restored.model.get('displayTitle'), '');
+        assert.deepEqual(app.DATA['cmi.suspend_data'].customData.nativeAdapt.M0, original, 'The accepted raw native record is not rewritten during restore');
+        controller.save();
+        const rebased = app.DATA['cmi.suspend_data'].customData.nativeAdapt.M0.components.q1;
+        assert.notEqual(rebased.fingerprint, original.components.q1.fingerprint);
+        const again = fixture('text'); again.model.attributes.displayTitle = '';
+        attachCorePersistence(app, again.Adapt, again.child, 'M0');
+        assert.equal(again.model.get('_isComplete'), true, 'The saved current fingerprint needs no old alias');
+    });
+
+    test(`${root}: text display aliases never admit another model, prompt, title or question state`, () => {
+        for (const change of [
+            undefined,
+            value => { value.model.attributes._component = 'matching'; },
+            value => { value.model.attributes._isQuestionType = true; },
+            value => { value.model.attributes._id = 'another'; },
+            value => { value.model.attributes.displayTitle = 'Different title'; },
+            value => { value.model.attributes.body = 'Changed actual body'; },
+            value => { value.model.attributes.instruction = 'Changed actual instruction'; },
+            value => { value.model.attributes.title = 'Changed retained title'; },
+            value => { value.model.attributes._items[0].text = 'Changed answer'; },
+            value => { value.model.attributes._questionWeight = 2; }
+        ]) {
+            const app = appFixture(), first = fixture('text'); first.model.attributes.displayTitle = 'Question';
+            const initial = attachCorePersistence(app, first.Adapt, first.child, 'M0');
+            first.model.attributes._isComplete = true; initial.save();
+            const restored = fixture('text'); restored.model.attributes.displayTitle = ''; if (change) change(restored);
+            // The unchanged model is the default four-argument strict path.
+            attachCorePersistence(app, restored.Adapt, restored.child, 'M0', change ? compatibility() : undefined);
+            assert.equal(restored.model.get('_isComplete'), false);
+        }
+    });
+
+    test(`${root}: malformed or foreign core display evidence fails before model or state changes`, () => {
+        for (const mutate of [value => { value.rule = 'ignore-fingerprints'; }, value => { value.proofs[0].path = 'elsewhere.json'; },
+            value => { value.proofs[0].componentDisplayTitles[0].currentDisplayTitle = 'new'; }, value => { value.proofs[0].extra = true; }]) {
+            const app = appFixture(), current = fixture('text'), proof = compatibility(); mutate(proof);
+            const before = structuredClone(app.DATA);
+            assert.throws(() => attachCorePersistence(app, current.Adapt, current.child, 'M0', proof));
+            assert.equal(current.Adapt.__lxpCorePersistence, undefined); assert.deepEqual(app.DATA, before);
+        }
+        const current = fixture('text');
+        assert.throws(() => attachCorePersistence(appFixture(), current.Adapt, current.child, 'MX', compatibility()));
     });
 
     test(`${root}: only allowlisted, finite native state can be restored`, () => {

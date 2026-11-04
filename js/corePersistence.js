@@ -1,5 +1,6 @@
 // Local LXP persistence for genuine Adapt Core models when no Spoor extension
 // is present. This is not an LMS conformance claim and does not grade answers.
+import { validatePresentationCompatibility } from './multiContract.js';
 var BOOLEAN_KEYS = ['_isComplete', '_isInteractionComplete', '_isVisited', '_isSubmitted', '_isCorrect'];
 var NUMBER_KEYS = ['_score', '_attemptsLeft'];
 var ACTIVE_TYPES = ['mcq', 'gmcq', 'matching'];
@@ -71,7 +72,27 @@ function restoreDraft(model, record, view) {
     if (typeof model.checkCanSubmit === 'function') model.checkCanSubmit();
 }
 
-export function attachCorePersistence(app, Adapt, childWindow, scoId) {
+export function attachCorePersistence(app, Adapt, childWindow, scoId, presentationCompatibility) {
+    var compatibility = validatePresentationCompatibility(presentationCompatibility, scoId);
+    var displayRows = compatibility ? compatibility.proofs.flatMap(function (proof) {
+        return proof.componentDisplayTitles.map(function (row) { return Object.assign({}, row); });
+    }) : [];
+    function compatibleRecord(model, record, signature) {
+        if (!record || record.fingerprint === signature) return record;
+        if (model.get('_component') !== 'text' || ![undefined, false].includes(model.get('_isQuestionType'))) return null;
+        var accepted = displayRows.some(function (row) {
+            if (row.componentId !== model.get('_id') || row.currentDisplayTitle !== model.get('displayTitle')) return false;
+            // Keep the native model's defaults and every other existing hash
+            // input. Only the proven old displayTitle is viewed differently.
+            return record.fingerprint === fingerprint({ get: function (key) {
+                return key === 'displayTitle' ? row.previousDisplayTitle : model.get(key);
+            } });
+        });
+        if (!accepted) return null;
+        var rebased = JSON.parse(JSON.stringify(record));
+        rebased.fingerprint = signature;
+        return rebased;
+    }
     if (Adapt.__lxpCorePersistence) return Adapt.__lxpCorePersistence;
     var controller = { mode: 'waiting', format: 1 };
     Adapt.__lxpCorePersistence = controller;
@@ -98,8 +119,8 @@ export function attachCorePersistence(app, Adapt, childWindow, scoId) {
         models.forEach(function (model) {
             var id = model.get('_id');
             signatures[id] = fingerprint(model);
-            var record = records && records[id];
-            if (!record || record.fingerprint !== signatures[id]) return;
+            var record = compatibleRecord(model, records && records[id], signatures[id]);
+            if (!record) return;
             var state = allowedAttemptState(record.state || {});
             model.setAttemptObject(state, false);
             if (state._isSubmitted === true) {
@@ -112,7 +133,7 @@ export function attachCorePersistence(app, Adapt, childWindow, scoId) {
         Adapt.on('componentView:preRender', function (view) {
             var id = view.model.get('_id');
             var latest = custom.nativeAdapt[scoId];
-            var record = latest && latest.components && latest.components[id];
+            var record = compatibleRecord(view.model, latest && latest.components && latest.components[id], signatures[id]);
             if (record && record.fingerprint === signatures[id] && !(record.state && record.state._isSubmitted)) {
                 pendingDrafts[id] = JSON.parse(JSON.stringify(record));
             }
