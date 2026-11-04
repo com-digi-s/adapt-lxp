@@ -22,6 +22,7 @@ function uid() { return globalThis.crypto && globalThis.crypto.randomUUID ? cryp
 function phaseLabel(phase) { return phase === 'entry' ? 'Einstiegstest' : 'Abschlusstest'; }
 function numericOrder(a, b) { const left = BigInt(a.number), right = BigInt(b.number); return left < right ? -1 : left > right ? 1 : 0; }
 function frameworkLabel(framework) { return framework.label.includes(framework.version) ? framework.label : framework.label + ' · ' + framework.version; }
+function frameworkShortLabel(framework) { return framework.prefix.includes(framework.version) ? framework.prefix : framework.prefix + ' · ' + framework.version; }
 
 export class MultiFrameworkApp {
     constructor(contract, options = {}) {
@@ -93,10 +94,12 @@ export class MultiFrameworkApp {
     installNavigation() {
         const bar = this.header.querySelector('#main-navbar .container-fluid');
         this.frameworkSelector = node('select', null, { 'data-framework-selector': '', 'aria-label': 'Kompetenzrahmen wählen', class: 'form-select form-select-sm mf-framework-selector' });
-        this.contract.frameworks.forEach(framework => this.frameworkSelector.append(node('option', frameworkLabel(framework), { value: framework.id })));
+        this.contract.frameworks.forEach(framework => this.frameworkSelector.append(node('option', frameworkShortLabel(framework), { value: framework.id, title: frameworkLabel(framework), 'aria-label': frameworkLabel(framework) })));
         this.frameworkSelector.hidden = this.contract.frameworks.length < 2;
         this.frameworkSelector.addEventListener('change', () => this.showFramework(this.frameworkSelector.value));
-        bar.insertBefore(this.frameworkSelector, this.header.querySelector('#breadcrumb-container'));
+        const breadcrumbs = this.header.querySelector('#breadcrumb-container');
+        breadcrumbs.setAttribute('role', 'navigation'); breadcrumbs.setAttribute('aria-label', 'Kursnavigation'); breadcrumbs.setAttribute('tabindex', '0');
+        bar.insertBefore(this.frameworkSelector, breadcrumbs);
         this.header.querySelector('.navbar-brand').addEventListener('click', event => { event.preventDefault(); this.showFramework(this.preferredFramework()); });
         this.header.querySelector('.navbar-brand').setAttribute('aria-label', 'Zur Lernübersicht');
         this.installGlossary();
@@ -135,24 +138,26 @@ export class MultiFrameworkApp {
         window.addEventListener('blur', () => dismiss());
     }
     updateLayout() {
-        const height = this.header?.querySelector('#main-navbar').getBoundingClientRect().height || 56;
-        const feedbackHeight = this.feedback && !this.feedback.hidden ? this.feedback.getBoundingClientRect().height : 0;
+        const height = Math.ceil(this.header?.querySelector('#main-navbar')?.getBoundingClientRect().height || 56);
+        const feedbackHeight = this.feedback && !this.feedback.hidden ? Math.ceil(this.feedback.getBoundingClientRect().height) : 0;
         document.documentElement.style.setProperty('--lxp-nav-height', height + 'px');
         document.documentElement.style.setProperty('--lxp-feedback-height', feedbackHeight + 'px');
     }
     updateNavigation(sco = null) {
         const framework = this.catalog.frameworks.get(this.state.activeFrameworkId || this.preferredFramework());
         this.frameworkSelector.value = framework.id;
+        this.frameworkSelector.setAttribute('title', frameworkLabel(framework));
+        this.frameworkSelector.setAttribute('aria-label', 'Kompetenzrahmen wählen: ' + frameworkLabel(framework));
         if (this.statusElement) this.statusElement.open = false;
         this.dashboardFrame.setAttribute('title', 'Lernübersicht: ' + frameworkLabel(framework));
         this.header.querySelector('#breadcrumb-container').hidden = !sco;
         const list = this.header.querySelector('.breadcrumb'); list.replaceChildren();
         if (sco) {
-            const item = node('li', null, { class: 'breadcrumb-item' });
-            item.append(button(frameworkLabel(framework), () => this.showFramework(framework.id), { class: 'btn btn-link p-0' })); list.append(item);
+            const item = node('li', null, { class: 'breadcrumb-item mf-breadcrumb-parent' });
+            item.append(button(frameworkShortLabel(framework), () => this.showFramework(framework.id), { class: 'btn btn-link p-0', title: frameworkLabel(framework), 'aria-label': 'Zur Lernübersicht: ' + frameworkLabel(framework) })); list.append(item);
             const module = this.catalog.modules.get(sco.moduleId);
-            if (module) { const entry = node('li', null, { class: 'breadcrumb-item' }); entry.append(button(module.label, () => this.showModule(module.id), { class: 'btn btn-link p-0' })); list.append(entry); }
-            list.append(node('li', sco.label, { class: 'breadcrumb-item active', 'aria-current': 'page', title: sco.label }));
+            if (module) { const entry = node('li', null, { class: 'breadcrumb-item mf-breadcrumb-parent' }); entry.append(button('Modul ' + module.number, () => this.showModule(module.id), { class: 'btn btn-link p-0', title: module.label, 'aria-label': 'Zum Modul: ' + module.label })); list.append(entry); }
+            list.append(node('li', sco.label, { class: 'breadcrumb-item active mf-breadcrumb-current', 'aria-current': 'page', title: sco.label }));
         }
         this.updateExperience(); this.refreshGlossary(); this.updateLayout();
     }
